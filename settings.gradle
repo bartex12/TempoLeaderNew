@@ -1,2 +1,2 @@
-include 'tempo_leader'
+include 'tempo_leader_java'
 rootProject.name='TempoLeader'
