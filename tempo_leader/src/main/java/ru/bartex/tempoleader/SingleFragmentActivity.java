@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TempDBHelper;
+import ru.bartex.tempoleader.ui.dialogs.DialogSetDelay;
 
 /**
  * Created by Андрей on 02.05.2018.

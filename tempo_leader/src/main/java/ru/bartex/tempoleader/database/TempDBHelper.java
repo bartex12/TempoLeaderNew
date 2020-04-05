@@ -11,11 +11,8 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import ru.bartex.tempoleader.DataFile;
-import ru.bartex.tempoleader.DataSet;
-import ru.bartex.tempoleader.database.P;
-import ru.bartex.tempoleader.database.TabFile;
-import ru.bartex.tempoleader.database.TabSet;
+import ru.bartex.tempoleader.data.DataFile;
+import ru.bartex.tempoleader.data.DataSet;
 
 import static ru.bartex.tempoleader.database.TabFile.COLUMN_DELAY;
 import static ru.bartex.tempoleader.database.TabFile.COLUMN_DESCRIPTION_OF_SPORT;

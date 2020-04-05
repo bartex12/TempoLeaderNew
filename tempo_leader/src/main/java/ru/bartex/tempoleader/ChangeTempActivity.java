@@ -37,9 +37,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import androidx.fragment.app.DialogFragment;
+import ru.bartex.tempoleader.data.DataFile;
+import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
+import ru.bartex.tempoleader.ui.dialogs.DialogChangeTemp;
+import ru.bartex.tempoleader.ui.dialogs.DialogSaveTempFragment;
 
 public class ChangeTempActivity extends AppCompatActivity implements
         DialogChangeTemp.ChangeTempUpDownListener, DialogSaveTempFragment.SaverFragmentListener{

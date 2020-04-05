@@ -15,8 +15,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import ru.bartex.tempoleader.data.DataFile;
+import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TempDBHelper;
+import ru.bartex.tempoleader.ui.main.MainActivity;
 
 public class NewExerciseActivity extends AppCompatActivity {
 
@@ -169,7 +172,7 @@ public class NewExerciseActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 Log.d(TAG, "Домой");
-                Intent intentHome = new Intent(this,MainActivity.class);
+                Intent intentHome = new Intent(this, MainActivity.class);
                 startActivity(intentHome);
                 finish();
                 return true;
