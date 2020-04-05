@@ -1,0 +1,116 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.geekbrains.a1l1_helloworld"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+8-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml
+10
+11    <application
+11-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:5:5-56:19
+12        android:allowBackup="true"
+12-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:6:9-35
+13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+13-->[androidx.core:core:1.1.0] C:\Users\Public\.gradle\caches\transforms-2\files-2.1\f01b27bb220ecb79298884ef36a7a2fb\core-1.1.0\AndroidManifest.xml:24:18-86
+14        android:debuggable="true"
+15        android:icon="@mipmap/ic_launcher"
+15-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:7:9-43
+16        android:label="@string/app_name"
+16-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:8:9-41
+17        android:supportsRtl="true"
+17-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:9:9-35
+18        android:testOnly="true"
+19        android:theme="@style/AppTheme" >
+19-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:10:9-40
+20        <activity
+20-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:11:9-21:20
+21            android:name="ru.bartex.p010_train.MainActivity"
+21-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:12:13-41
+22            android:label="@string/app_name"
+22-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:13:13-45
+23            android:launchMode="singleTop"
+23-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:14:13-43
+24            android:theme="@style/AppTheme.NoActionBar" >
+24-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:15:13-56
+25            <intent-filter>
+25-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:16:13-20:29
+26                <action android:name="android.intent.action.MAIN" />
+26-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:17:17-68
+26-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:17:25-66
+27
+28                <category android:name="android.intent.category.LAUNCHER" />
+28-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:19:17-76
+28-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:19:27-74
+29            </intent-filter>
+30        </activity>
+31        <activity android:name="ru.bartex.p010_train.TimeMeterActivity" >
+31-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:22:9-23:20
+31-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:22:19-52
+32        </activity>
+33        <activity android:name="ru.bartex.p010_train.TimeGrafActivity" >
+33-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:24:9-25:20
+33-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:24:19-51
+34        </activity>
+35        <activity android:name="ru.bartex.p010_train.PrefActivity" >
+35-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:26:9-27:20
+35-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:26:19-47
+36        </activity>
+37        <activity
+37-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:28:9-35:20
+38            android:name="ru.bartex.p010_train.SetListActivity"
+38-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:29:13-44
+39            android:parentActivityName="ru.bartex.p010_train.MainActivity"
+39-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:30:13-55
+40            android:windowSoftInputMode="stateHidden" >
+40-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:31:13-54
+41            <meta-data
+41-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:32:13-34:48
+42                android:name="android.support.PARENT_ACTIVITY"
+42-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:33:17-63
+43                android:value=".MainActivity" />
+43-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:34:17-46
+44        </activity>
+45        <activity
+45-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:36:9-39:20
+46            android:name="ru.bartex.p010_train.DetailActivity"
+46-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:37:13-43
+47            android:windowSoftInputMode="stateVisible" >
+47-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:38:13-55
+48        </activity>
+49        <activity
+49-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:40:9-43:20
+50            android:name="ru.bartex.p010_train.HelpMainActivity"
+50-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:41:13-45
+51            android:label="" >
+51-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:42:13-29
+52        </activity>
+53        <activity
+53-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:44:9-48:20
+54            android:name="ru.bartex.p010_train.TabBarActivity"
+54-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:45:13-43
+55            android:label="@string/title_activity_tab_bar"
+55-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:46:13-59
+56            android:theme="@style/AppTheme.NoActionBar" >
+56-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:47:13-56
+57        </activity>
+58        <activity
+58-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:49:9-52:20
+59            android:name="ru.bartex.p010_train.ChangeTempActivity"
+59-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:50:13-47
+60            android:label="@string/change_name" >
+60-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:51:13-48
+61        </activity>
+62        <activity
+62-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:53:9-55:20
+63            android:name="ru.bartex.p010_train.NewExerciseActivity"
+63-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:53:19-54
+64            android:label="@string/new_name" >
+64-->D:\AndroidStudioProjects\SesorsNew\tempo_leader\src\main\AndroidManifest.xml:54:19-51
+65        </activity>
+66    </application>
+67
+68</manifest>
