@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.preference.PreferenceManager;
@@ -29,6 +30,7 @@ import androidx.fragment.app.DialogFragment;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogSaveSecFragment;
 
@@ -36,7 +38,7 @@ public class TimeMeterActivity extends AppCompatActivity
         implements DialogSaveSecFragment.SaverFragmentSecundomerListener {
 
     public static final String TAG ="33333";
-
+    private SQLiteDatabase database;
     private Button mButtonStart;
     private Button mButtonStop;
     private Button mButtonReset;
@@ -150,7 +152,7 @@ public class TimeMeterActivity extends AppCompatActivity
                 //создаём экземпляр класса DataSet в конструкторе
                 DataSet set = new DataSet(time_now,1,j+1);
                 //добавляем запись в таблицу TabSet, используя данные DataSet
-                mTempDBHelper.addSet(set, file1_id);
+               TabSet.addSet(database, set, file1_id);
                 //======Окончание добавления записей в таблицы DataFile и DataSet=========//
             }
             // Cохраняем имя файла в предпочтениях (ИСПОЛЬЗУЕМ  при переходе в график с тулбара)
@@ -179,6 +181,9 @@ public class TimeMeterActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_meter);
+
+        // вызываем здесь, закрываем в onDestroy()
+        database = new TempDBHelper(this).getWritableDatabase();
 
         ActionBar acBar = getSupportActionBar();
         acBar.setTitle(R.string.Timemeter);

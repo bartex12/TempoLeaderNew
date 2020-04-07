@@ -44,6 +44,7 @@ public class TabBarTempFragment extends Fragment {
     ViewPager mViewPager;
 
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
     SimpleCursorAdapter scAdapter;
     Dialog dialog;
 
@@ -63,6 +64,13 @@ public class TabBarTempFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTempDBHelper = new TempDBHelper(getActivity());
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        database.close();
     }
 
     @Override

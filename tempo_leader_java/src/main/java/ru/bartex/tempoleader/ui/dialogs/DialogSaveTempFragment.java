@@ -2,6 +2,7 @@ package ru.bartex.tempoleader.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +31,7 @@ public class DialogSaveTempFragment extends DialogFragment {
     String finishFileName; //имя файла, передаваемое в аргументах фрагмента
 
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
 
     public DialogSaveTempFragment(){}
 
@@ -54,6 +56,13 @@ public class DialogSaveTempFragment extends DialogFragment {
         Log.d(TAG, "DialogSaveTempFragment: onAttach   mSaverFragmentListener = " +
                 mSaverFragmentListener);
         mTempDBHelper = new TempDBHelper(context);
+        database = new TempDBHelper(context).getWritableDatabase();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        database.close();
     }
 
     @Override

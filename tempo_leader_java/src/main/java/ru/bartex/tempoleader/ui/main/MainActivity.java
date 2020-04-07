@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity
 
     //создаём базу данных, если ее не было
     TempDBHelper mDbHelper = new TempDBHelper(this);
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Log.d(TAG,"MainActivity onCreate");
 
+        database = new TempDBHelper(this).getWritableDatabase();
         //если в базе нет записей, добавляем подход из 4х фрагментов в таблицу TabSet
         // и пишем с именем "Автосохранение секундомера" в таблицу TabFile
         mDbHelper.createDefaultSetIfNeed();

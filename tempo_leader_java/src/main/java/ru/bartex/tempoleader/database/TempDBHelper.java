@@ -157,7 +157,7 @@ public class TempDBHelper extends SQLiteOpenHelper {
         cursor.close();
         return count;
     }
-
+        //***********************************
     //получаем количество фрагментов подхода в подходе
     public int getSetFragmentsCount(long fileId) {
 

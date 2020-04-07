@@ -2,6 +2,7 @@ package ru.bartex.tempoleader;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 
 public class DetailActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     private EditText mNumberOfFrag;  //порядковый номер фрагмента подхода
     private Button mButtonOk;
     private Button mButtonCancel;
+
 
     private static final String TAG = "33333";
     public static final String INTENT_SET_UUID = "DetailActivity.intent_set_uuid";
@@ -40,6 +43,7 @@ public class DetailActivity extends AppCompatActivity {
     int fragmentNumber;  //номер фрагмента для Вставить до/после
     long fileId; //id файла, в который добавляем новый фрагмент подхода
     String finishFileName; //имя файла для обратной отправки
+    private SQLiteDatabase database;
 
     //редактируемая запись появляется в списке, только если нажата кнопка Принять
     //кнопка Назад в панели инструментов, кнопка отмена и кнопка Обратно на телефоне - отменяют
@@ -49,6 +53,9 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        // вызываем здесь, закрываем в onDestroy()
+        database = new TempDBHelper(this).getWritableDatabase();
 
         ActionBar act = getSupportActionBar();
         //act.setTitle("Редактирование");
@@ -87,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
             }else if (extras.getInt(P.FROM_ACTIVITY) ==P.TO_ADD_FRAG){
                 act.setTitle("Добавить ");
                 fileId = extras.getLong(P.INTENT_TO_DETILE_FILE_ID);
-                fragmentCount = mDBHelper.getSetFragmentsCount(fileId);
+                fragmentCount = TabSet.getSetFragmentsCount(database, fileId);
                 mDataSet = new DataSet();
                 mDataSet.setNumberOfFrag(fragmentCount + 1);
                 Log.d(TAG, "DetailActivity TO_ADD_FRAG " +
@@ -103,7 +110,7 @@ public class DetailActivity extends AppCompatActivity {
                 //если Добавить с тулбара редактора  +
                if (extras.getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG) {
                    //Добавляем фрагмент подхода
-                   mDBHelper.addSet(mDataSet, fileId);
+                   TabSet.addSet(database, mDataSet, fileId);
                    Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_ADD_FRAG ");
                     //посылаем интент для обновления данных на экране
                    Intent intentSave = new Intent();
@@ -112,7 +119,7 @@ public class DetailActivity extends AppCompatActivity {
                    //если вставить после  из контекстного меню редактора
                }else if (extras.getInt(P.FROM_ACTIVITY) ==P.TO_INSERT_AFTER_FRAG){
                    //вставляем фрагмент подхода после позиции, на которой сделан щелчок
-                   mDBHelper.addSetAfter(mDataSet, fileId, fragmentNumber);
+                   TabSet.addSetAfter(database, mDataSet, fileId, fragmentNumber);
                    Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_INSERT_AFTER_FRAG ");
                    //посылаем интент для обновления данных на экране
                    Intent intentInsertAfter = new Intent();
@@ -338,7 +345,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        database.close();
     }
 
     //отслеживание нажатия кнопки HOME

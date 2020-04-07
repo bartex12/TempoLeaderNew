@@ -3,6 +3,7 @@ package ru.bartex.tempoleader.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.text.InputType;
@@ -28,6 +29,7 @@ public class DialogSaveSecFragment extends DialogFragment {
 
     static String TAG = "33333";
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
 
     public DialogSaveSecFragment(){}
 
@@ -43,6 +45,13 @@ public class DialogSaveSecFragment extends DialogFragment {
         super.onAttach(context);
         mSaverFragSectListener = (SaverFragmentSecundomerListener)context;
         mTempDBHelper = new TempDBHelper(context);
+        database = new TempDBHelper(context).getWritableDatabase();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        database.close();
     }
 
     @Override

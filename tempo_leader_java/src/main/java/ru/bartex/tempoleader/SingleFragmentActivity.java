@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -30,6 +31,7 @@ import java.util.TimerTask;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogSetDelay;
 
@@ -45,7 +47,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     //реализация в SetListFragment через SetListActivity и её метод createFragment(String nameOfFile)
 
     static String TAG = "33333";
-
+    private SQLiteDatabase database;
     LinearLayout mNameLayout; // Layout для имени файла - на нём щелчок для вызова списка имён
 
     private Button mStartButton;
@@ -145,6 +147,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_set_list);
         Log.d(TAG, "SingleFragmentActivity - onCreate");
 
+        database = new TempDBHelper(this).getWritableDatabase();
         //чтобы не выскакивала экранная клавиатура, в манифесте добавлена строка
         //android:windowSoftInputMode="stateHidden"
 
@@ -229,7 +232,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
                 //получаем количество фрагментов в выполняемом подходе. Если было удаление или добавление
                 //фрагмента подхода, нужно пересчитывать каждый раз
-                mTotalCountFragment = mTempDBHelper.getSetFragmentsCount(fileId);
+                mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
 
                 //Покажем таймер задержки
                 mtextViewCountDown.setText(String.valueOf(timeOfDelay));
@@ -387,7 +390,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             //получаем id файла
             fileId = mTempDBHelper.getIdFromFileName(finishFileName);
             //количество фрагментов подхода
-            countOfSet =mTempDBHelper.getSetFragmentsCount(fileId);
+            countOfSet =TabSet.getSetFragmentsCount(database, fileId);
             Log.d(TAG, " getSetFragmentsCount =  " + countOfSet);
 
         //Вставляем фрагмент, реализованный в классе, наследующем SingleFragmentActivity
@@ -443,7 +446,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         Log.d(TAG, "fileId  = " + fileId);
         //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
         //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
-        mTotalCountFragment = mTempDBHelper.getSetFragmentsCount(fileId);
+        mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
 
         //посчитаем общее врямя выполнения подхода в секундах
         mTimeOfSet = mTempDBHelper.getSumOfTimeSet(fileId);
@@ -496,6 +499,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
         //отключаем таймер
         if (mTimer!=null)mTimer.cancel();
+
+        database.close();
     }
 
     //отслеживание нажатия кнопки HOME

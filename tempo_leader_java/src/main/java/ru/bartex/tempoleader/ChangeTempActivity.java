@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
@@ -50,6 +51,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
 
     private static final String TAG = "33333";
     public static final int  VALUE = 10;
+    private SQLiteDatabase database;
 
     ListView changeTemp_listView;
     TextView changeTemp_textViewName;
@@ -176,6 +178,8 @@ public class ChangeTempActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_change_temp);
         Log.d(TAG, "ChangeTempActivity onCreate------!!!-------");
 
+        initDB();
+
         //разрешить только портретную ориентацию экрана
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -193,7 +197,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
         fileId = mDBHelper.getIdFromFileName(finishFileName);
 
         //количество фрагментов подхода
-        countOfSet =mDBHelper.getSetFragmentsCount(fileId);
+        countOfSet =TabSet.getSetFragmentsCount( database,fileId);
 
          //создаём и записываем в базу копию файла на случай отмены изменений
         fileIdCopy = mDBHelper.createFileCopy(finishFileName, fileId, endName);
@@ -435,6 +439,11 @@ public class ChangeTempActivity extends AppCompatActivity implements
         }
     }
 
+    private void initDB() {
+        // вызываем здесь, закрываем в onDestroy()
+        database = new TempDBHelper(this).getWritableDatabase();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -483,6 +492,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
         Log.d(TAG, "ChangeTempActivity onDestroy");
         //удаляем  файл - копию
         mDBHelper.deleteFileAndSets(fileIdCopy);
+        database.close();
     }
 
     //отслеживание нажатия кнопки HOME
@@ -925,7 +935,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
             //создаём экземпляр класса DataSet в конструкторе
             DataSet set = new DataSet(time_now,reps_now,number_now);
             //добавляем запись в таблицу TabSet, используя данные DataSet
-            mTempDBHelper.addSet(set, file1_id);
+            TabSet.addSet(database, set, file1_id);
         }
         //======Окончание добавления записей в таблицы DataFile и DataSet=========//
         Log.d(TAG, "SingleFragmentActivity saveDataAndFilename записан файл = " +

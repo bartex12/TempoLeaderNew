@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -58,6 +59,8 @@ public class SetListFragment extends Fragment {
     long finishFileId;
 
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
+
     int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
 
@@ -119,6 +122,13 @@ public class SetListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTempDBHelper = new TempDBHelper(getActivity());
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        database.close();
     }
 
     @Override

@@ -704,6 +704,7 @@
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="graph">График</string>
+    <string name="head">Заголовок</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string name="label_N">№</string>
@@ -738,6 +739,7 @@
     <string name="start_button">старт</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="stop_button">стоп</string>
+    <string name="subhead">Описание</string>
     <string name="textViewDelay">Задержка, сек</string>
     <string name="textViewRestTime">Время отдыха</string>
     <string name="textViewTimeRemain">До старта, сек</string>

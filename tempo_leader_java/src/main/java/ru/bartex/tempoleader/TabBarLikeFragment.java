@@ -48,6 +48,7 @@ public class TabBarLikeFragment extends Fragment {
     private static final String DIALOG_CHANGE_NAME = "ChangeNamePicker";
 
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
     SimpleCursorAdapter scAdapter;
     Dialog dialog;
 
@@ -67,6 +68,7 @@ public class TabBarLikeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTempDBHelper = new TempDBHelper(getActivity());
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
     }
 
     @Override

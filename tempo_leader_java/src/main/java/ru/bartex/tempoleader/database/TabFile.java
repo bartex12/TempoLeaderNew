@@ -1,8 +1,17 @@
 package ru.bartex.tempoleader.database;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import ru.bartex.tempoleader.data.DataFile;
 
 public class TabFile {
+
+    public static final String TAG ="33333";
 
     private TabFile(){
         //пустой конструктор
@@ -19,4 +28,181 @@ public class TabFile {
     public final static String COLUMN_TYPE_FROM = "Type_From";
     public final static String COLUMN_DELAY = "Delay";
 
+
+    //Метод для добавления нового файла с подходом в список
+    public long addFile(SQLiteDatabase database, DataFile file) {
+        Log.d(TAG, "TempDBHelper.addFile ... " + file.getFileName());
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_FILE_NAME, file.getFileName());
+        cv.put(COLUMN_FILE_NAME_DATE, file.getFileNameDate());
+        cv.put(COLUMN_FILE_NAME_TIME, file.getFileNameTime());
+        cv.put(COLUMN_KIND_OF_SPORT, file.getKindOfSport());
+        cv.put(COLUMN_DESCRIPTION_OF_SPORT, file.getDescriptionOfSport());
+        cv.put(COLUMN_TYPE_FROM, file.getType_From());
+        cv.put(COLUMN_DELAY, file.getDelay());
+        // вставляем строку
+
+        return database.insert(TABLE_NAME, null, cv);
+    }
+
+    //Метод для изменения имени файла
+    public void updateFileName(SQLiteDatabase database, String nameFile, long fileId) {
+
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(COLUMN_FILE_NAME, nameFile);
+        database.update(TABLE_NAME, updatedValues,_ID + "=" + fileId, null);
+    }
+
+    //получаем ID по имени
+    public long getIdFromFileName(SQLiteDatabase database, String name) {
+        long currentID;
+
+        Cursor cursor = database.query(
+                TABLE_NAME,   // таблица
+                new String[]{_ID},            // столбцы
+                COLUMN_FILE_NAME + "=?",                  // столбцы для условия WHERE
+                new String[]{name},                  // значения для условия WHERE
+                null,                  // Don't group the rows
+                null,                  // Don't filter by row groups
+                null);                   // порядок сортировки
+
+        if ((cursor != null) && (cursor.getCount() != 0)) {
+            cursor.moveToFirst();
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(_ID);
+            // Используем индекс для получения строки или числа
+            currentID = cursor.getLong(idColumnIndex);
+        } else {
+            currentID = -1;
+        }
+        Log.d(TAG, "getIdFromName currentID = " + currentID);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return currentID;
+    }
+    /**
+     * Возвращает задержку старта файла по его ID
+     */
+    public int  getFileDelayFromTabFile(SQLiteDatabase database,  String name) throws SQLException {
+
+        long rowId = this.getIdFromFileName(database, name);
+
+        Cursor mCursor = database.query(true, TABLE_NAME,
+                null,
+                _ID + "=" + rowId,
+                null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        int delay = mCursor.getInt(mCursor.getColumnIndex(COLUMN_DELAY));
+
+        mCursor.close();
+        return delay;
+    }
+
+    /**
+     * Возвращает имя файла по его ID
+     */
+    public String getFileNameFromTabFile(SQLiteDatabase database,   long rowId) throws SQLException {
+
+        Cursor mCursor = database.query(true, TABLE_NAME,
+                null,
+                _ID + "=" + rowId,
+                null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        String fileName = mCursor.getString(mCursor.getColumnIndex(COLUMN_FILE_NAME));
+        Log.d(TAG, "getFileNameFromTabFile fileName = " + fileName);
+        mCursor.close();
+
+        return fileName;
+    }
+
+    /**
+     * Возвращает тип файла по его ID
+     */
+    public String getFileTypeFromTabFile( SQLiteDatabase database, long rowId) throws SQLException {
+
+        Cursor mCursor = database.query(true, TABLE_NAME,
+                null,
+                _ID + "=" + rowId,
+                null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        String fileType = mCursor.getString(mCursor.getColumnIndex(COLUMN_TYPE_FROM));
+
+        mCursor.close();
+        return fileType;
+    }
+
+    /**
+     * Возвращает объект DataFile с данными файла из таблицы TabFile с номмером ID = rowId
+     */
+    public DataFile getAllFilesData(SQLiteDatabase database, long rowId) throws SQLException {
+
+        Cursor cursorFile = database.query(true, TABLE_NAME,
+                new String[]{_ID, COLUMN_FILE_NAME,COLUMN_FILE_NAME_DATE,
+                        COLUMN_FILE_NAME_TIME, COLUMN_KIND_OF_SPORT,
+                        COLUMN_DESCRIPTION_OF_SPORT, COLUMN_TYPE_FROM,
+                        COLUMN_DELAY},
+                _ID + "=" + rowId,
+                null, null, null, null, null);
+        if ((cursorFile != null)&& (cursorFile.getCount()>0)) {
+            cursorFile.moveToFirst();
+        }
+        Log.d(TAG, "getAllFilesData cursorFile.getCount() = " + cursorFile.getCount());
+
+        // Используем индекс для получения строки или числа
+        long current_ID = cursorFile.getLong(
+                cursorFile.getColumnIndex(_ID));
+        String current_nameFile = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_FILE_NAME));
+        String current_nameFileDate = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_FILE_NAME_DATE));
+        String current_nameFileTime = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_FILE_NAME_TIME));
+        String current_kindSport = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_KIND_OF_SPORT));
+        String current_descript = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_DESCRIPTION_OF_SPORT));
+        String current_typeFrom = cursorFile.getString(
+                cursorFile.getColumnIndex(COLUMN_TYPE_FROM));
+        int current_delay = cursorFile.getInt(
+                cursorFile.getColumnIndex(COLUMN_DELAY));
+
+        DataFile dataFile = new DataFile(current_ID,current_nameFile,
+                current_nameFileDate,current_nameFileTime,current_kindSport,
+                current_descript,current_typeFrom,current_delay);
+
+        cursorFile.close();
+        return dataFile;
+
+    }
+
+    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
+    public Cursor getAllFilesFromTimemeter(SQLiteDatabase database) throws SQLException {
+
+        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
+                " where " + COLUMN_TYPE_FROM + " = ? ";
+        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
+    public Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
+
+        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
+                " where " + COLUMN_TYPE_FROM + " = ? ";
+        Cursor mCursor = database.rawQuery(query, new String[]{type});
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
@@ -50,11 +51,14 @@ public class TimeGrafActivity extends AppCompatActivity {
     private String finishFileName = P.FINISH_FILE_NAME;
 
     TempDBHelper mTempDBHelper = new TempDBHelper(this);
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timegraf);
+
+        database = new TempDBHelper(this).getWritableDatabase();
 
         ActionBar act = getSupportActionBar();
         act.setTitle(R.string.graph);
@@ -174,6 +178,7 @@ public class TimeGrafActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        database.close();
     }
 
     //отслеживание нажатия кнопки HOME

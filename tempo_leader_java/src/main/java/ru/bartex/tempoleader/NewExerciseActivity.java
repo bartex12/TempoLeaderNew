@@ -3,6 +3,7 @@ package ru.bartex.tempoleader;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.main.MainActivity;
 
@@ -42,11 +44,14 @@ public class NewExerciseActivity extends AppCompatActivity {
     Button create;
 
     TempDBHelper mTempDBHelper = new TempDBHelper(this);
+    SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_exercise_con);
+
+        database = new TempDBHelper(this).getWritableDatabase();
 
         //разрешить только портретную ориентацию экрана
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -141,13 +146,13 @@ public class NewExerciseActivity extends AppCompatActivity {
                         for (int i = 0; i<timeArray.length; i++){
                             if ((timeArray[i]!=0)&&(repsArray[i]!=0)){
                                 DataSet set = new DataSet(timeArray[i],repsArray[i], j);
-                                mTempDBHelper.addSet(set, file1_id);
+                                TabSet.addSet(database, set, file1_id);
                                 j++;
                             }
                         }
                         mTempDBHelper.rerangeSetFragments(file1_id);
                         Log.d(TAG, "MyDatabaseHelper.create count = " +
-                                mTempDBHelper.getSetFragmentsCount(file1_id));
+                                TabSet.getSetFragmentsCount(database, file1_id));
                     }
 
                     Intent intent = new Intent(NewExerciseActivity.this, SetListActivity.class);

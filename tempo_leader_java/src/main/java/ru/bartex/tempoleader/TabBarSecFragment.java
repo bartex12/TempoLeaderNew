@@ -46,6 +46,7 @@ public class TabBarSecFragment extends Fragment {
     private static final int REQUEST_FRAGMENT_CODE = 0;
 
     TempDBHelper mTempDBHelper;
+    private SQLiteDatabase database;
     SimpleCursorAdapter scAdapter;
     Dialog dialog;
 
@@ -65,6 +66,7 @@ public class TabBarSecFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTempDBHelper = new TempDBHelper(getActivity());
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
     }
 
     @Override
