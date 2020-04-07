@@ -92,4 +92,6 @@
     <string name="textViewTimeRemain">Before start, sec</string>
     <string name="textViewelay">Delay, sec</string>
     <string name="appDescription">Sets the pace of cycling exercises</string>
+    <string name="head">head</string>
+    <string name="subhead">subhead</string>
 </resources>

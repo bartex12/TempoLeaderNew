@@ -134,5 +134,7 @@
     <string name="textViewTimeRemain">До старта, сек</string>
     <string name="textViewelay">Задержка, сек</string>
     <string name="appDescription">Задаёт темп выполнения циклических упражнений</string>
+    <string name="head">Заголовок</string>
+    <string name="subhead">Описание</string>
 
 </resources>

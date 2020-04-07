@@ -43,7 +43,6 @@ import ru.bartex.tempoleader.TabBarActivity;
 import ru.bartex.tempoleader.TimeMeterActivity;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TempDBHelper;
-import ru.bartex.tempoleader.ui.HelpMainActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

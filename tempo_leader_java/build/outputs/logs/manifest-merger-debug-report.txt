@@ -90,12 +90,16 @@ ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\A
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:15:13-56
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:12:13-70
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+intent-filter#action:name:android.intent.action.MAIN+action:name:android.intent.action.VIEW+category:name:android.intent.category.LAUNCHER
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:16:13-20:29
 action#android.intent.action.MAIN
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:17:17-68
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:17:25-66
+action#android.intent.action.VIEW
+ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:18:17-68
+	android:name
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:18:25-66
 category#android.intent.category.LAUNCHER
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:19:17-76
 	android:name
@@ -132,12 +136,12 @@ ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\A
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:38:13-55
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:37:13-64
-activity#ru.bartex.tempoleader.ui.HelpMainActivity
+activity#ru.bartex.tempoleader.ui.main.HelpMainActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:40:9-43:20
 	android:label
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:42:13-29
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:41:13-69
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:41:13-74
 activity#ru.bartex.tempoleader.TabBarActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:44:9-48:20
 	android:label
