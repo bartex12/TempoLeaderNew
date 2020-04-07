@@ -28,6 +28,7 @@ import java.util.Map;
 
 import androidx.fragment.app.Fragment;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 
@@ -203,7 +204,7 @@ public class SetListFragment extends Fragment {
 
         //id файла с именем finishFileName - он меняется при возврате из редактирования
         //так как файл может быть перезаписан с другим id  - кстати, это нужно исправить
-        finishFileId = mTempDBHelper.getIdFromFileName (finishFileName);
+        finishFileId = TabFile.getIdFromFileName (database, finishFileName);
 
         updateAdapter();
         //вычисляем и показываем общее время выполнения подхода и количество повторов в подходе
@@ -259,11 +260,11 @@ public class SetListFragment extends Fragment {
     public void updateAdapter() {
         Log.d(TAG, "SetListFragment: updateAdapter() ");
             //получаем id записи с таким именем
-            long finishFileId = mTempDBHelper.getIdFromFileName (finishFileName);
+            long finishFileId = TabFile.getIdFromFileName (database, finishFileName);
             Log.d(TAG,"SetListFragment  имя =" + finishFileName + "  Id = " + finishFileId );
 
             //получаем курсор с данными подхода с id = finishFileId
-            Cursor cursor = mTempDBHelper.getAllSetFragments(finishFileId);
+            Cursor cursor = TabSet.getAllSetFragments(database, finishFileId);
             Log.d(TAG, "SetListFragment: updateAdapter() cursor.getCount() = " + cursor.getCount());
 
             //Список с данными для адаптера
@@ -343,11 +344,11 @@ public class SetListFragment extends Fragment {
         Log.d(TAG,"SetListFragment calculateAndShowTotalValues finishFileId  = " + finishFileId);
 
         //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = mTempDBHelper.getSumOfTimeSet(finishFileId);
+        mTimeOfSet = TabSet.getSumOfTimeSet(database, finishFileId);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
-        mTotalReps = mTempDBHelper.getSumOfRepsSet(finishFileId);
+        mTotalReps = TabSet.getSumOfRepsSet(database, finishFileId);
         Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps);
 
         //покажем общее время подхода и общее число повторений в подходе

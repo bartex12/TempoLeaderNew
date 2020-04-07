@@ -128,7 +128,7 @@ public class DetailActivity extends AppCompatActivity {
                    //если вставить до  из контекстного меню редактора
                }else if (extras.getInt(P.FROM_ACTIVITY) ==P.TO_INSERT_BEFORE_FRAG){
                    //вставляем фрагмент подхода после позиции, на которой сделан щелчок
-                   mDBHelper.addSetBefore(mDataSet, fileId, fragmentNumber);
+                  TabSet.addSetBefore(database, mDataSet, fileId, fragmentNumber);
                    Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_INSERT_BEFORE_FRAG ");
                     //посылаем интент для обновления данных на экране
                    Intent intentInsertBefore = new Intent();
@@ -137,7 +137,7 @@ public class DetailActivity extends AppCompatActivity {
                     //если Изменить из контекстного меню редактора
                 }else if(extras.getInt(P.DETAIL_CHANGE_REQUEST) == P.DETAIL_CHANGE_TEMP_REQUEST_CODE){
                    //обновляем фрагмент подхода в базе данных
-                   mDBHelper.updateSetFragment(mDataSet);
+                   TabSet.updateSetFragment(database, mDataSet);
                     Log.d(TAG, "mButtonOk (P.DETAIL_CHANGE_REQUEST) == P.DETAIL_CHANGE_TEMP_REQUEST_CODE");
                     //посылаем интент чтобы показать иконку Сохранить как
                     Intent intentSaveIcon = new Intent();

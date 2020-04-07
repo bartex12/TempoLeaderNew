@@ -88,7 +88,7 @@ public class TabBarTempFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //строка с именем файла
-                String fileName = mTempDBHelper.getFileNameFromTabFile(l);
+                String fileName = TabFile.getFileNameFromTabFile(database, l);
                 Log.d(TAG, "TabBarTempFragment onCreateView     имя файла = " +  fileName +
                         "  long l = " + l ) ;
                 //отправляем интент с меткой 333, что значит из TabBarActivity
@@ -108,7 +108,7 @@ public class TabBarTempFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "TabBarTempFragment onResume");
 
-        Cursor cursor = mTempDBHelper.getAllFilesWhithType(P.TYPE_TEMPOLEADER);
+        Cursor cursor = TabFile.getAllFilesWhithType(database, P.TYPE_TEMPOLEADER);
 
         // формируем столбцы сопоставления
         String[] from = new String[]{TabFile.COLUMN_FILE_NAME};
@@ -175,7 +175,7 @@ public class TabBarTempFragment extends Fragment {
         if (item.getItemId() == P.DELETE_ACTION_TEMP) {
             Log.d(TAG, "PersonsListActivity CM_DELETE_ID");
 
-            String fileName = mTempDBHelper.getFileNameFromTabFile(acmi.id);
+            String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
                     fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
                 Snackbar.make(getView(), "Системный файл. Удаление запрещено.", Snackbar.LENGTH_LONG)
@@ -212,7 +212,7 @@ public class TabBarTempFragment extends Fragment {
             //если выбран пункт Изменить запись
         } else if (item.getItemId() == P.CHANGE_ACTION_TEMP) {
             //получаем объект с данными строки с id = acmi.id из  таблицы TabFile
-            final DataFile dataFile = mTempDBHelper.getAllFilesData(acmi.id);
+            final DataFile dataFile = TabFile.getAllFilesData(database, acmi.id);
             String fn = dataFile.getFileName();
 
             //если имя системного файла
@@ -262,7 +262,7 @@ public class TabBarTempFragment extends Fragment {
                         }
 
                         //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                        long fileId = mTempDBHelper.getIdFromFileName(nameFile);
+                        long fileId = TabFile.getIdFromFileName(database, nameFile);
                         Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                         //если имя - пустая строка
@@ -284,7 +284,7 @@ public class TabBarTempFragment extends Fragment {
                             Log.d(TAG, "Такое имя отсутствует fileId = " + fileId);
 
                             //изменяем имя файла
-                            mTempDBHelper.updateFileName(nameFile, acmi.id);
+                            TabFile.updateFileName(database, nameFile, acmi.id);
 
                             //принудительно прячем  клавиатуру - повторный вызов ее покажет
                             takeOnAndOffSoftInput();
@@ -321,7 +321,7 @@ public class TabBarTempFragment extends Fragment {
             //если выбран пункт Переместить в секундомер
         } else if (item.getItemId() == P.MOVE_SEC_ACTION_TEMP) {
 
-            String fileName = mTempDBHelper.getFileNameFromTabFile(acmi.id);
+            String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
                     fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
                 Snackbar.make(getView(), "Системный файл.Перемещение запрещено.", Snackbar.LENGTH_LONG)
@@ -341,7 +341,7 @@ public class TabBarTempFragment extends Fragment {
             //если выбран пункт Переместить в избранное
         } else if (item.getItemId() == P.MOVE_LIKE_ACTION_TEMP) {
 
-            String fileName = mTempDBHelper.getFileNameFromTabFile(acmi.id);
+            String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
                     fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
                 Snackbar.make(getView(), "Системный файл.Перемещение запрещено.", Snackbar.LENGTH_LONG)

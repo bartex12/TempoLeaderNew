@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 
@@ -90,11 +91,11 @@ public class TimeGrafActivity extends AppCompatActivity {
         nameOfFile.setText(finishFileName);
 
         //получаем id записи с таким именем
-        long finishFileId = mTempDBHelper.getIdFromFileName (finishFileName);
+        long finishFileId = TabFile.getIdFromFileName (database, finishFileName);
         Log.d(TAG,"TimeGrafActivity имя =" + finishFileName + "  Id = " + finishFileId );
 
         //получаем курсор с данными подхода с id = finishFileId
-        Cursor cursor = mTempDBHelper.getAllSetFragmentsRaw(finishFileId);
+        Cursor cursor = TabSet.getAllSetFragmentsRaw(database, finishFileId);
         // Узнаем индекс каждого столбца
         int idColumnIndex = cursor.getColumnIndex(TabSet.COLUMN_SET_TIME);
 

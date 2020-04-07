@@ -41,6 +41,7 @@ import androidx.fragment.app.DialogFragment;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogChangeTemp;
@@ -111,9 +112,9 @@ public class ChangeTempActivity extends AppCompatActivity implements
 
         //обновляем фрагменты по очереди
         for (int i = 0; i<countOfSet; i++ ){
-            DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, i);
+            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
             dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
-            mDBHelper.updateSetFragment(dataSet);
+            TabSet.updateSetFragment(database, dataSet);
             Log.d(TAG, "ChangeTempActivity changeTempUpDown dataSet Time = " +
                     dataSet.getTimeOfRep());
         }
@@ -132,8 +133,8 @@ public class ChangeTempActivity extends AppCompatActivity implements
         //имя файла, если строка имени пуста
         String fileNameDefoult =P.FINISH_FILE_NAME;
 
-        long oldFileId = mDBHelper.getIdFromFileName(oldNameFile);
-        String typeFile = mDBHelper.getFileTypeFromTabFile(oldFileId);
+        long oldFileId = TabFile.getIdFromFileName(database, oldNameFile);
+        String typeFile = TabFile.getFileTypeFromTabFile(database, oldFileId);
 
         if (newNameFile.isEmpty()) {
             switch (typeFile) {
@@ -154,20 +155,20 @@ public class ChangeTempActivity extends AppCompatActivity implements
         //и записываем новый файл с новым именем (переменнная для имени старая )
         finishFileName = saveDataAndFilename(newNameFile, fileNameDefoult, typeFile);
         //стотрим его id чтобы не было краха - ЭТОТ id используется дальше в show_list_of_files
-        fileId = mDBHelper.getIdFromFileName(finishFileName);
+        fileId = TabFile.getIdFromFileName(database, finishFileName);
         //выводим имя файла на экран
         changeTemp_textViewName.setText(finishFileName);
 
 
         //после этого можно спросить - созданить ли старый файл из копии под старым именем
-        String oldNameOfFileCopy = mDBHelper.getFileNameFromTabFile(fileIdCopy);
+        String oldNameOfFileCopy = TabFile.getFileNameFromTabFile(database, fileIdCopy);
         String oldNameOfFile = oldNameOfFileCopy.substring(0,
                 oldNameOfFileCopy.length()-endName.length());
         Log.d(TAG, "SingleFragmentActivity - onFileNameTransmit oldNameOfFileCopy.length() = "+
                 oldNameOfFileCopy.length());
         Log.d(TAG, "SingleFragmentActivity - onFileNameTransmit oldNameOfFileCopy = "+
                 oldNameOfFileCopy + "  oldNameOfFile = "+ oldNameOfFile);
-        long oldNameOfFileId = mDBHelper.createFileCopy(oldNameOfFile,fileIdCopy,"");
+        long oldNameOfFileId = TabSet.createFileCopy(database, oldNameOfFile,fileIdCopy,"");
         Log.d(TAG, "SingleFragmentActivity - onFileNameTransmit oldNameOfFileId = "+
                 oldNameOfFileId + "  oldNameOfFile = "+ oldNameOfFile);
     }
@@ -194,13 +195,13 @@ public class ChangeTempActivity extends AppCompatActivity implements
         finishFileName = intent.getStringExtra(P.FINISH_FILE_NAME);
         Log.d(TAG, "ChangeTempActivity finishFileName = " + finishFileName);
         //получаем id файла
-        fileId = mDBHelper.getIdFromFileName(finishFileName);
+        fileId = TabFile.getIdFromFileName(database, finishFileName);
 
         //количество фрагментов подхода
         countOfSet =TabSet.getSetFragmentsCount( database,fileId);
 
          //создаём и записываем в базу копию файла на случай отмены изменений
-        fileIdCopy = mDBHelper.createFileCopy(finishFileName, fileId, endName);
+        fileIdCopy = TabSet.createFileCopy(database, finishFileName, fileId, endName);
 
         deltaValue = (TextView)findViewById(R.id.deltaValue);
         deltaValue.setVisibility(View.INVISIBLE);
@@ -350,12 +351,12 @@ public class ChangeTempActivity extends AppCompatActivity implements
                 //теперь первоначальный файл содержится в копии
                 fileId = fileIdCopy;
                 //изменяем имя у копии файла на первоначальное имя
-                mDBHelper.updateFileName(finishFileName,fileIdCopy);
+                TabFile.updateFileName(database, finishFileName,fileIdCopy);
 
                // Log.d(TAG, " ПОСЛЕ ИЗМ В КОПИИ ChangeTempActivity fileId = " + fileId +
                 //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
                 // снова создаём и записываем в базу копию файла на случай отмены изменений
-                fileIdCopy = mDBHelper.createFileCopy(finishFileName, fileId, endName);
+                fileIdCopy = TabSet.createFileCopy(database, finishFileName, fileId, endName);
 
                // Log.d(TAG, " ПОСЛЕ СОЗД НОВОЙ КОПИИ ChangeTempActivity fileId = " + fileId +
                 //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
@@ -598,14 +599,14 @@ public class ChangeTempActivity extends AppCompatActivity implements
             builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mDBHelper.deleteSet(fileId, (acmi.position+1));
+                    TabSet.deleteSet(database, fileId, (acmi.position+1));
                     Log.d(TAG,"ChangeTempActivity P.DELETE_CHANGETEMP  имя =" + finishFileName +
                             "  Id = " + fileId +
                             "  acmi.position+1 = " + (acmi.position+1) +
                             "  acmi.id = " + acmi.id);
 
                     //пересчитываем номера фрагментов подхода
-                    mDBHelper.rerangeSetFragments(fileId);
+                    TabSet.rerangeSetFragments(database, fileId);
 
                     //обновляем данные списка фрагмента активности
                     updateAdapter();
@@ -627,7 +628,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
             Log.d(TAG, "ChangeTempActivity P.CHANGE_CHANGETEMP acmi.position = " +
                     acmi.position + "  acmi.id = " + acmi.id);
             //объект фрагмент данных с fileId на позиции acmi.position
-            DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, acmi.position);
+            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, acmi.position);
 
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra(P.DETAIL_DATA_SET, dataSet);
@@ -693,11 +694,11 @@ public class ChangeTempActivity extends AppCompatActivity implements
     private void calculateAndShowTotalValues(){
 
         //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = mDBHelper.getSumOfTimeSet(fileId);
+        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
-        mTotalReps = mDBHelper.getSumOfRepsSet(fileId);
+        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
         Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps);
 
         //покажем общее время подхода и общее число повторений в подходе
@@ -739,15 +740,15 @@ public class ChangeTempActivity extends AppCompatActivity implements
             if (mCheckBoxAll.isChecked()){
                 //обновляем фрагменты по очереди
                 for (int i = 0; i<countOfSet; i++ ){
-                    DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, i);
+                    DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
                     dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
-                    mDBHelper.updateSetFragment(dataSet);
+                    TabSet.updateSetFragment(database, dataSet);
                    // Log.d(TAG, "ChangeTempActivity dataSet Time = " + dataSet.getTimeOfRep());
                 }
             }else {
-                DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, positionOfList);
+                DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, positionOfList);
                 dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
-                mDBHelper.updateSetFragment(dataSet);
+                TabSet.updateSetFragment(database, dataSet);
                 //Log.d(TAG, "ChangeTempActivity dataSet Time = " + dataSet.getTimeOfRep());
             }
             delta = String.format("%+3.0f", time);
@@ -758,23 +759,23 @@ public class ChangeTempActivity extends AppCompatActivity implements
             if (mCheckBoxAll.isChecked()){
                 //обновляем фрагменты по очереди
                 for (int i = 0; i<countOfSet; i++ ){
-                    DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, i);
+                    DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
                     dataSet.setReps((dataSet.getReps())+ii);
                     //если число повторений < 0, пишем 0
                     if (dataSet.getReps() < 0){
                         dataSet.setReps(0);
                     }
-                    mDBHelper.updateSetFragment(dataSet);
+                    TabSet.updateSetFragment(database, dataSet);
                    // Log.d(TAG, "ChangeTempActivity dataSet Reps = " + dataSet.getReps());
                 }
                 //если только в одной - выбранной -  строке
             }else {
-                DataSet dataSet = mDBHelper.getOneSetFragmentData(fileId, positionOfList);
+                DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, positionOfList);
                 dataSet.setReps((dataSet.getReps())+ii);
                 if (dataSet.getReps() < 0){
                     dataSet.setReps(0);
                 }
-                mDBHelper.updateSetFragment(dataSet);
+                TabSet.updateSetFragment(database, dataSet);
                 //Log.d(TAG, "ChangeTempActivity dataSet Reps = " + dataSet.getTimeOfRep());
             }
             delta = String.format("%+3d", count);
@@ -787,11 +788,11 @@ public class ChangeTempActivity extends AppCompatActivity implements
     public void updateAdapter() {
         Log.d(TAG, "ChangeTempActivity: updateAdapter() ");
         //получаем id записи с таким именем
-        long finishFileId = mDBHelper.getIdFromFileName (finishFileName);
+        long finishFileId = TabFile.getIdFromFileName (database, finishFileName);
         Log.d(TAG,"ChangeTempActivity  имя =" + finishFileName + "  Id = " + finishFileId );
 
         //получаем курсор с данными подхода с id = finishFileId
-        Cursor cursor = mDBHelper.getAllSetFragments(finishFileId);
+        Cursor cursor = TabSet.getAllSetFragments(database, finishFileId);
         Log.d(TAG, "ChangeTempActivity: updateAdapter() cursor.getCount() = " + cursor.getCount());
 
         //Список с данными для адаптера
@@ -896,7 +897,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
             finishFileName = fileNameDefoult;
 
             //проверяем, есть ли в базе запись с таким именем
-            long repeatId = mTempDBHelper.getIdFromFileName (finishFileName);
+            long repeatId = TabFile.getIdFromFileName (database, finishFileName);
             Log.d(TAG,"saveDataAndFilename repeatId = " + repeatId);
             //если есть (repeatId не равно -1), стираем её и потом пишем новые данные под таким именем
             if (repeatId != -1){
@@ -912,7 +913,7 @@ public class ChangeTempActivity extends AppCompatActivity implements
         DataFile file1 = new DataFile(finishFileName, dateFormat, timeFormat,
                 null,null, typeData, 6);
         //добавляем запись в таблицу TabFile, используя данные DataFile
-        long file1_id =  mTempDBHelper.addFile(file1);
+        long file1_id =  TabFile.addFile(database, file1);
 
         //меняем задний фон строк списка
         //changeTemp_listView.setBackgroundColor(Color.RED);

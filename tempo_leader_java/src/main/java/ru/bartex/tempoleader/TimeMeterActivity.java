@@ -30,6 +30,7 @@ import androidx.fragment.app.DialogFragment;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogSaveSecFragment;
@@ -113,14 +114,14 @@ public class TimeMeterActivity extends AppCompatActivity
                     "  finishNameFile = " + finishNameFile);
 
             //проверяем, есть ли в базе запись с таким именем FILENAME_OTSECHKI_SEC
-            long repeatId = mTempDBHelper.getIdFromFileName (finishNameFile);
+            long repeatId = TabFile.getIdFromFileName (database, finishNameFile);
             Log.d(TAG,"onNameAndGrafTransmit repeatId = " + repeatId);
             //если есть (repeatId не равно -1), стираем её и потом пишем новые данные под таким именем
             if (repeatId != -1){mTempDBHelper.deleteFileAndSets(repeatId);}
 
             }else {
                 //проверяем, есть ли в базе запись с именем nameFile< чтобы избежать дублирования
-                long checkRepeatId = mTempDBHelper.getIdFromFileName (nameFile);
+                long checkRepeatId = TabFile.getIdFromFileName (database, nameFile);
                 Log.d(TAG,"onNameAndGrafTransmit checkRepeatId = " + checkRepeatId);
                 //если есть (repeatId не равно -1), добавляем к имени +
                 if (checkRepeatId != -1){
@@ -134,7 +135,7 @@ public class TimeMeterActivity extends AppCompatActivity
             DataFile file1 = new DataFile(finishNameFile, dateFormat, timeFormat,
                     null,null,P.TYPE_TIMEMETER, 6);
             //добавляем запись в таблицу TabFile, используя данные DataFile
-            long file1_id =  mTempDBHelper.addFile(file1);
+            long file1_id =  TabFile.addFile(database, file1);
 
             //готовим данные фрагментов подхода
             // если индекс =0, то первое значение
@@ -583,7 +584,7 @@ public class TimeMeterActivity extends AppCompatActivity
                 Log.d(TAG, "action_timing finishFileName = " + finishNameFile);
                 //если файл был удалён, fileId = -1 и тогда вместо finishNameFile
                 // передаём Автосохранение секундомера
-                if ((mTempDBHelper.getIdFromFileName(finishNameFile)) == -1){
+                if ((TabFile.getIdFromFileName(database, finishNameFile)) == -1){
                     finishNameFile = P.FILENAME_OTSECHKI_SEC;
                 }
                 Log.d(TAG, "После action_timing finishFileName = " + finishNameFile);

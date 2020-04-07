@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.DialogFragment;
 import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TempDBHelper;
 
 /**
@@ -86,7 +87,7 @@ public class DialogSaveSecFragment extends DialogFragment {
                 }
 
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = mTempDBHelper.getIdFromFileName(nameFile);
+                long fileId = TabFile.getIdFromFileName(database, nameFile);
                 Log.d(TAG, "nameFile = " + nameFile + "  fileId = " +fileId);
 
                 //если имя - пустая строка
@@ -148,7 +149,7 @@ public class DialogSaveSecFragment extends DialogFragment {
                     Log.d(TAG, "SaverFragmentSecundomer date.isChecked() Имя файла = " + nameFile);
                 }
                     //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                    long fileId = mTempDBHelper.getIdFromFileName(nameFile);
+                    long fileId = TabFile.getIdFromFileName(database, nameFile);
                     Log.d(TAG, "nameFile = " + nameFile + "  fileId = " +fileId);
 
                     //если имя - пустая строка

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.main.MainActivity;
@@ -103,7 +104,7 @@ public class NewExerciseActivity extends AppCompatActivity {
                 }
 
                 String fileNameStr = fileName.getText().toString();
-                long fileId = mTempDBHelper.getIdFromFileName(fileNameStr);
+                long fileId = TabFile.getIdFromFileName(database, fileNameStr);
                 Log.d(TAG, "fileNameStr = " +fileNameStr + "  fileId = " +fileId);
 
                 //если имя - пустая строка
@@ -139,7 +140,7 @@ public class NewExerciseActivity extends AppCompatActivity {
                                 dateFormat, timeFormat, null,
                                 null, P.TYPE_LIKE, delayInt);
                         //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
-                        long file1_id = mTempDBHelper.addFile(file);
+                        long file1_id = TabFile.addFile(database, file);
                         Log.d(TAG, "Добавили   fileNameStr = " + fileNameStr + " file1_id = " + file1_id);
 
                         int j = 1;
@@ -150,7 +151,7 @@ public class NewExerciseActivity extends AppCompatActivity {
                                 j++;
                             }
                         }
-                        mTempDBHelper.rerangeSetFragments(file1_id);
+                        TabSet.rerangeSetFragments(database, file1_id);
                         Log.d(TAG, "MyDatabaseHelper.create count = " +
                                 TabSet.getSetFragmentsCount(database, file1_id));
                     }

@@ -31,6 +31,7 @@ import java.util.TimerTask;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import ru.bartex.tempoleader.database.P;
+import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogSetDelay;
@@ -222,12 +223,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
                 //   для первого фрагмента подхода до начала работы таймера
 
                 //получаем время между повторениями mCountFragment = 0 фрагмента подхода
-                countMilliSecond = mTempDBHelper.
-                        getTimeOfRepInPosition(fileId, mCountFragment)*1000;
+                countMilliSecond = TabSet.
+                        getTimeOfRepInPosition(database, fileId, mCountFragment)*1000;
                 Log.d(TAG, "Время между повторениями = " + countMilliSecond);
 
                 //получаем количество повторений для mCountFragment = 0 фрагмента подхода
-                countReps = mTempDBHelper.getRepsInPosition(fileId, mCountFragment);
+                countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
                 Log.d(TAG, "Количество повторений во фрагменте подхода = " + countReps);
 
                 //получаем количество фрагментов в выполняемом подходе. Если было удаление или добавление
@@ -353,7 +354,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
             finishFileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_TEMP);
             //если файл был удалён, fileId = -1 и тогда вместо finishNameFile
             // передаём Автосохранение секундомера
-            if ((mTempDBHelper.getIdFromFileName(finishFileName)) == -1){
+            if ((TabFile.getIdFromFileName(database, finishFileName)) == -1){
                 finishFileName = P.FILENAME_OTSECHKI_TEMP;
             }
             Log.d(TAG, " finishFileName = " + finishFileName);
@@ -380,7 +381,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         } else if(fromActivity == 555) {
             //получаем имя файла из интента
             finishFileName = intent.getStringExtra(P.FINISH_FILE_NAME);
-            timeOfDelay = mTempDBHelper.getFileDelayFromTabFile(finishFileName);
+            timeOfDelay = TabFile.getFileDelayFromTabFile(database, finishFileName);
             mDelayButton.setText(String.valueOf(timeOfDelay));
 
         }else Log.d(TAG, " intentTransfer = null ");
@@ -388,7 +389,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         Log.d(TAG, " fromActivity =  " + fromActivity +" mNameOfFile = " + finishFileName);
 
             //получаем id файла
-            fileId = mTempDBHelper.getIdFromFileName(finishFileName);
+            fileId = TabFile.getIdFromFileName(database, finishFileName);
             //количество фрагментов подхода
             countOfSet =TabSet.getSetFragmentsCount(database, fileId);
             Log.d(TAG, " getSetFragmentsCount =  " + countOfSet);
@@ -441,7 +442,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         mNameOfFile.setText(finishFileName);
 
         //получаем id  файла с раскладкой по его имени finishFileName из интента
-        fileId = mTempDBHelper.getIdFromFileName(finishFileName);
+        fileId = TabFile.getIdFromFileName(database, finishFileName);
 
         Log.d(TAG, "fileId  = " + fileId);
         //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
@@ -449,11 +450,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
 
         //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = mTempDBHelper.getSumOfTimeSet(fileId);
+        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
-        mTotalReps = mTempDBHelper.getSumOfRepsSet(fileId);
+        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
         Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps + " fileId = " + fileId);
 
         //покажем общее время подхода и общее число повторений в подходе
@@ -589,7 +590,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
             case R.id.show_list_of_files:
                 //определяем тип файла
-                String type =  mTempDBHelper.getFileTypeFromTabFile(fileId);
+                String type =  TabFile.getFileTypeFromTabFile(database, fileId);
                 //вызываем TabBarActivity
                 Intent intentList = new Intent(getBaseContext(), TabBarActivity.class);
                 intentList.putExtra(P.TYPE_OF_FILE, type);
@@ -772,9 +773,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
                 }//переходим к следующему фрагменту
                 if ((mCurrentRep >= countReps) && (mCountFragment < mTotalCountFragment - 1)) {
                     mCountFragment++;
-                    countMilliSecond = mTempDBHelper.
-                            getTimeOfRepInPosition(fileId, mCountFragment)*1000;
-                    countReps = mTempDBHelper.getRepsInPosition(fileId, mCountFragment);
+                    countMilliSecond = TabSet.
+                            getTimeOfRepInPosition(database, fileId, mCountFragment)*1000;
+                    countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
                     Log.d(TAG, "countMilliSecond = " + countMilliSecond + "  countReps = " + countReps);
                     mTotalKvant = 0;
                     mCurrentRep = 0;

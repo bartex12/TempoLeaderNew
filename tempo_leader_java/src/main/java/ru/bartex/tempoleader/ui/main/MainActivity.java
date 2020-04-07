@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         // и пишем с именем "Автосохранение секундомера" в таблицу TabFile
         mDbHelper.createDefaultSetIfNeed();
         //выводим в лог все строки базы
-        mDbHelper.displayDatabaseInfo();
+        //mDbHelper.displayDatabaseInfo();
 
         mListView = (ListView) findViewById(R.id.listView);
         //адаптер  - в onResume

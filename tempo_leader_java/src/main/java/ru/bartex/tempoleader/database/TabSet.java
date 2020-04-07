@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 
 public class TabSet {
@@ -25,6 +26,19 @@ public class TabSet {
 
     public TabSet(){
         //пустой конструктор
+    }
+
+    public static void createTable(SQLiteDatabase database){
+        // Строка для создания таблицы TabSet
+        String SQL_CREATE_TAB_SET = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_SET_FILE_ID + " INTEGER NOT NULL, "
+                + COLUMN_SET_FRAG_NUMBER + " INTEGER NOT NULL, "
+                + COLUMN_SET_TIME + " REAL NOT NULL, "
+                + COLUMN_SET_REPS + " INTEGER NOT NULL DEFAULT 1);";
+
+
+        database.execSQL(SQL_CREATE_TAB_SET);
     }
 
     //получаем количество фрагментов подхода в подходе
@@ -92,7 +106,7 @@ public class TabSet {
     }
 
     //Метод для вставки нового фрагмента подхода в список ДО  выделенного фрагмента
-    public void addSetBefore(SQLiteDatabase database, DataSet set, long file_id, int numberOfString) {
+    public static void addSetBefore(SQLiteDatabase database, DataSet set, long file_id, int numberOfString) {
         Log.d(TAG, "MyDatabaseHelper.addSetBefore ... getNumberOfFrag = " + set.getNumberOfFrag());
 
         //получаем  фрагменты подхода с ID = file_id
@@ -121,7 +135,7 @@ public class TabSet {
                         mCursor.getPosition() + " id строки =" + id);
             }
             //Добавляем фрагмент подхода созданный в DetailActiviti
-            this.addSet(database, set, file_id);
+            TabSet.addSet(database, set, file_id);
             //пересчитывает  номера фрагментов подхода
             //this.rerangeSetFragments(file_id);
 
@@ -134,7 +148,7 @@ public class TabSet {
     /**
      * Пересчитывает  номера фрагментов подхода после удаления какого либо фрагмента подхода
      */
-    public void rerangeSetFragments(SQLiteDatabase database, long fileId) throws SQLException {
+    public static void rerangeSetFragments(SQLiteDatabase database, long fileId) throws SQLException {
 
         String query = "select " + _ID + " , " +  COLUMN_SET_FRAG_NUMBER +
                 " from " + TABLE_NAME +
@@ -165,7 +179,7 @@ public class TabSet {
     }
 
     //Метод для изменения времени и количества повторений фрагмента подхода  по известному DataSet
-    public void updateSetFragment(SQLiteDatabase database, DataSet mDataSet) {
+    public static void updateSetFragment(SQLiteDatabase database, DataSet mDataSet) {
 
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(COLUMN_SET_TIME, mDataSet.getTimeOfRep());
@@ -178,7 +192,7 @@ public class TabSet {
     }
 
     //удаляем строку с номером fragmentNumber, относящуюся к файлу с id =fileId
-    public void deleteSet(SQLiteDatabase database, long fileId, long fragmentNumber) {
+    public static void deleteSet(SQLiteDatabase database, long fileId, long fragmentNumber) {
 
         database.delete(TabSet.TABLE_NAME, COLUMN_SET_FILE_ID +
                 " =? " + " AND " + COLUMN_SET_FRAG_NUMBER +
@@ -190,7 +204,7 @@ public class TabSet {
      * и порядкового номера фрагмента для всех фрагментов одного подхода с id = rowId
      * отсортировано по COLUMN_SET_FRAG_NUMBER, иначе в Андроид 4 работает неправильно
      */
-    public Cursor getAllSetFragments(SQLiteDatabase database, long rowId) throws SQLException {
+    public static Cursor getAllSetFragments(SQLiteDatabase database, long rowId) throws SQLException {
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 new String[]{COLUMN_SET_TIME, COLUMN_SET_REPS, COLUMN_SET_FRAG_NUMBER},
@@ -205,7 +219,7 @@ public class TabSet {
     /**
      * Возвращает DataSet с номером фрагмента подхода position из файла с номером ID = fileId
      */
-    public DataSet getOneSetFragmentData(SQLiteDatabase database, long fileId, int position) throws SQLException {
+    public static DataSet getOneSetFragmentData(SQLiteDatabase database, long fileId, int position) throws SQLException {
 
         Cursor cursorFile = database.query(true, TABLE_NAME,
                 new String[]{_ID, COLUMN_SET_FILE_ID, COLUMN_SET_FRAG_NUMBER,
@@ -240,7 +254,7 @@ public class TabSet {
     /**
      * Возвращает курсор с набором данных времени всех фрагментов одного подхода с id = rowId
      */
-    public Cursor getAllSetFragmentsRaw(SQLiteDatabase database, long rowId) throws SQLException {
+    public static Cursor getAllSetFragmentsRaw(SQLiteDatabase database, long rowId) throws SQLException {
 
         String query = "select " + COLUMN_SET_TIME + " from " + TABLE_NAME +
                 " where " + COLUMN_SET_FILE_ID + " = ? ";
@@ -255,7 +269,7 @@ public class TabSet {
     /**
      * Возвращает время фрагмента подхода с номером position для файла подхода с id = rowId
      */
-    public float getTimeOfRepInPosition(SQLiteDatabase database, long rowId, int position) throws SQLException {
+    public static float getTimeOfRepInPosition(SQLiteDatabase database, long rowId, int position) throws SQLException {
 
         String query = "select " + COLUMN_SET_TIME + " from " + TABLE_NAME +
                 " where " + COLUMN_SET_FILE_ID + " = ? ";
@@ -281,7 +295,7 @@ public class TabSet {
      * Возвращает количество повторений для фрагмента подхода с номером position
      * для файла подхода с id = rowId
      */
-    public int getRepsInPosition(SQLiteDatabase database, long rowId, int position) throws SQLException {
+    public static int getRepsInPosition(SQLiteDatabase database, long rowId, int position) throws SQLException {
 
 
         String query = "select " + COLUMN_SET_REPS + " from " + TABLE_NAME +
@@ -304,7 +318,7 @@ public class TabSet {
         return -1;
     }
 
-    public float getSumOfTimeSet(SQLiteDatabase database, long rowId) throws SQLException {
+    public static float getSumOfTimeSet(SQLiteDatabase database, long rowId) throws SQLException {
 
         String query = " select " + " sum( " + COLUMN_SET_TIME +
                 " * " + COLUMN_SET_REPS + " ) " +
@@ -324,7 +338,7 @@ public class TabSet {
         }
         return sum;
     }
-    public int getSumOfRepsSet(SQLiteDatabase database, long rowId) throws SQLException {
+    public static int getSumOfRepsSet(SQLiteDatabase database, long rowId) throws SQLException {
 
         String query = " select " + " sum( " + COLUMN_SET_REPS + " ) " +
                 " from " + TABLE_NAME + " where " + COLUMN_SET_FILE_ID + " = ?";
@@ -344,4 +358,24 @@ public class TabSet {
         return sum;
     }
 
+    // создать копию файла  в базе данных и получить его id
+    public static long createFileCopy(SQLiteDatabase database, String finishFileName, long fileId, String endName){
+
+        //количество фрагментов подхода
+        int countOfSet =TabSet.getSetFragmentsCount(database,  fileId);
+        String newFileName = finishFileName + endName;
+        Log.d(TAG, "createFileCopy newFileName = " + newFileName);
+        //создаём и записываем в базу копию файла на случай отмены изменений
+        DataFile dataFileCopy = TabFile.getAllFilesData(database, fileId);
+        dataFileCopy.setFileName(newFileName);
+        long fileIdCopy = TabFile.addFile(database, dataFileCopy);
+        //записываем фрагменты подхода в файл-копию
+        for (int i = 0; i<countOfSet; i++ ){
+            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
+            TabSet.addSet(database, dataSet,fileIdCopy);
+        }
+        Log.d(TAG, "createFileCopy фрагментов  = " +
+                TabSet.getSetFragmentsCount(database, fileIdCopy));
+        return  fileIdCopy;
+    }
 }

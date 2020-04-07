@@ -86,7 +86,7 @@ public class TabBarLikeFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //строка с именем файла
-                String fileName = mTempDBHelper.getFileNameFromTabFile(l);
+                String fileName = TabFile.getFileNameFromTabFile(database, l);
                 Log.d(TAG, "TabBarLikeFragment onCreateView     имя файла = " +  fileName +
                         "  long l = " + l ) ;
                 //отправляем интент с меткой 333, что значит из TabBarActivity
@@ -106,7 +106,7 @@ public class TabBarLikeFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "TabBarLikeFragment onResume");
 
-        Cursor cursor = mTempDBHelper.getAllFilesWhithType(P.TYPE_LIKE);
+        Cursor cursor = TabFile.getAllFilesWhithType(database, P.TYPE_LIKE);
 
         // формируем столбцы сопоставления
         String[] from = new String[]{TabFile.COLUMN_FILE_NAME};
@@ -187,7 +187,7 @@ public class TabBarLikeFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    String fileName = mTempDBHelper.getFileNameFromTabFile(acmi.id);
+                    String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
                     if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
                             fileName.equals(P.FILENAME_OTSECHKI_TEMP)){
                         Toast.makeText(getContext(), "Системный файл. Удаление запрещено.",
@@ -211,7 +211,7 @@ public class TabBarLikeFragment extends Fragment {
             //если выбран пункт Изменить запись
         } else if (item.getItemId() == P.CHANGE_ACTION_LIKE) {
             //получаем объект с данными строки с id = acmi.id из  таблицы TabFile
-            final DataFile dataFile = mTempDBHelper.getAllFilesData(acmi.id);
+            final DataFile dataFile = TabFile.getAllFilesData(database, acmi.id);
             String fn = dataFile.getFileName();
 
             //если имя системного файла
@@ -261,7 +261,7 @@ public class TabBarLikeFragment extends Fragment {
                         }
 
                         //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                        long fileId = mTempDBHelper.getIdFromFileName(nameFile);
+                        long fileId = TabFile.getIdFromFileName(database, nameFile);
                         Log.d(TAG, "nameFile = " + nameFile + "  fileId = " + fileId);
 
                         //если имя - пустая строка
@@ -283,7 +283,7 @@ public class TabBarLikeFragment extends Fragment {
                             Log.d(TAG, "Такое имя отсутствует fileId = " + fileId);
 
                             //изменяем имя файла
-                            mTempDBHelper.updateFileName(nameFile, acmi.id);
+                            TabFile.updateFileName(database, nameFile, acmi.id);
 
                             //принудительно прячем  клавиатуру - повторный вызов ее покажет
                             takeOnAndOffSoftInput();

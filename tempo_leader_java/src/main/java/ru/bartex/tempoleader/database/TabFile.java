@@ -29,8 +29,24 @@ public class TabFile {
     public final static String COLUMN_DELAY = "Delay";
 
 
+    public static void createTable(SQLiteDatabase database){
+        // Строка для создания таблицы TabFile
+        String SQL_CREATE_TAB_FILE = "CREATE TABLE " + TABLE_NAME + " ("
+                + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_FILE_NAME + " TEXT NOT NULL, "
+                + COLUMN_FILE_NAME_DATE + " TEXT NOT NULL, "
+                + COLUMN_FILE_NAME_TIME + " TEXT NOT NULL, "
+                + COLUMN_KIND_OF_SPORT + " TEXT, "
+                + COLUMN_DESCRIPTION_OF_SPORT + " TEXT, "
+                + COLUMN_TYPE_FROM + " TEXT NOT NULL DEFAULT 'type_timemeter', "
+                + COLUMN_DELAY + " INTEGER NOT NULL DEFAULT 6);";
+
+        // Запускаем создание таблицы
+        database.execSQL(SQL_CREATE_TAB_FILE);
+    }
+
     //Метод для добавления нового файла с подходом в список
-    public long addFile(SQLiteDatabase database, DataFile file) {
+    public static long addFile(SQLiteDatabase database, DataFile file) {
         Log.d(TAG, "TempDBHelper.addFile ... " + file.getFileName());
 
         ContentValues cv = new ContentValues();
@@ -47,7 +63,7 @@ public class TabFile {
     }
 
     //Метод для изменения имени файла
-    public void updateFileName(SQLiteDatabase database, String nameFile, long fileId) {
+    public static void updateFileName(SQLiteDatabase database, String nameFile, long fileId) {
 
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(COLUMN_FILE_NAME, nameFile);
@@ -55,7 +71,7 @@ public class TabFile {
     }
 
     //получаем ID по имени
-    public long getIdFromFileName(SQLiteDatabase database, String name) {
+    public static long getIdFromFileName(SQLiteDatabase database, String name) {
         long currentID;
 
         Cursor cursor = database.query(
@@ -85,9 +101,9 @@ public class TabFile {
     /**
      * Возвращает задержку старта файла по его ID
      */
-    public int  getFileDelayFromTabFile(SQLiteDatabase database,  String name) throws SQLException {
+    public static int  getFileDelayFromTabFile(SQLiteDatabase database,  String name) throws SQLException {
 
-        long rowId = this.getIdFromFileName(database, name);
+        long rowId = TabFile.getIdFromFileName(database, name);
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 null,
@@ -105,7 +121,7 @@ public class TabFile {
     /**
      * Возвращает имя файла по его ID
      */
-    public String getFileNameFromTabFile(SQLiteDatabase database,   long rowId) throws SQLException {
+    public static String getFileNameFromTabFile(SQLiteDatabase database,   long rowId) throws SQLException {
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 null,
@@ -124,7 +140,7 @@ public class TabFile {
     /**
      * Возвращает тип файла по его ID
      */
-    public String getFileTypeFromTabFile( SQLiteDatabase database, long rowId) throws SQLException {
+    public static String getFileTypeFromTabFile( SQLiteDatabase database, long rowId) throws SQLException {
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 null,
@@ -142,7 +158,7 @@ public class TabFile {
     /**
      * Возвращает объект DataFile с данными файла из таблицы TabFile с номмером ID = rowId
      */
-    public DataFile getAllFilesData(SQLiteDatabase database, long rowId) throws SQLException {
+    public static DataFile getAllFilesData(SQLiteDatabase database, long rowId) throws SQLException {
 
         Cursor cursorFile = database.query(true, TABLE_NAME,
                 new String[]{_ID, COLUMN_FILE_NAME,COLUMN_FILE_NAME_DATE,
@@ -184,7 +200,7 @@ public class TabFile {
     }
 
     //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public Cursor getAllFilesFromTimemeter(SQLiteDatabase database) throws SQLException {
+    public static Cursor getAllFilesFromTimemeter(SQLiteDatabase database) throws SQLException {
 
         String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
                 " where " + COLUMN_TYPE_FROM + " = ? ";
@@ -195,7 +211,7 @@ public class TabFile {
         return mCursor;
     }
     //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
+    public static Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
 
         String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
                 " where " + COLUMN_TYPE_FROM + " = ? ";
