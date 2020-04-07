@@ -1,9 +1,7 @@
 package ru.bartex.tempoleader.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -13,18 +11,6 @@ import java.util.GregorianCalendar;
 
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
-
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_DELAY;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_DESCRIPTION_OF_SPORT;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_FILE_NAME;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_FILE_NAME_DATE;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_FILE_NAME_TIME;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_KIND_OF_SPORT;
-import static ru.bartex.tempoleader.database.TabFile.COLUMN_TYPE_FROM;
-import static ru.bartex.tempoleader.database.TabSet.COLUMN_SET_FILE_ID;
-import static ru.bartex.tempoleader.database.TabSet.COLUMN_SET_FRAG_NUMBER;
-import static ru.bartex.tempoleader.database.TabSet.COLUMN_SET_REPS;
-import static ru.bartex.tempoleader.database.TabSet.COLUMN_SET_TIME;
 
 
 public class TempDBHelper extends SQLiteOpenHelper {
