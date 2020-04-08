@@ -1,15 +1,18 @@
 package ru.bartex.tempoleader.ui.main;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.bartex.tempoleader.R;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,13 +45,22 @@ public class HelpMainActivity extends AppCompatActivity {
 
         InputStream iFile = getResources().openRawResource(R.raw.help_trener_plus);
         StringBuilder strFile = inputStreamToString(iFile);
-        tvHelp.setText(strFile);
+        //tvHelp.setText(strFile);
+        tvHelp.setText(Html.fromHtml(strFile.toString()));
+
 
         left = (ImageView)findViewById(R.id.imageView2);
         left.setImageResource(R.drawable.help_magistr);
 
         right = (ImageView)findViewById(R.id.imageView3);
         right.setImageResource(R.drawable.help_magistr);
+
+        //в альбомной ориентации отключаем картинки, чтобы было больше места
+        if(getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE){
+            left.setVisibility(View.GONE);
+            right.setVisibility(View.GONE);
+        }
     }
 
     private StringBuilder inputStreamToString(InputStream iFile) {
@@ -96,13 +108,11 @@ public class HelpMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-
-            //чтобы работала стрелка Назад, а не происходил крах приложения
-            case android.R.id.home:
-                Log.d(TAG, "Домой");
-                onBackPressed();
-                return true;
+        //чтобы работала стрелка Назад, а не происходил крах приложения
+        if (item.getItemId() == android.R.id.home) {
+            Log.d(TAG, "Домой");
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

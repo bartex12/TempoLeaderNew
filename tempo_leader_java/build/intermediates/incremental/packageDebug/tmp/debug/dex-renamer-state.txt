@@ -1,4 +1,4 @@
-#Wed Apr 08 00:32:46 MSK 2020
+#Wed Apr 08 16:56:05 MSK 2020
 base.0=D\:\\AndroidStudioProjects\\TempoLeader2020\\tempo_leader_java\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

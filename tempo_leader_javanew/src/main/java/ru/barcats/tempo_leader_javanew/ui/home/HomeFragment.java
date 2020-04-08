@@ -1,18 +1,29 @@
 package ru.barcats.tempo_leader_javanew.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
@@ -21,15 +32,17 @@ import ru.barcats.tempo_leader_javanew.model.DataHome;
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG ="33333";
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerView;
+    private NavController navController;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         return inflater.inflate(R.layout.fragment_home, container, false);
-
     }
 
     @Override
@@ -38,13 +51,32 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewHome);
 
-        homeViewModel.getListMain().observe(getViewLifecycleOwner(), new Observer<ArrayList<DataHome>>() {
+        homeViewModel.getListMain().observe(getViewLifecycleOwner(),
+                new Observer<ArrayList<DataHome>>() {
             @Override
             public void onChanged(ArrayList<DataHome> dataHomes) {
                 showMainList(dataHomes);
             }
         });
+
+        //находим NavController для фрагмента
+        navController = Navigation.findNavController(view);
+
+        //конфигурация из графа обеспечивает правильную работу стрелок в тулбаре
+        AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+
+        //initToolBar();
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.main_menu);
+        //придётся добираться до ActionBar, чтобы сделать меню
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setTitle(R.string.main_menu);
+        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
+
+        setHasOptionsMenu(true);
     }
+
 
     private void showMainList(ArrayList<DataHome> dataHomes) {
         //используем встроенный GridLayoutManager
@@ -65,7 +97,6 @@ public class HomeFragment extends Fragment {
     //метод для получения слушателя щелчков на элементах списка
     private RecyclerViewMainAdapter.OnMainListClickListener getOnMainListClickListListener() {
         return new RecyclerViewMainAdapter.OnMainListClickListener() {
-
             @Override
             public void onMainListClick(int position) {
                 NavController navController =
@@ -75,18 +106,29 @@ public class HomeFragment extends Fragment {
                     case 0:
                         navController.navigate(R.id.action_nav_home_to_nav_secundomer);
                         break;
-
                     case 1:
                         navController.navigate(R.id.action_nav_home_to_nav_tempoleader);
                         break;
-
                     case 2:
                         navController.navigate(R.id.action_nav_home_to_nav_rascladki);
                         break;
                 }
-
             }
         };
-
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home_menu, menu);
+    }
+
+    //переопределяем метод для работы с navController -для этого в navigation и меню должны
+    //быть одинаковые id пункта назначения и шп пункта меню
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
+    }
+
 }
