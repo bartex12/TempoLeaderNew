@@ -7,17 +7,23 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -70,39 +76,54 @@ public class HelpFragment extends Fragment {
         });
         return root;
     }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        //находим NavController
-//        navController = Navigation.
-//                findNavController(getActivity(), R.id.nav_host_fragment);
-//
-//        //конфигурация из графа обеспечивает правильную работу стрелок в тулбаре
-//        mAppBarConfiguration =
-//                new AppBarConfiguration.Builder(navController.getGraph()).build();
-//
-//        //initToolBar();
-//        toolbar = view.findViewById(R.id.toolbar);
-//        //getActivity().setSupportActionBar(toolbar);
-//        //getActivity().getSupportActionBar().setTitle(R.string.main_menu);
-//        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
-//    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //находим NavController
+        navController = Navigation.
+                findNavController(getActivity(), R.id.nav_host_fragment);
+
+        DrawerLayout drawerLayout = view.findViewById(R.id.drawer_layout);
+        //конфигурация из графа обеспечивает правильную работу стрелок в тулбаре
+        mAppBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph())
+                        .setDrawerLayout(drawerLayout)
+                        .build();
+
+        //инициализация  ToolBar();
+        toolbar = view.findViewById(R.id.toolbar);
+        //придётся добираться до ActionBar, чтобы сделать меню
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+        appCompatActivity.getSupportActionBar().setTitle(R.string.main_menu);
+        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
+        // разрешаем меню ActionBar во фрагменте
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.help_menu, menu);
+    }
+
+    //переопределяем метод для работы с navController -для этого в navigation и меню должны
+    //быть одинаковые id пункта назначения и id пункта меню
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
+    }
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //
-//        switch (item.getItemId()) {
-////            case R.id.action_settings:
-////                Log.d(TAG, "OptionsItem = action_settings");
-////                //navController.navigate(R.id.action_nav_help_to_nav_settings);
-////                return true;
-//
-////            case R.id.action_help_main:
-////                Log.d(TAG, "OptionsItem = action_help_main");
-////                //navController.navigate(R.id.action_nav_home_to_nav_help);
-////                return true;
+//        if (item.getItemId() == R.id.nav_set) {
+//            Log.d(TAG, "OptionsItem = action_settings");
+//            navController.navigate(R.id.action_nav_help_to_nav_set);
+//            return true;
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }

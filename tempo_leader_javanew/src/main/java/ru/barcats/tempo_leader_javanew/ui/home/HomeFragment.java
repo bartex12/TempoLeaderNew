@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,21 +63,22 @@ public class HomeFragment extends Fragment {
         //находим NavController для фрагмента
         navController = Navigation.findNavController(view);
 
+        DrawerLayout drawerLayout = view.findViewById(R.id.drawer_layout);
         //конфигурация из графа обеспечивает правильную работу стрелок в тулбаре
-        AppBarConfiguration mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-
-        //initToolBar();
+        AppBarConfiguration mAppBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph())
+                        .setDrawerLayout(drawerLayout)
+                        .build();
+        //инициализация  ToolBar();
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.main_menu);
         //придётся добираться до ActionBar, чтобы сделать меню
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
         appCompatActivity.setSupportActionBar(toolbar);
         appCompatActivity.getSupportActionBar().setTitle(R.string.main_menu);
         NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
-
+        // разрешаем меню ActionBar во фрагменте
         setHasOptionsMenu(true);
     }
-
 
     private void showMainList(ArrayList<DataHome> dataHomes) {
         //используем встроенный GridLayoutManager
@@ -124,7 +126,7 @@ public class HomeFragment extends Fragment {
     }
 
     //переопределяем метод для работы с navController -для этого в navigation и меню должны
-    //быть одинаковые id пункта назначения и шп пункта меню
+    //быть одинаковые id пункта назначения и id пункта меню
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         return NavigationUI.onNavDestinationSelected(item, navController)

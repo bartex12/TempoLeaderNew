@@ -43,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph())
+                        .setDrawerLayout(drawerLayout)
+                        .build();
+
         //меню шторки работает автоматически, если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
     }

@@ -24,8 +24,8 @@
             android:id="@+id/action_nav_home_to_nav_help"
             app:destination="@id/nav_help" />
         <action
-            android:id="@+id/action_nav_home_to_nav_set"
-            app:destination="@id/nav_set" />
+            android:id="@+id/action_nav_home_to_nav_settings"
+            app:destination="@id/nav_settings" />
     </fragment>
 
     <fragment
@@ -68,11 +68,15 @@
         android:id="@+id/nav_help"
         android:name="ru.barcats.tempo_leader_javanew.ui.help.HelpFragment"
         android:label="@string/help"
-        tools:layout="@layout/fragment_help" />
+        tools:layout="@layout/fragment_help" >
+        <action
+            android:id="@+id/action_nav_help_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
 
     <activity
         android:id="@+id/nav_settings"
         android:name="ru.barcats.tempo_leader_javanew.ui.settings.PrefActivity"
-        android:label="SettingActivity" />
+        android:label="@string/Settings" />
 
 </navigation>
