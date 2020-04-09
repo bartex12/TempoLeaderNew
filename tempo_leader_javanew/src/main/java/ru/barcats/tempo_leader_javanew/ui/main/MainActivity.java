@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -12,8 +13,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private  BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
         navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         toolbar = findViewById(R.id.toolbar);
@@ -57,10 +63,34 @@ public class MainActivity extends AppCompatActivity {
                         navController.getGraph())
                         .setDrawerLayout(drawerLayout)
                         .build();
+        //обработка событий нижней навигации с помощью NavigationUI
+        NavigationUI.setupWithNavController(bottomNavigation, navController);
         //обработка событий тулбара с помощью NavigationUI
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        //меню шторки работает автоматически, если id меню совпадает с id в navigation
+        //обработка событий меню шторки - если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+               switch (destination.getId()){
+                   case R.id.nav_home:
+                       toolbar.setVisibility(View.VISIBLE);
+                       bottomNavigation.setVisibility(View.GONE);
+                       break;
+
+                       case R.id.nav_help:
+                           toolbar.setVisibility(View.GONE);
+                           bottomNavigation.setVisibility(View.GONE);
+                       break;
+
+                   case R.id.nav_set:
+                       toolbar.setVisibility(View.VISIBLE);
+                       bottomNavigation.setVisibility(View.GONE);
+                       break;
+               }
+            }
+        });
     }
 
     @Override
@@ -93,4 +123,5 @@ public class MainActivity extends AppCompatActivity {
         });
         quitDialog.show();
     }
+
 }

@@ -61,8 +61,7 @@
     <fragment
         android:id="@+id/nav_set"
         android:name="ru.barcats.tempo_leader_javanew.ui.settings.PrefFragment"
-        android:label="@string/Settings"
-        tools:layout="@layout/fragment_send" />
+        android:label="@string/Settings" />
 
     <fragment
         android:id="@+id/nav_help"

@@ -40,9 +40,7 @@ public class HelpFragment extends Fragment {
 
     private HelpViewModel helpViewModel;
     private static final String TAG ="33333";
-    private NavController navController;
-    private Toolbar toolbar;
-    private AppBarConfiguration mAppBarConfiguration;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
