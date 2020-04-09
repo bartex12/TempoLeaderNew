@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,9 +33,12 @@ import ru.barcats.tempo_leader_javanew.R;
 
 import android.view.Menu;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG ="33333";
+    private boolean doubleBackToExitPressedOnce;
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
     private DrawerLayout drawerLayout;
@@ -69,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         //обработка событий меню шторки - если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        //добавляем слушатель изменений пункта назначения в NavController,
+        //в методе обратного вызова проводим манипуляции с bottomNavigation и toolbar
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -78,12 +83,10 @@ public class MainActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
                        break;
-
                        case R.id.nav_help:
                            toolbar.setVisibility(View.GONE);
                            bottomNavigation.setVisibility(View.GONE);
                        break;
-
                    case R.id.nav_set:
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
@@ -95,33 +98,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d(TAG, "MainActivity onBackPressed");
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            //openQuitDialog();
+        //если  фрагмент HomeFragment закрываем программу по двойному щелчку Назад
+        if (navController.getCurrentDestination().getId() == R.id.nav_home){
+            //если флаг = true - а это при двойном щелчке - закрываем программу
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            //выставляем флаг = true
+            this.doubleBackToExitPressedOnce = true;
+            //закрываем шторку, если была открыта
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+            //показываем Snackbar Для выхода нажмите  НАЗАД  ещё раз
+            Snackbar.make(findViewById(android.R.id.content),
+                    Objects.requireNonNull(this).getString(R.string.forExit),
+                    Snackbar.LENGTH_SHORT).show();
+            //запускаем поток, в котором через 2 секунды меняем флаг
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }else {
             super.onBackPressed();
         }
-    }
-
-    private void openQuitDialog() {
-        AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
-        quitDialog.setTitle(R.string.ExitYesNo);
-
-        quitDialog.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-
-        quitDialog.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        quitDialog.show();
     }
 
 }

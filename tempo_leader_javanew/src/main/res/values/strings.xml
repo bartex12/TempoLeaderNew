@@ -147,6 +147,7 @@
     <string name="subhead">Подзаголовок</string>
     <string name="help">Справка</string>
     <string name="help_text">СПРАВКА</string>
+    <string name="forExit">Для выхода нажмите  НАЗАД  ещё раз</string>
 
 
 </resources>
