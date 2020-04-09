@@ -31,6 +31,11 @@ import android.view.Menu;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG ="33333";
+    private NavController navController;
+    private AppBarConfiguration appBarConfiguration;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +46,19 @@ public class MainActivity extends AppCompatActivity {
         // правильно инициализируется и получит настройки по умолчанию
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        toolbar = findViewById(R.id.toolbar);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(navController.getGraph())
+        //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
+        appBarConfiguration =
+                new AppBarConfiguration.Builder(
+                        navController.getGraph())
                         .setDrawerLayout(drawerLayout)
                         .build();
-
+        //обработка событий тулбара с помощью NavigationUI
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         //меню шторки работает автоматически, если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
     }

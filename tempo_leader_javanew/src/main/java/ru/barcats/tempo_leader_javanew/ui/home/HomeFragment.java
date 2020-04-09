@@ -41,43 +41,31 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        //находим RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewHome);
-
+        //находим NavController
+        navController = Navigation.findNavController(view);
+        //находим HomeViewModel
+        homeViewModel =
+                ViewModelProviders.of(this).get(HomeViewModel.class);
+        //наблюдаем за изменением данных
         homeViewModel.getListMain().observe(getViewLifecycleOwner(),
                 new Observer<ArrayList<DataHome>>() {
-            @Override
-            public void onChanged(ArrayList<DataHome> dataHomes) {
-                showMainList(dataHomes);
-            }
-        });
-
-        //находим NavController для фрагмента
-        navController = Navigation.findNavController(view);
-
-        DrawerLayout drawerLayout = view.findViewById(R.id.drawer_layout);
-        //конфигурация из графа обеспечивает правильную работу стрелок в тулбаре
-        AppBarConfiguration mAppBarConfiguration =
-                new AppBarConfiguration.Builder(navController.getGraph())
-                        .setDrawerLayout(drawerLayout)
-                        .build();
-        //инициализация  ToolBar();
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        //придётся добираться до ActionBar, чтобы сделать меню
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        appCompatActivity.setSupportActionBar(toolbar);
-        appCompatActivity.getSupportActionBar().setTitle(R.string.main_menu);
-        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
-        // разрешаем меню ActionBar во фрагменте
-        setHasOptionsMenu(true);
+                    @Override
+                    public void onChanged(ArrayList<DataHome> dataHomes) {
+                        for (int i = 0; i<dataHomes.size(); i++){
+                            Log.d(TAG, "HomeFragment onChanged dataHomes = " +
+                                    dataHomes.get(i).getHead());
+                        }
+                        showMainList(dataHomes);
+                    }
+                });
     }
 
     private void showMainList(ArrayList<DataHome> dataHomes) {
@@ -101,9 +89,6 @@ public class HomeFragment extends Fragment {
         return new RecyclerViewMainAdapter.OnMainListClickListener() {
             @Override
             public void onMainListClick(int position) {
-                NavController navController =
-                        Navigation.findNavController(Objects.requireNonNull(getActivity()),
-                                R.id.nav_host_fragment);
                 switch (position){
                     case 0:
                         navController.navigate(R.id.action_nav_home_to_nav_secundomer);
@@ -117,20 +102,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.home_menu, menu);
-    }
-
-    //переопределяем метод для работы с navController -для этого в navigation и меню должны
-    //быть одинаковые id пункта назначения и id пункта меню
-    @Override
-    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
     }
 
 }

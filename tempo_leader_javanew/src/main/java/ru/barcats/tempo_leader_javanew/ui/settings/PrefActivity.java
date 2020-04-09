@@ -34,9 +34,9 @@ public class PrefActivity extends AppCompatActivity {
 //        getSupportActionBar().setTitle(R.string.Settings);
 //        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
 
-        // меняем фрагмент в контейнере
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new PrefFragment())
-                .commit();
+//        // меняем фрагмент в контейнере
+//        getFragmentManager().beginTransaction()
+//                .replace(android.R.id.content, new PrefFragment())
+//                .commit();
     }
 }
