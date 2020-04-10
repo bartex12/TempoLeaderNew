@@ -6,7 +6,7 @@ public class FragmentOfSet {
     private int mReps;
     private int mTimeDelay;
 
-    FragmentOfSet(float timeOfRep,int reps){
+    public FragmentOfSet(float timeOfRep,int reps){
         mTimeOfRep = timeOfRep;
         mReps = reps;
     }

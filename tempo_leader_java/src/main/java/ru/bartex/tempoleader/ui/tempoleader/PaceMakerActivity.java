@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.tempoleader;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +27,10 @@ import java.util.TimerTask;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import ru.bartex.tempoleader.FragmentOfSet;
+import ru.bartex.tempoleader.PrefActivity;
+import ru.bartex.tempoleader.R;
+import ru.bartex.tempoleader.TimeOfDelayPaceMaker;
 
 public class PaceMakerActivity extends AppCompatActivity implements TextWatcher {
 

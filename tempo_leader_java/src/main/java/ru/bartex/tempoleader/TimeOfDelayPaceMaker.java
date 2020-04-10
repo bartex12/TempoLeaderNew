@@ -7,7 +7,7 @@ public class TimeOfDelayPaceMaker {
 
     private int mTimeDelay;
 
-    TimeOfDelayPaceMaker(int timeDelay){
+    public  TimeOfDelayPaceMaker(int timeDelay){
         mTimeDelay = timeDelay;
     }
 

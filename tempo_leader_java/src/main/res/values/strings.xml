@@ -136,6 +136,9 @@
     <string name="appDescription">Задаёт темп выполнения циклических упражнений</string>
     <string name="head">Заголовок</string>
     <string name="subhead">Описание</string>
-    <string name="NN">№</string>
+    <string name="NN" translatable="false">№</string>
+    <string name="_555" translatable="false">555</string>
+    <string name="_0_00_0" translatable="false">0:00.0</string>
+    <string name="_0" translatable="false">0</string>
 
 </resources>
