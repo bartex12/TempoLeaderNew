@@ -18,14 +18,14 @@
             android:id="@+id/action_nav_home_to_nav_tempoleader"
             app:destination="@id/nav_tempoleader" />
         <action
-            android:id="@+id/action_nav_home_to_nav_rascladki"
-            app:destination="@id/nav_rascladki" />
-        <action
             android:id="@+id/action_nav_home_to_nav_help"
             app:destination="@id/nav_help" />
         <action
             android:id="@+id/action_nav_home_to_nav_set"
             app:destination="@id/nav_set" />
+        <action
+            android:id="@+id/action_nav_home_to_raskladkiActivity"
+            app:destination="@id/raskladkiActivity" />
     </fragment>
 
     <fragment
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/nav_rascladki"
-        android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.RaskladkiFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.TabBarSecFragment"
         android:label="@string/ListOfTimeReps"
         tools:layout="@layout/fragment_raskladki" />
 
@@ -73,5 +73,9 @@
         android:id="@+id/nav_settings"
         android:name="ru.barcats.tempo_leader_javanew.ui.settings.PrefActivity"
         android:label="@string/Settings" />
+    <activity
+        android:id="@+id/raskladkiActivity"
+        android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.RaskladkiActivity"
+        android:label="RaskladkiActivity" />
 
 </navigation>

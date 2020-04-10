@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.raskladki;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import ru.bartex.tempoleader.PrefActivity;
+import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
 
 public class TabBarActivity extends AppCompatActivity {
@@ -174,11 +176,11 @@ public class TabBarActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             switch (position){
                 case 0:
-                    return TabBarSecFragment.newInstance(0);
+                    return TabBarSecFragment.newInstance(position);
                 case 1:
-                    return TabBarTempFragment.newInstance(1);
+                    return TabBarTempFragment.newInstance(position);
                 case 2:
-                    return TabBarLikeFragment.newInstance(2);
+                    return TabBarLikeFragment.newInstance(position);
                 default:
                     return null;
             }

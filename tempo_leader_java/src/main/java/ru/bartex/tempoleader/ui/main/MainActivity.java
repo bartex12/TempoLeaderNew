@@ -40,7 +40,7 @@ import ru.bartex.tempoleader.NewExerciseActivity;
 import ru.bartex.tempoleader.PrefActivity;
 import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.SetListActivity;
-import ru.bartex.tempoleader.TabBarActivity;
+import ru.bartex.tempoleader.ui.raskladki.TabBarActivity;
 import ru.bartex.tempoleader.TimeMeterActivity;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TempDBHelper;

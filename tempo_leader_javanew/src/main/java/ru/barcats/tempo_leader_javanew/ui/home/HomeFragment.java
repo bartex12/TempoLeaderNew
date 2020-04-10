@@ -3,32 +3,21 @@ package ru.barcats.tempo_leader_javanew.ui.home;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.Objects;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.ui.main.RecyclerViewMainAdapter;
 import ru.barcats.tempo_leader_javanew.model.DataHome;
 
 public class HomeFragment extends Fragment {
@@ -69,13 +58,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void showMainList(ArrayList<DataHome> dataHomes) {
-        //используем встроенный GridLayoutManager
+        //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //передаём список в адаптер
         //адаптер для RecyclerView
-        RecyclerViewMainAdapter adapter = new RecyclerViewMainAdapter(dataHomes);
+        RecyclerViewHomeAdapter adapter = new RecyclerViewHomeAdapter(dataHomes);
         //получаем слушатель щелчков на элементах списка
-        RecyclerViewMainAdapter.OnMainListClickListener listListener = getOnMainListClickListListener();
+        RecyclerViewHomeAdapter.OnMainListClickListener listListener = getOnMainListClickListListener();
         //устанавливаем слушатель в адаптер
         adapter.setOnMainListClickListener(listListener);
         //устанавливаем GridLayoutManager для RecyclerView
@@ -85,8 +74,8 @@ public class HomeFragment extends Fragment {
     }
 
     //метод для получения слушателя щелчков на элементах списка
-    private RecyclerViewMainAdapter.OnMainListClickListener getOnMainListClickListListener() {
-        return new RecyclerViewMainAdapter.OnMainListClickListener() {
+    private RecyclerViewHomeAdapter.OnMainListClickListener getOnMainListClickListListener() {
+        return new RecyclerViewHomeAdapter.OnMainListClickListener() {
             @Override
             public void onMainListClick(int position) {
                 switch (position){
@@ -97,7 +86,7 @@ public class HomeFragment extends Fragment {
                         navController.navigate(R.id.action_nav_home_to_nav_tempoleader);
                         break;
                     case 2:
-                        navController.navigate(R.id.action_nav_home_to_nav_rascladki);
+                        navController.navigate(R.id.action_nav_home_to_raskladkiActivity);
                         break;
                 }
             }

@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.main;
+package ru.barcats.tempo_leader_javanew.ui.home;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataHome;
 
-public class RecyclerViewMainAdapter extends RecyclerView.Adapter<RecyclerViewMainAdapter.ViewHolder> {
+public class RecyclerViewHomeAdapter extends RecyclerView.Adapter<RecyclerViewHomeAdapter.ViewHolder> {
 
     private static final String TAG = "33333";
     private ArrayList<DataHome> listOfMain;
     private Context context;
     private OnMainListClickListener onMainListClickListener;
 
-    public RecyclerViewMainAdapter(ArrayList<DataHome> listOfMain){
+    public RecyclerViewHomeAdapter(ArrayList<DataHome> listOfMain){
         this.listOfMain =listOfMain;
         Log.d(TAG, "RecyclerViewMainAdapter listOfMain.size() = " + listOfMain.size());
     }

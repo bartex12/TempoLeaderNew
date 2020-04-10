@@ -1,17 +1,12 @@
 package ru.barcats.tempo_leader_javanew.ui.main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
 
+import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -31,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import ru.barcats.tempo_leader_javanew.R;
 
-import android.view.Menu;
 
 import java.util.Objects;
 

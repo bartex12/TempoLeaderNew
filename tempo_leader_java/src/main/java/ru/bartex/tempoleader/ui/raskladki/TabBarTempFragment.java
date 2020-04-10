@@ -1,5 +1,4 @@
-package ru.bartex.tempoleader;
-
+package ru.bartex.tempoleader.ui.raskladki;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -32,32 +30,34 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import ru.bartex.tempoleader.R;
+import ru.bartex.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TempDBHelper;
 
-
-public class TabBarSecFragment extends Fragment {
+public class TabBarTempFragment extends Fragment {
 
     static String TAG = "33333";
+    private static final int REQUEST_FRAGMENT_CODE = 1;
+
     ListView mListView;
     ViewPager mViewPager;
-    private static final int REQUEST_FRAGMENT_CODE = 0;
 
     TempDBHelper mTempDBHelper;
     private SQLiteDatabase database;
     SimpleCursorAdapter scAdapter;
     Dialog dialog;
 
-    public TabBarSecFragment() {
+    public TabBarTempFragment() {
         // Required empty public constructor
     }
 
-    public static TabBarSecFragment newInstance(int numberItem) {
+    public static TabBarTempFragment newInstance(int numberItem){
         Bundle args = new Bundle();
-        args.putInt(P.ARG_NUMBER_ITEM_SEC, numberItem);
-        TabBarSecFragment fragment = new TabBarSecFragment();
+        args.putInt(P.ARG_NUMBER_ITEM_TEMP,numberItem);
+        TabBarTempFragment fragment = new TabBarTempFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,23 +70,29 @@ public class TabBarSecFragment extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        database.close();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "TabBarSecFragment onCreateView");
-
+        Log.d(TAG, "TabBarTempFragment onCreateView");
         // создаём View для этого фрагмента
-        View v = inflater.inflate(R.layout.fragment_tab_bar_sec, container, false);
+        View v = inflater.inflate(R.layout.fragment_tab_bar_temp, container, false);
 
         mViewPager = getActivity().findViewById(R.id.container);
 
-        mListView = v.findViewById(R.id.listViewSec);
+        mListView = v.findViewById(R.id.listViewTemp);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 //строка с именем файла
                 String fileName = TabFile.getFileNameFromTabFile(database, l);
-                Log.d(TAG, "TabBarSecFragment onCreateView     имя файла = " + fileName +
-                        "  long l = " + l);
+                Log.d(TAG, "TabBarTempFragment onCreateView     имя файла = " +  fileName +
+                        "  long l = " + l ) ;
                 //отправляем интент с меткой 333, что значит из TabBarActivity
                 Intent intent = new Intent(getActivity(), SetListActivity.class);
                 intent.putExtra(P.FINISH_FILE_NAME, fileName);
@@ -102,9 +108,9 @@ public class TabBarSecFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "TabBarSecFragment onResume");
+        Log.d(TAG, "TabBarTempFragment onResume");
 
-        Cursor cursor = TabFile.getAllFilesWhithType(database, P.TYPE_TIMEMETER);
+        Cursor cursor = TabFile.getAllFilesWhithType(database, P.TYPE_TEMPOLEADER);
 
         // формируем столбцы сопоставления
         String[] from = new String[]{TabFile.COLUMN_FILE_NAME};
@@ -122,13 +128,13 @@ public class TabBarSecFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "TabBarSecFragment onPause");
+        Log.d(TAG, "TabBarTempFragment onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "TabBarSecFragment onStop");
+        Log.d(TAG, "TabBarTempFragment onStop");
     }
 
     @Override
@@ -144,31 +150,32 @@ public class TabBarSecFragment extends Fragment {
         }
     }
 
-    //создаём контекстное меню для списка (сначала регистрация нужна  - здесь в onResume)
+    //создаём контекстное меню для списка (сначала регистрация нужна в onCreateView)
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, P.DELETE_ACTION_SEC, 0, "Удалить запись");
-        menu.add(0, P.CHANGE_ACTION_SEC, 0, "Изменить запись");
-        menu.add(0, P.MOVE_TEMP_ACTION_SEC, 0, "Переместить в темполидер");
-        menu.add(0, P.MOVE_LIKE_ACTION_SEC, 0, "Переместить в избранное");
-        menu.add(0, P.CANCEL_ACTION_SEC, 0, "Отмена");
+        menu.add(0, P.DELETE_ACTION_TEMP, 0, "Удалить запись");
+        menu.add(0, P.CHANGE_ACTION_TEMP, 0, "Изменить запись");
+        menu.add(0, P.MOVE_SEC_ACTION_TEMP, 0, "Переместить в секундомер");
+        menu.add(0, P.MOVE_LIKE_ACTION_TEMP, 0, "Переместить в избранное");
+        menu.add(0, P.CANCEL_ACTION_TEMP, 0, "Отмена");
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
         // получаем инфу о пункте списка
         final AdapterView.AdapterContextMenuInfo acmi =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         //получаем номер открытой вкладки из аргументов
-        int curItem = getArguments().getInt(P.ARG_NUMBER_ITEM_SEC);
-        Log.d(TAG, "TabBarSecFragment curItem = " + curItem);
+        int curItem = getArguments().getInt(P.ARG_NUMBER_ITEM_TEMP);
+        Log.d(TAG, "TabBarSecFragment curItem = " + curItem );
         //смотрим номер текущей вкладки
         int currentItem = mViewPager.getCurrentItem();
 
         //если выбран пункт Удалить запись
-        if (item.getItemId() == P.DELETE_ACTION_SEC) {
-            Log.d(TAG, "TabBarSecFragment DELETE_ACTION");
+        if (item.getItemId() == P.DELETE_ACTION_TEMP) {
+            Log.d(TAG, "PersonsListActivity CM_DELETE_ID");
 
             String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
@@ -194,6 +201,7 @@ public class TabBarSecFragment extends Fragment {
                             Log.d(TAG, "PersonsListActivity удалена позиция с ID " + acmi.id);
                             //обновляем адаптер
                             mViewPager.getAdapter().notifyDataSetChanged();
+                            //onResume();
                     }
                 });
                 //если текущий фрагмент это открытая вкладка, то показываем диалог
@@ -203,9 +211,8 @@ public class TabBarSecFragment extends Fragment {
             }
             return true;
 
-
             //если выбран пункт Изменить запись
-        } else if (item.getItemId() == P.CHANGE_ACTION_SEC) {
+        } else if (item.getItemId() == P.CHANGE_ACTION_TEMP) {
             //получаем объект с данными строки с id = acmi.id из  таблицы TabFile
             final DataFile dataFile = TabFile.getAllFilesData(database, acmi.id);
             String fn = dataFile.getFileName();
@@ -238,18 +245,18 @@ public class TabBarSecFragment extends Fragment {
                 dateAndTime.setText(min);
                 dateAndTime.setEnabled(false);
 
-                final CheckBox date = view.findViewById(R.id.checkBoxDate);
+                final CheckBox date = (CheckBox) view.findViewById(R.id.checkBoxDate);
 
                 changeDialog.setView(view);
                 changeDialog.setTitle("Изменить имя");
                 changeDialog.setIcon(R.drawable.ic_wrap_text_black_24dp);
 
-            Button saveButYes = view.findViewById(R.id.buttonSaveYesChangeName);
-            saveButYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                Button saveButYes = (Button)view.findViewById(R.id.buttonSaveYesChangeName);
+                saveButYes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    String nameFile = name.getText().toString();
+                        String nameFile = name.getText().toString();
 
                         if(date.isChecked()){
                             nameFile = nameFile + "_" + P.setDateString();
@@ -289,19 +296,19 @@ public class TabBarSecFragment extends Fragment {
                             //getActivity().finish(); //закрывает и диалог и активность
                             dialog.dismiss();  //закрывает только диалог
                         }
-                }
-            });
+                    }
+                });
 
-            Button saveButNo = view.findViewById(R.id.buttonSaveNoChangeName);
-            saveButNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                    takeOnAndOffSoftInput();
-                    //getActivity().finish(); //закрывает и диалог и активность
-                    dialog.dismiss();  //закрывает только диалог
-                }
-            });
+                Button saveButNo = (Button)view.findViewById(R.id.buttonSaveNoChangeName);
+                saveButNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //принудительно прячем  клавиатуру - повторный вызов ее покажет
+                        takeOnAndOffSoftInput();
+                        //getActivity().finish(); //закрывает и диалог и активность
+                        dialog.dismiss();  //закрывает только диалог
+                    }
+                });
                 //если делать запрет на закрытие окна при щелчке за пределами окна,
                 // то сначала билдер создаёт диалог
                 dialog = changeDialog.create();
@@ -313,9 +320,28 @@ public class TabBarSecFragment extends Fragment {
                 }
                 return true;
             }
+            //если выбран пункт Переместить в секундомер
+        } else if (item.getItemId() == P.MOVE_SEC_ACTION_TEMP) {
+
+            String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
+            if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
+                    fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
+                Snackbar.make(getView(), "Системный файл.Перемещение запрещено.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }else {
+
+                SQLiteDatabase db = mTempDBHelper.getWritableDatabase();
+                ContentValues updatedValues = new ContentValues();
+                updatedValues.put(TabFile.COLUMN_TYPE_FROM, P.TYPE_TIMEMETER);
+                db.update(TabFile.TABLE_NAME, updatedValues,
+                        TabFile._ID + "=" + acmi.id, null);
+                //обновляем адаптер вкладок
+                mViewPager.getAdapter().notifyDataSetChanged();
+            }
+            return true;
 
             //если выбран пункт Переместить в избранное
-        } else if (item.getItemId() == P.MOVE_LIKE_ACTION_SEC) {
+        } else if (item.getItemId() == P.MOVE_LIKE_ACTION_TEMP) {
 
             String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
@@ -333,37 +359,16 @@ public class TabBarSecFragment extends Fragment {
                 mViewPager.getAdapter().notifyDataSetChanged();
             }
             return true;
-
-            //если выбран пункт Переместить в Темполидер
-        } else if (item.getItemId() == P.MOVE_TEMP_ACTION_SEC) {
-
-            String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
-            if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
-                    fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
-                Snackbar.make(getView(), "Системный файл.Перемещение запрещено.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }else {
-
-                SQLiteDatabase db = mTempDBHelper.getWritableDatabase();
-                ContentValues updatedValues = new ContentValues();
-                updatedValues.put(TabFile.COLUMN_TYPE_FROM, P.TYPE_TEMPOLEADER);
-                db.update(TabFile.TABLE_NAME, updatedValues,
-                        TabFile._ID + "=" + acmi.id, null);
-                //обновляем адаптер вкладок
-                mViewPager.getAdapter().notifyDataSetChanged();
-            }
-            return true;
-
         }
-            //если ничего не выбрано
-            return super.onContextItemSelected(item);
-        }
+        //если ничего не выбрано
+        return super.onContextItemSelected(item);
+    }
 
-        //принудительно вызываем клавиатуру - повторный вызов ее скроет
-        private void takeOnAndOffSoftInput(){
-            InputMethodManager imm = (InputMethodManager) getActivity().
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        }
+    //принудительно вызываем клавиатуру - повторный вызов ее скроет
+    private void takeOnAndOffSoftInput(){
+        InputMethodManager imm = (InputMethodManager) getActivity().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
 
 }

@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.raskladki;
 
 
 import android.app.Activity;
@@ -32,6 +32,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import ru.bartex.tempoleader.R;
+import ru.bartex.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;

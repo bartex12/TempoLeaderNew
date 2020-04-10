@@ -35,6 +35,7 @@ import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogSetDelay;
+import ru.bartex.tempoleader.ui.raskladki.TabBarActivity;
 
 /**
  * Created by Андрей on 02.05.2018.

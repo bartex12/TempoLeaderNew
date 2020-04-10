@@ -42,7 +42,7 @@
             android:label="">
         </activity>
         <activity
-            android:name="ru.bartex.tempoleader.TabBarActivity"
+            android:name="ru.bartex.tempoleader.ui.raskladki.TabBarActivity"
             android:label="@string/title_activity_tab_bar"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
