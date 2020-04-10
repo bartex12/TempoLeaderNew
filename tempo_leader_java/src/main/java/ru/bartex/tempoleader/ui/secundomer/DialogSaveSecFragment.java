@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader.ui.dialogs;
+package ru.bartex.tempoleader.ui.secundomer;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

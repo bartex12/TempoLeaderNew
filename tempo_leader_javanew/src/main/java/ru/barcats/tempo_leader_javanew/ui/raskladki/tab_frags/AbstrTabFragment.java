@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.SecViewModel;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 
 public abstract class AbstrTabFragment extends Fragment {

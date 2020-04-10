@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="ru.bartex.tempoleader.TimeMeterActivity">
+        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeMeterActivity">
         </activity>
-        <activity android:name="ru.bartex.tempoleader.TimeGrafActivity">
+        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeGrafActivity">
         </activity>
         <activity android:name="ru.bartex.tempoleader.PrefActivity">
         </activity>

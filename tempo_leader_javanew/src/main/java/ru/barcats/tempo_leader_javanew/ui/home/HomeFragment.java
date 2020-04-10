@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
                         navController.navigate(R.id.action_nav_home_to_nav_tempoleader);
                         break;
                     case 2:
-                        navController.navigate(R.id.action_nav_home_to_raskladkiActivity);
+                        navController.navigate(R.id.action_nav_home_to_nav_rascladki);
                         break;
                 }
             }

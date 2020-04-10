@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.secundomer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,13 +27,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.fragment.app.DialogFragment;
+import ru.bartex.tempoleader.PrefActivity;
+import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
-import ru.bartex.tempoleader.ui.dialogs.DialogSaveSecFragment;
 
 public class TimeMeterActivity extends AppCompatActivity
         implements DialogSaveSecFragment.SaverFragmentSecundomerListener {

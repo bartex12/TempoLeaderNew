@@ -136,5 +136,6 @@
     <string name="appDescription">Задаёт темп выполнения циклических упражнений</string>
     <string name="head">Заголовок</string>
     <string name="subhead">Описание</string>
+    <string name="NN">№</string>
 
 </resources>

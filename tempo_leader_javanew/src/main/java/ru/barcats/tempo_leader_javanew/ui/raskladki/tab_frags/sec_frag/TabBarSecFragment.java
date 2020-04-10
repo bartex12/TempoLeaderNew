@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags.temp_frag;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.sec_frag;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,18 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.SecViewModel;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.AbstrTabFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
 
-public class TabBarTempFragment extends AbstrTabFragment {
+public class TabBarSecFragment extends AbstrTabFragment {
 
-    private  TempViewModel tempViewModel;
+    private SecViewModel secViewModel;
 
-    public static TabBarTempFragment newInstance(int numberItem){
+    public static TabBarSecFragment newInstance(int numberItem) {
         Bundle args = new Bundle();
-        args.putInt(P.ARG_NUMBER_ITEM,numberItem);
-        TabBarTempFragment fragment = new TabBarTempFragment();
+        args.putInt(P.ARG_NUMBER_ITEM, numberItem);
+        TabBarSecFragment fragment = new TabBarSecFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,9 +31,9 @@ public class TabBarTempFragment extends AbstrTabFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
 
-        tempViewModel =
-                ViewModelProviders.of(this).get(TempViewModel.class);
-        tempViewModel.getRascladki()
+        secViewModel =
+                ViewModelProviders.of(this).get(SecViewModel.class);
+        secViewModel.getRascladki()
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
@@ -51,9 +50,10 @@ public class TabBarTempFragment extends AbstrTabFragment {
         return new RecyclerViewTabAdapter.OnClickOnLineListener() {
             @Override
             public void onClickOnLineListener(String nameItem) {
-                //TODO
+                //TODO у каждого фрагмента свой вариант действий
             }
         };
     }
+
 
 }

@@ -19,7 +19,7 @@
         android:keepScreenOn="true"
         android:text="@string/CountZeroTime"
         android:textColor="#1909f7"
-        android:textSize="40dp"/>
+        android:textSize="40sp"/>
 
     <TextView
         android:id="@+id/textViewTimePause"
@@ -27,9 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textViewTime"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginEnd="42dp"
-        android:layout_marginRight="42dp"
         android:text="@string/CountZeroTime"
         android:visibility="gone"/>
 
@@ -39,7 +37,6 @@
         android:layout_height="5dp"
         android:background="#72f5a4"
         android:layout_below="@+id/textViewTime"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout2">
     </LinearLayout>
@@ -61,11 +58,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="№"
+                android:text="@string/NN"
                 android:id="@+id/item_list"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:id="@+id/time_list"
@@ -73,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="5"
                 android:text="@string/label_time"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -82,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="9"
                 android:text="@string/label_lap"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"/>
 
         </TableRow>
@@ -94,7 +91,6 @@
         android:layout_height="5dp"
         android:background="#72f5a4"
         android:layout_below="@+id/headOfList"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout3">
     </LinearLayout>
@@ -108,7 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listViewRep"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_above="@+id/linearLayout"
             android:layout_marginBottom="10dp"/>
@@ -125,7 +120,7 @@
                 android:id="@+id/buttonNext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/draw"
                 android:gravity="center"
@@ -135,7 +130,7 @@
                 android:id="@+id/buttonStop"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/draw"
                 android:gravity="center"
@@ -145,7 +140,7 @@
                 android:id="@+id/buttonReset"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/draw"
                 android:gravity="center"

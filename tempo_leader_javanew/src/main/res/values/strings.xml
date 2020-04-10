@@ -149,6 +149,7 @@
     <string name="help_text">СПРАВКА</string>
     <string name="forExit">Для выхода нажмите  НАЗАД  ещё раз</string>
     <string name="listOfNames">Раскладки</string>
+    <string name="NN">№</string>
 
 
 </resources>

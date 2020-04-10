@@ -1,21 +1,19 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags.like_frag;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag;
 
 import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.RaskladkiSecStorage;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.RaskladkiSecStorageImpl;
 
-public class LikeViewModel extends ViewModel {
+public class TempViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<String>> data;
-    private RaskladkiLikeStorage storage;
+    private RaskladkiTempStorage storage;
 
-    public LikeViewModel() {
+    public TempViewModel() {
 
-        storage = new RaskladkiLikeStorageImpl();
+        storage = new RaskladkiTempStorageImpl();
     }
 
     public LiveData<ArrayList<String>> getRascladki() {

@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,16 +12,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.AbstrTabFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
 
-public class TabBarSecFragment extends AbstrTabFragment {
+public class TabBarLikeFragment extends AbstrTabFragment {
 
-    private SecViewModel secViewModel;
+    private LikeViewModel likeViewModel;
 
-    public static TabBarSecFragment newInstance(int numberItem) {
+    public static TabBarLikeFragment newInstance(int numberItem){
         Bundle args = new Bundle();
-        args.putInt(P.ARG_NUMBER_ITEM, numberItem);
-        TabBarSecFragment fragment = new TabBarSecFragment();
+        args.putInt(P.ARG_NUMBER_ITEM,numberItem);
+        TabBarLikeFragment fragment = new TabBarLikeFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -31,9 +31,10 @@ public class TabBarSecFragment extends AbstrTabFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
 
-        secViewModel =
-                ViewModelProviders.of(this).get(SecViewModel.class);
-        secViewModel.getRascladki()
+        //TODO у каждого фрагмента свой ViewModel
+        likeViewModel =
+                ViewModelProviders.of(this).get(LikeViewModel.class);
+        likeViewModel.getRascladki()
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
@@ -50,7 +51,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
         return new RecyclerViewTabAdapter.OnClickOnLineListener() {
             @Override
             public void onClickOnLineListener(String nameItem) {
-                //TODO у каждого фрагмента свой вариант действий
+                //TODO
             }
         };
     }

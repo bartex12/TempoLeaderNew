@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags.like_frag;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag;
 
 import java.util.ArrayList;
 

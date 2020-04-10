@@ -1,8 +1,6 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.frags.like_frag;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag;
 
 import java.util.ArrayList;
-
-import ru.barcats.tempo_leader_javanew.ui.raskladki.frags.sec_frag.RaskladkiSecStorage;
 
 
 public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {

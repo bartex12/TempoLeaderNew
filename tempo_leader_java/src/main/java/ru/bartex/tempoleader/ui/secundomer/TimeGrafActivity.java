@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.secundomer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.bartex.tempoleader.R;
+import ru.bartex.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
@@ -35,7 +37,7 @@ public class TimeGrafActivity extends AppCompatActivity {
 
     public static final String TAG ="33333";
 
-    static final String REP_TIME_LIST = "ru.bartex.p010_train.repTimeList";
+    public static final String REP_TIME_LIST = "ru.bartex.p010_train.repTimeList";
 
     ListView mListViewTiming;
     TextView nameOfFile;
