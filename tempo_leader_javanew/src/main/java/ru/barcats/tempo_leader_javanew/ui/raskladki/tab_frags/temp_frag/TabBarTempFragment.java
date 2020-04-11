@@ -37,7 +37,7 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
-                        initRecycler(view, strings);
+                        initRecycler(strings);
                     }
                 });
 

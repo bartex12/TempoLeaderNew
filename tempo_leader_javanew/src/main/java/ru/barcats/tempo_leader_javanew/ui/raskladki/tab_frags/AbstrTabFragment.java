@@ -27,11 +27,7 @@ public abstract class AbstrTabFragment extends Fragment {
     public RecyclerView recyclerView;
     public RecyclerViewTabAdapter adapter;
 
-    public AbstrTabFragment() {
-        // Required empty public constructor
-    }
 
-    //public abstract RecyclerViewTabAdapter getRecyclerViewTabAdapter(ArrayList<String> strings);
     public abstract RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener();
 
 
@@ -41,14 +37,14 @@ public abstract class AbstrTabFragment extends Fragment {
         database = new TempDBHelper(context).getWritableDatabase();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "// AbstrTabFragment onCreate // " );
-        //получаем id файла из аргументов
-        //positionItem = getArguments().getInt(P.ARG_NUMBER_ITEM, 0);
-        //Log.d(TAG, "AbstrTabFragment onCreate  positionItem = " + positionItem );
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        Log.d(TAG, "// AbstrTabFragment onCreate // " );
+//        //получаем id файла из аргументов
+//        //positionItem = getArguments().getInt(P.ARG_NUMBER_ITEM, 0);
+//        //Log.d(TAG, "AbstrTabFragment onCreate  positionItem = " + positionItem );
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +67,7 @@ public abstract class AbstrTabFragment extends Fragment {
         Log.d(TAG, "// AbstrTabFragment onDestroy // " );
     }
 
-    public void initRecycler(View view, ArrayList<String> strings) {
+    public void initRecycler(ArrayList<String> strings) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);

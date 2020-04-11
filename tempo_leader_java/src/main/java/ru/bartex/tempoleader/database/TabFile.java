@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import ru.bartex.tempoleader.data.DataFile;
 
 public class TabFile {
@@ -199,17 +201,7 @@ public class TabFile {
 
     }
 
-    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static Cursor getAllFilesFromTimemeter(SQLiteDatabase database) throws SQLException {
 
-        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
-                " where " + COLUMN_TYPE_FROM + " = ? ";
-        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
     //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
     public static Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
 

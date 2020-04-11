@@ -79,8 +79,8 @@ public class TempDBHelper extends SQLiteOpenHelper {
 
             //создаём экземпляр класса DataFile в конструкторе
             DataFile file2 = new DataFile(P.FILENAME_OTSECHKI_TEMP,
-                    dateFormat, timeFormat, "Пистолетики",
-                    "Полиатлон", P.TYPE_TEMPOLEADER, 6);
+                    dateFormat, timeFormat, "Полиатлон",
+                    "Пистолетики", P.TYPE_TEMPOLEADER, 6);
 
             //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
             long file2_id = TabFile.addFile(db, file2);

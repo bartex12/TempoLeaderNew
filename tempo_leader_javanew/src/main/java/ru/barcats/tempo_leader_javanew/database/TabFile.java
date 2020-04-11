@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.P;
 
@@ -201,7 +203,7 @@ public class TabFile {
     }
 
     //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static Cursor getAllFilesFromTimemeter(SQLiteDatabase database) throws SQLException {
+    public static Cursor getAllFilesFromTimemeter(SQLiteDatabase database) {
 
         String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
                 " where " + COLUMN_TYPE_FROM + " = ? ";
@@ -211,6 +213,43 @@ public class TabFile {
         }
         return mCursor;
     }
+
+    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
+    public static ArrayList<String> getArrayListFilesFromTimemeter(SQLiteDatabase database)  {
+
+        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
+                " where " + COLUMN_TYPE_FROM + " = ? ";
+        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
+
+        ArrayList<String> list = new ArrayList<String>(mCursor.getCount());
+        // Проходим через все строки в курсоре
+        while (mCursor.moveToNext()){
+            String name  = mCursor.getString(mCursor.getColumnIndex(COLUMN_FILE_NAME));
+            list.add(name);
+            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
+        }
+        mCursor.close();
+        return list;
+    }
+
+    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
+    public static ArrayList<String> getArrayListFilesFromTempoleader(SQLiteDatabase database)  {
+
+        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
+                " where " + COLUMN_TYPE_FROM + " = ? ";
+        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TEMPOLEADER});
+
+        ArrayList<String> list = new ArrayList<String>(mCursor.getCount());
+        // Проходим через все строки в курсоре
+        while (mCursor.moveToNext()){
+            String name  = mCursor.getString(mCursor.getColumnIndex(COLUMN_FILE_NAME));
+            list.add(name);
+            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
+        }
+        mCursor.close();
+        return list;
+    }
+
     //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
     public static Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
 
@@ -221,5 +260,15 @@ public class TabFile {
             mCursor.moveToFirst();
         }
         return mCursor;
+    }
+
+    //получаем количество файлов (сохранённых подходов) в базе
+    public static  int getFilesCount(SQLiteDatabase database) {
+        Log.i(TAG, "TempDBHelper.getFilesCount ... ");
+        String countQuery = "SELECT  * FROM " + TABLE_NAME;
+        Cursor cursor = database.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 }

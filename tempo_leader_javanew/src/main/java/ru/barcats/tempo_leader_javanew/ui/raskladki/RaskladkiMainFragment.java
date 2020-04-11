@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class RaskladkiActivity extends Fragment {
+public class RaskladkiMainFragment extends Fragment {
 
     static String TAG = "33333";
     private SectionsPagerAdapter pagerAdapter;

@@ -48,8 +48,7 @@ public class TabBarActivity extends AppCompatActivity {
         //показать стрелку Назад
         acBar.setDisplayHomeAsUpEnabled(true );
         acBar.setHomeButtonEnabled(true);
-
-        // Создайте адаптер, который вернет фрагмент для каждого из трех
+        // Создаём адаптер, который вернет фрагмент для каждого из трех
         //        первичных разделов активности.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Установите ViewPager с адаптером вкладок
@@ -194,7 +193,6 @@ public class TabBarActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-
             //возвращаем имя вкладки
            return tabTitles[position];
             //для установки иконок надо return null

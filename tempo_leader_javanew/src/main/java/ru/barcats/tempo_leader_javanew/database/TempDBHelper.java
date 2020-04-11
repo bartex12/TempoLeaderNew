@@ -47,7 +47,7 @@ public class TempDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        int count = this.getFilesCount();
+        int count = TabFile.getFilesCount(db);
         if (count == 0) {
 
             //получаем дату и время в нужном для базы данных формате
@@ -75,7 +75,7 @@ public class TempDBHelper extends SQLiteOpenHelper {
             TabSet.addSet(db, set4, file1_id);
 
             Log.d(TAG, "MyDatabaseHelper.createDefaultPersonIfNeed ... count = " +
-                    this.getFilesCount());
+                    TabFile.getFilesCount(db));
 
             //создаём экземпляр класса DataFile в конструкторе
             DataFile file2 = new DataFile(P.FILENAME_OTSECHKI_TEMP,
@@ -98,7 +98,7 @@ public class TempDBHelper extends SQLiteOpenHelper {
             TabSet.addSet(db, set44, file2_id);
 
             Log.d(TAG, "MyDatabaseHelper.createDefaultPersonIfNeed ... count = " +
-                    this.getFilesCount());
+                    TabFile.getFilesCount(db));
         }
     }
 
@@ -118,16 +118,16 @@ public class TempDBHelper extends SQLiteOpenHelper {
                 calendar.get(Calendar.SECOND));
     }
 
-    //получаем количество файлов (сохранённых подходов) в базе
-    public int getFilesCount() {
-        Log.i(TAG, "TempDBHelper.getFilesCount ... ");
-        String countQuery = "SELECT  * FROM " + TabFile.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
+//    //получаем количество файлов (сохранённых подходов) в базе
+//    public int getFilesCount() {
+//        Log.i(TAG, "TempDBHelper.getFilesCount ... ");
+//        String countQuery = "SELECT  * FROM " + TabFile.TABLE_NAME;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(countQuery, null);
+//        int count = cursor.getCount();
+//        cursor.close();
+//        return count;
+//    }
 
         //***********************************
 
