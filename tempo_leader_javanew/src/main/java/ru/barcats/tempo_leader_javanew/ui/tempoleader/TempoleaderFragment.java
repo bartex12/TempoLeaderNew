@@ -32,21 +32,28 @@ public class TempoleaderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "** TempoleaderFragment onViewCreated " +
-                " NAME_OF_FILE = " + getArguments().getString(P.NAME_OF_FILE) +
-                " FROM_ACTIVITY = " +  getArguments().getInt(P.FROM_ACTIVITY) +
-                " FINISH_FILE_ID = " + getArguments().getInt(P.FINISH_FILE_ID));
+        String dataFile;
+        // когда грузим с главного экрана или со шторки, аргументы = null
+        if (getArguments() != null) {
+            Log.d(TAG, "** TempoleaderFragment onViewCreated " +
+                    " NAME_OF_FILE = " + getArguments().getString(P.NAME_OF_FILE) +
+                    " FROM_ACTIVITY = " +  getArguments().getInt(P.FROM_ACTIVITY) +
+                    " FINISH_FILE_ID = " + getArguments().getInt(P.FINISH_FILE_ID));
+            dataFile = getArguments().getString(P.NAME_OF_FILE);
+        }else {
+            dataFile = P.FILENAME_OTSECHKI_SEC;
+        }
 
         slideshowViewModel =
                 ViewModelProviders.of(this).get(TempoleaderViewModel.class);
 
-        slideshowViewModel.loadDataSet(getArguments().getString(P.NAME_OF_FILE))
+        slideshowViewModel.loadDataSet(dataFile)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
                 //TODO
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
-
+                //показываем список на экране
                 showSetList(view, dataSets);
             }
         });
