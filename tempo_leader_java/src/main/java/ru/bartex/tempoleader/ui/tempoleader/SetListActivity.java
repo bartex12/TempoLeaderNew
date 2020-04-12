@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.tempoleader;
 
 
 import androidx.fragment.app.Fragment;

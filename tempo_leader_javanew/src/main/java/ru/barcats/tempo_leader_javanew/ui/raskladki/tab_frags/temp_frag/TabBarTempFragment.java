@@ -42,17 +42,16 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 });
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
-
     }
 
-    @Override
-    public RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener() {
-        return new RecyclerViewTabAdapter.OnClickOnLineListener() {
-            @Override
-            public void onClickOnLineListener(String nameItem) {
-                //TODO
-            }
-        };
-    }
+//    @Override
+//    public RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener() {
+//        return new RecyclerViewTabAdapter.OnClickOnLineListener() {
+//            @Override
+//            public void onClickOnLineListener(String nameItem) {
+//                //TODO
+//            }
+//        };
+//    }
 
 }

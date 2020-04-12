@@ -39,7 +39,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import ru.bartex.tempoleader.ui.creation.NewExerciseActivity;
 import ru.bartex.tempoleader.PrefActivity;
 import ru.bartex.tempoleader.R;
-import ru.bartex.tempoleader.SetListActivity;
+import ru.bartex.tempoleader.ui.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.ui.raskladki.TabBarActivity;
 import ru.bartex.tempoleader.ui.secundomer.TimeMeterActivity;
 import ru.bartex.tempoleader.database.P;

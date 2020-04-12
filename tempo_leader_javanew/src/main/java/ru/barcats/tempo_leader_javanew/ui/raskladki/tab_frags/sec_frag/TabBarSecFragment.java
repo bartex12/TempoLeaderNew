@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
@@ -44,16 +47,5 @@ public class TabBarSecFragment extends AbstrTabFragment {
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
     }
-
-    @Override
-    public RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener() {
-        return new RecyclerViewTabAdapter.OnClickOnLineListener() {
-            @Override
-            public void onClickOnLineListener(String nameItem) {
-                //TODO у каждого фрагмента свой вариант действий
-            }
-        };
-    }
-
 
 }

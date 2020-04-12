@@ -33,13 +33,12 @@ public class RaskladkiSecStorageImpl implements RaskladkiSecStorage {
         //если в базе нет данных - пишем файл автосохранение_секундомера
         tempDBHelper.createDefaultSetIfNeed(database);
 
-        //получаем все файлы для вкладки темполидер
+        //получаем все файлы для вкладки секундомера
         data = TabFile.getArrayListFilesWhithType(database, P.TYPE_TIMEMETER);
 
-        //TODO  удалить
-        for (int i = 0; i <20 ; i++) {
-            data.add("файл " + i);
-        }
+//        for (int i = 0; i <20 ; i++) {
+//            data.add("файл " + i);
+//        }
 
         return data;
     }

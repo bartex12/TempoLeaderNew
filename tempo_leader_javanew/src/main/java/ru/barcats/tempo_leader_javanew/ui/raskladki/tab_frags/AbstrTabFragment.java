@@ -12,10 +12,13 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
+import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 
 public abstract class AbstrTabFragment extends Fragment {
@@ -24,12 +27,9 @@ public abstract class AbstrTabFragment extends Fragment {
     private int positionItem;
     private SQLiteDatabase database;
 
-    public RecyclerView recyclerView;
-    public RecyclerViewTabAdapter adapter;
-
-
-    public abstract RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener();
-
+    protected RecyclerView recyclerView;
+    private RecyclerViewTabAdapter adapter;
+    public View view;
 
     @Override
     public void onAttach(Context context) {
@@ -37,19 +37,10 @@ public abstract class AbstrTabFragment extends Fragment {
         database = new TempDBHelper(context).getWritableDatabase();
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG, "// AbstrTabFragment onCreate // " );
-//        //получаем id файла из аргументов
-//        //positionItem = getArguments().getInt(P.ARG_NUMBER_ITEM, 0);
-//        //Log.d(TAG, "AbstrTabFragment onCreate  positionItem = " + positionItem );
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_raskladki, container, false);
+        view = inflater.inflate(R.layout.fragment_raskladki, container, false);
         recyclerView = view.findViewById(R.id.recycler_rascladki);
         return view;
     }
@@ -85,6 +76,20 @@ public abstract class AbstrTabFragment extends Fragment {
         return adapter;
     }
 
-
+    private RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener() {
+        return new RecyclerViewTabAdapter.OnClickOnLineListener() {
+            @Override
+            public void onClickOnLineListener(String fileName) {
+                //TODO у каждого фрагмента свой вариант действий если через диалог
+                //передаём имя файла в пункт назначения - во фрагмент темполидера
+                Bundle bundle = new Bundle();
+                bundle.putString(P.NAME_OF_FILE, fileName);
+                bundle.putInt(P.FROM_ACTIVITY, P.TAB_BAR_ACTIVITY);  //333 - TabBarActivity
+                bundle.putInt(P.FINISH_FILE_ID, 1); // не помню
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_nav_rascladki_to_nav_tempoleader, bundle);
+            }
+        };
+    }
 
 }

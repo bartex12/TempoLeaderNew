@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 
@@ -204,16 +206,24 @@ public class TabSet {
      * и порядкового номера фрагмента для всех фрагментов одного подхода с id = rowId
      * отсортировано по COLUMN_SET_FRAG_NUMBER, иначе в Андроид 4 работает неправильно
      */
-    public static Cursor getAllSetFragments(SQLiteDatabase database, long rowId) throws SQLException {
+    public static ArrayList<DataSet> getAllSetFragments(SQLiteDatabase database, long rowId) throws SQLException {
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 new String[]{COLUMN_SET_TIME, COLUMN_SET_REPS, COLUMN_SET_FRAG_NUMBER},
                 COLUMN_SET_FILE_ID + "=" + rowId,
                 null, null, null, COLUMN_SET_FRAG_NUMBER, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
+        ArrayList<DataSet> list = new ArrayList<DataSet>(mCursor.getCount());
+        // Проходим через все строки в курсоре
+        while (mCursor.moveToNext()){
+            String time = mCursor.getString(mCursor.getColumnIndex(COLUMN_SET_TIME));
+            String reps = mCursor.getString(mCursor.getColumnIndex(COLUMN_SET_REPS));
+            String fragNumber = mCursor.getString(mCursor.getColumnIndex(COLUMN_SET_FRAG_NUMBER));
+            DataSet dataSet = new DataSet(Float.valueOf(time),Integer.valueOf(reps),
+                    Integer.valueOf(fragNumber));
+            list.add(dataSet);
         }
-        return mCursor;
+        mCursor.close();
+        return list;
     }
 
     /**

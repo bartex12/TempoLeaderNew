@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.tempoleader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +30,9 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import ru.bartex.tempoleader.ChangeTempActivity;
+import ru.bartex.tempoleader.PrefActivity;
+import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;
@@ -341,7 +344,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         //получаем интент, он есть в любом случае
         Intent intent = getIntent();
         //считываем значение FROM_ACTIVITY из интента
-        // MainActivity =111   TIME_GRAF_ACTIVITY = 222    TabBarActivity = 333
+        //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
+        //444 -DetailActivity  555 - NewExerciseActivity
         fromActivity = intent.getIntExtra(P.FROM_ACTIVITY,111);
 
         //если интент пришел от MainActivity

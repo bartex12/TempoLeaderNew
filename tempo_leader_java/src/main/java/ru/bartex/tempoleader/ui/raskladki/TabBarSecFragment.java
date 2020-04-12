@@ -33,7 +33,7 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import ru.bartex.tempoleader.R;
-import ru.bartex.tempoleader.SetListActivity;
+import ru.bartex.tempoleader.ui.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;

@@ -29,9 +29,9 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         //получаем все файлы для вкладки темполидер
         data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
 
-        for (int i = 0; i <20 ; i++) {
-            data.add("файл " + i*100);
-        }
+//        for (int i = 0; i <20 ; i++) {
+//            data.add("файл " + i*100);
+//        }
 
         return data;
     }

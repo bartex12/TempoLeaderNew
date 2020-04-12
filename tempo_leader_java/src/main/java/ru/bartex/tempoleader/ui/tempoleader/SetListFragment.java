@@ -1,4 +1,4 @@
-package ru.bartex.tempoleader;
+package ru.bartex.tempoleader.ui.tempoleader;
 
 
 import android.content.Context;
@@ -27,6 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import androidx.fragment.app.Fragment;
+import ru.bartex.tempoleader.ChangeTempActivity;
+import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
 import ru.bartex.tempoleader.database.TabSet;

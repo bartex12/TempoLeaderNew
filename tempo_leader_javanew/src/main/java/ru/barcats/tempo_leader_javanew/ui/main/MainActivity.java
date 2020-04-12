@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         toolbar = findViewById(R.id.toolbar);
+
         //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
         appBarConfiguration =
                 new AppBarConfiguration.Builder(
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         //NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
         //обработка событий нижней навигации с помощью NavigationUI
         NavigationUI.setupWithNavController(bottomNavigation, navController);
-        //обработка событий тулбара с помощью NavigationUI
+        //обработка событий тулбара - например смена заголовка - с помощью NavigationUI
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         //обработка событий меню шторки - если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -83,23 +84,21 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(
                     @NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                switch (destination.getId()){
-                   case R.id.nav_home:
-                       toolbar.setVisibility(View.VISIBLE);
-                       bottomNavigation.setVisibility(View.GONE);
-                       break;
-                       case R.id.nav_help:
-                           toolbar.setVisibility(View.GONE);
-                           bottomNavigation.setVisibility(View.GONE);
-                       break;
-                   case R.id.nav_set:
-                       toolbar.setVisibility(View.VISIBLE);
-                       bottomNavigation.setVisibility(View.GONE);
-                       break;
                    case R.id.nav_rascladki:
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.VISIBLE);
                        break;
-
+                   case R.id.nav_home:
+                   case R.id.nav_set:
+                   case R.id.nav_secundomer:
+                   case R.id.nav_tempoleader:
+                       toolbar.setVisibility(View.VISIBLE);
+                       bottomNavigation.setVisibility(View.GONE);
+                       break;
+                   case R.id.nav_help:
+                       toolbar.setVisibility(View.GONE);
+                       bottomNavigation.setVisibility(View.GONE);
+                       break;
                }
             }
         });
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                //TODO
+//
 //                Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
 //            }
 //        });

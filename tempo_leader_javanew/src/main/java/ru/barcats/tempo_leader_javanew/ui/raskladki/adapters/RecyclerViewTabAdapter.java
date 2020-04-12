@@ -17,6 +17,7 @@ public class RecyclerViewTabAdapter extends
     ArrayList<String> data;
     OnClickOnLineListener onLineListener;
 
+
     public RecyclerViewTabAdapter(ArrayList<String> data) {
         if (data != null){
             this.data = data;
@@ -42,8 +43,17 @@ public class RecyclerViewTabAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.name_of_rasckadka.setText(data.get(position));
+
+        //устанавливаем слущатель щелчков на списке
+        holder.name_of_rasckadka.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fileName = data.get(position);
+                onLineListener.onClickOnLineListener(fileName);
+            }
+        });
     }
 
     @Override

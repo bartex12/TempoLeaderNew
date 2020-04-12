@@ -47,7 +47,11 @@
         android:id="@+id/nav_rascladki"
         android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.RaskladkiMainFragment"
         android:label="@string/ListOfTimeReps"
-        tools:layout="@layout/fragment_tab_raskladki" />
+        tools:layout="@layout/fragment_tab_raskladki" >
+        <action
+            android:id="@+id/action_nav_rascladki_to_nav_tempoleader"
+            app:destination="@id/nav_tempoleader" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_share"

@@ -18,7 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.bartex.tempoleader.PrefActivity;
 import ru.bartex.tempoleader.R;
-import ru.bartex.tempoleader.SetListActivity;
+import ru.bartex.tempoleader.ui.tempoleader.SetListActivity;
 import ru.bartex.tempoleader.data.DataFile;
 import ru.bartex.tempoleader.data.DataSet;
 import ru.bartex.tempoleader.database.P;

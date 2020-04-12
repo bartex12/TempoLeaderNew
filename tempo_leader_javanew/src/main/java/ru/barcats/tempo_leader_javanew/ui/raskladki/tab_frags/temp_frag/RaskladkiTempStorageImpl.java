@@ -32,10 +32,10 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
             //получаем все файлы для вкладки темполидер
             data = TabFile.getArrayListFilesWhithType(database,  P.TYPE_TEMPOLEADER);
 
-            //TODO  удалить
-        for (int i = 0; i <20 ; i++) {
-            data.add("файл " + i*10);
-        }
+//
+//        for (int i = 0; i <20 ; i++) {
+//            data.add("файл " + i*10);
+//        }
 
         return data;
     }

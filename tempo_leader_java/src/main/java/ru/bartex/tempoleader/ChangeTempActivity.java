@@ -46,6 +46,7 @@ import ru.bartex.tempoleader.database.TabSet;
 import ru.bartex.tempoleader.database.TempDBHelper;
 import ru.bartex.tempoleader.ui.dialogs.DialogChangeTemp;
 import ru.bartex.tempoleader.ui.dialogs.DialogSaveTempFragment;
+import ru.bartex.tempoleader.ui.tempoleader.SingleFragmentActivity;
 
 public class ChangeTempActivity extends AppCompatActivity implements
         DialogChangeTemp.ChangeTempUpDownListener, DialogSaveTempFragment.SaverFragmentListener{
