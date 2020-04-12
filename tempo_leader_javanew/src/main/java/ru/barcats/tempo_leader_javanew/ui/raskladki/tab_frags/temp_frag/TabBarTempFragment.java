@@ -40,9 +40,9 @@ public class TabBarTempFragment extends AbstrTabFragment {
                         initRecycler(strings);
                     }
                 });
-
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
+
     }
 
     @Override

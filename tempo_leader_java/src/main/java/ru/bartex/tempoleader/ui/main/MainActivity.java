@@ -36,7 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 
 import androidx.drawerlayout.widget.DrawerLayout;
-import ru.bartex.tempoleader.NewExerciseActivity;
+import ru.bartex.tempoleader.ui.creation.NewExerciseActivity;
 import ru.bartex.tempoleader.PrefActivity;
 import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.SetListActivity;

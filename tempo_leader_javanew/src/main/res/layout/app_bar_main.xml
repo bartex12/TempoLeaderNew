@@ -11,18 +11,19 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+        <!--        тулбар  -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
 
+<!--    нижняя навигация-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -32,3 +33,17 @@
         app:menu="@menu/bottom_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+<!--app:layout_scrollFlags="scroll|enterAlways"-->
+<!--    android:layout_gravity="end|bottom"-->
+<!--    app:layout_collapseMode="pin"-->
+
+<!--<com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--android:id="@+id/collapsing_toolbar_layout"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--app:contentScrim="?attr/colorPrimary"-->
+<!--app:expandedTitleGravity="top"-->
+<!--app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">-->
+
+<!-- </com.google.android.material.appbar.CollapsingToolbarLayout>-->

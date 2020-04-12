@@ -29,43 +29,18 @@ public class RaskladkiSecStorageImpl implements RaskladkiSecStorage {
 
     @Override
     public ArrayList<String> getRaskladkiList() {
-        //количество файлов в TabFile
-        int count = TabFile.getFilesCount(database);
-        Log.d(TAG, "RaskladkiSecStorageImpl FilesCount = " + count);
 
-        if (count<=0){
-            //получаем дату и время в нужном для базы данных формате
-            String dateFormat = tempDBHelper.getDateString();
-            String timeFormat = tempDBHelper.getTimeString();
+        //если в базе нет данных - пишем файл автосохранение_секундомера
+        tempDBHelper.createDefaultSetIfNeed(database);
 
-            //создаём экземпляр класса DataFile в конструкторе
-            DataFile file1 = new DataFile(P.FILENAME_OTSECHKI_SEC,
-                    dateFormat, timeFormat, "Подтягивание",
-                    "Подтягивание на перекладине", P.TYPE_TIMEMETER, 6);
-            //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
-            long file1_id = TabFile.addFile(database, file1);
+        //получаем все файлы для вкладки темполидер
+        data = TabFile.getArrayListFilesWhithType(database, P.TYPE_TIMEMETER);
 
-            //создаём экземпляр класса DataSet в конструкторе
-            DataSet set1 = new DataSet(2f, 1, 1);
-            //добавляем запись в таблицу TabSet, используя данные DataSet
-            TabSet.addSet(database, set1, file1_id);
-            // повторяем для всех фрагментов подхода
-            DataSet set2 = new DataSet(2.5f, 1, 2);
-            TabSet.addSet(database, set2, file1_id);
-            DataSet set3 = new DataSet(3f, 1, 3);
-            TabSet.addSet(database, set3, file1_id);
-            DataSet set4 = new DataSet(3.5f, 1, 4);
-            TabSet.addSet(database, set4, file1_id);
-
-            data.add(file1.getFileName());
-
-        }else {
-            data = TabFile.getArrayListFilesFromTimemeter(database);
-
-            data.add("Первый");
-            data.add("Второй");
-            data.add("Третий");
+        //TODO  удалить
+        for (int i = 0; i <20 ; i++) {
+            data.add("файл " + i);
         }
+
         return data;
     }
 }

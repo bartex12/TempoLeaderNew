@@ -43,62 +43,35 @@ public class TempDBHelper extends SQLiteOpenHelper {
     //***********************************************
 
     // Если записей в базе нет, вносим запись
-    public void createDefaultSetIfNeed() {
+    public void createDefaultSetIfNeed(SQLiteDatabase database) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        int count = TabFile.getFilesCount(database);
+        Log.d(TAG, "MyDatabaseHelper.createDefaultPersonIfNeed ... count = " + count);
 
-        int count = TabFile.getFilesCount(db);
-        if (count == 0) {
-
+        if (count <= 0) {
+            DataFile file;
+            long file_id;
             //получаем дату и время в нужном для базы данных формате
             String dateFormat = getDateString();
             String timeFormat = getTimeString();
 
-            //создаём экземпляр класса DataFile в конструкторе
-            DataFile file1 = new DataFile(P.FILENAME_OTSECHKI_SEC,
-                    dateFormat, timeFormat, "Подтягивание",
-                    "Подтягивание на перекладине", P.TYPE_TIMEMETER, 6);
+                file = new DataFile(P.FILENAME_OTSECHKI_SEC,
+                        dateFormat, timeFormat, "Подтягивание",
+                        "Подтягивание на перекладине", P.TYPE_TIMEMETER, 6);
 
-            //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
-            long file1_id = TabFile.addFile(db, file1);
+                file_id = TabFile.addFile(database, file);
 
-            //создаём экземпляр класса DataSet в конструкторе
-            DataSet set1 = new DataSet(2f, 1, 1);
-            //добавляем запись в таблицу TabSet, используя данные DataSet
-            TabSet.addSet(db, set1, file1_id);
-            // повторяем для всех фрагментов подхода
-            DataSet set2 = new DataSet(2.5f, 1, 2);
-            TabSet.addSet(db, set2, file1_id);
-            DataSet set3 = new DataSet(3f, 1, 3);
-            TabSet.addSet(db, set3, file1_id);
-            DataSet set4 = new DataSet(3.5f, 1, 4);
-            TabSet.addSet(db, set4, file1_id);
-
-            Log.d(TAG, "MyDatabaseHelper.createDefaultPersonIfNeed ... count = " +
-                    TabFile.getFilesCount(db));
-
-            //создаём экземпляр класса DataFile в конструкторе
-            DataFile file2 = new DataFile(P.FILENAME_OTSECHKI_TEMP,
-                    dateFormat, timeFormat, "Пистолетики",
-                    "Полиатлон", P.TYPE_TEMPOLEADER, 6);
-
-            //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
-            long file2_id = TabFile.addFile(db, file2);
-
-            //создаём экземпляр класса DataSet в конструкторе
-            DataSet set11 = new DataSet(2.2f, 3, 1);
-            //добавляем запись в таблицу TabSet, используя данные DataSet
-            TabSet.addSet(db, set11, file2_id);
-            // повторяем для всех фрагментов подхода
-            DataSet set22 = new DataSet(2.3f, 3, 2);
-            TabSet.addSet(db, set22, file2_id);
-            DataSet set33 = new DataSet(2.5f, 4, 3);
-            TabSet.addSet(db, set33, file2_id);
-            DataSet set44 = new DataSet(2.7f, 2, 4);
-            TabSet.addSet(db, set44, file2_id);
-
-            Log.d(TAG, "MyDatabaseHelper.createDefaultPersonIfNeed ... count = " +
-                    TabFile.getFilesCount(db));
+                //создаём экземпляр класса DataSet в конструкторе
+                DataSet set1 = new DataSet(2f, 1, 1);
+                //добавляем запись в таблицу TabSet, используя данные DataSet
+                TabSet.addSet(database, set1, file_id);
+                // повторяем для всех фрагментов подхода
+                DataSet set2 = new DataSet(2.5f, 1, 2);
+                TabSet.addSet(database, set2, file_id);
+                DataSet set3 = new DataSet(3f, 1, 3);
+                TabSet.addSet(database, set3, file_id);
+                DataSet set4 = new DataSet(3.5f, 1, 4);
+                TabSet.addSet(database, set4, file_id);
         }
     }
 
@@ -117,17 +90,6 @@ public class TempDBHelper extends SQLiteOpenHelper {
                 calendar.get(Calendar.MINUTE),
                 calendar.get(Calendar.SECOND));
     }
-
-//    //получаем количество файлов (сохранённых подходов) в базе
-//    public int getFilesCount() {
-//        Log.i(TAG, "TempDBHelper.getFilesCount ... ");
-//        String countQuery = "SELECT  * FROM " + TabFile.TABLE_NAME;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(countQuery, null);
-//        int count = cursor.getCount();
-//        cursor.close();
-//        return count;
-//    }
 
         //***********************************
 

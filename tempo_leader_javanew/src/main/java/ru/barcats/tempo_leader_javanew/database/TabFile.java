@@ -202,24 +202,31 @@ public class TabFile {
 
     }
 
-    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static Cursor getAllFilesFromTimemeter(SQLiteDatabase database) {
+//    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
+//    public static ArrayList<String> getArrayListFilesFromTimemeter(SQLiteDatabase database)  {
+//
+//        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
+//                " where " + COLUMN_TYPE_FROM + " = ? ";
+//        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
+//
+//        ArrayList<String> list = new ArrayList<String>(mCursor.getCount());
+//        // Проходим через все строки в курсоре
+//        while (mCursor.moveToNext()){
+//            String name  = mCursor.getString(mCursor.getColumnIndex(COLUMN_FILE_NAME));
+//            list.add(name);
+//            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
+//        }
+//        mCursor.close();
+//        return list;
+//    }
+
+    //получить названия всех файлов с типом файла type_from
+    public static ArrayList<String> getArrayListFilesWhithType(
+            SQLiteDatabase database, String type_from)  {
 
         String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
                 " where " + COLUMN_TYPE_FROM + " = ? ";
-        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-
-    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static ArrayList<String> getArrayListFilesFromTimemeter(SQLiteDatabase database)  {
-
-        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
-                " where " + COLUMN_TYPE_FROM + " = ? ";
-        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TIMEMETER});
+        Cursor mCursor = database.rawQuery(query, new String[]{ type_from});
 
         ArrayList<String> list = new ArrayList<String>(mCursor.getCount());
         // Проходим через все строки в курсоре
@@ -230,36 +237,6 @@ public class TabFile {
         }
         mCursor.close();
         return list;
-    }
-
-    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static ArrayList<String> getArrayListFilesFromTempoleader(SQLiteDatabase database)  {
-
-        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
-                " where " + COLUMN_TYPE_FROM + " = ? ";
-        Cursor mCursor = database.rawQuery(query, new String[]{P.TYPE_TEMPOLEADER});
-
-        ArrayList<String> list = new ArrayList<String>(mCursor.getCount());
-        // Проходим через все строки в курсоре
-        while (mCursor.moveToNext()){
-            String name  = mCursor.getString(mCursor.getColumnIndex(COLUMN_FILE_NAME));
-            list.add(name);
-            //Log.i(TAG, "SmetaOpenHelper.getArrayTypeId position = " + position);
-        }
-        mCursor.close();
-        return list;
-    }
-
-    //получить названия всех файлов с типом файла P.TYPE_TIMEMETER
-    public static Cursor getAllFilesWhithType(SQLiteDatabase database, String type) throws SQLException {
-
-        String query = "select " + _ID + " , " + COLUMN_FILE_NAME  + " from " + TABLE_NAME +
-                " where " + COLUMN_TYPE_FROM + " = ? ";
-        Cursor mCursor = database.rawQuery(query, new String[]{type});
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
     }
 
     //получаем количество файлов (сохранённых подходов) в базе

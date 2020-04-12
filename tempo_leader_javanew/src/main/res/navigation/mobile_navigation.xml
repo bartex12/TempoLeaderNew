@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_rascladki"
             app:destination="@id/nav_rascladki" />
+        <action
+            android:id="@+id/action_nav_home_to_newExerciseFragment"
+            app:destination="@id/new_exercise" />
     </fragment>
 
     <fragment
@@ -44,7 +47,7 @@
         android:id="@+id/nav_rascladki"
         android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.RaskladkiMainFragment"
         android:label="@string/ListOfTimeReps"
-        tools:layout="@layout/activity_raskladki" />
+        tools:layout="@layout/fragment_tab_raskladki" />
 
     <fragment
         android:id="@+id/nav_share"
@@ -79,5 +82,14 @@
         android:id="@+id/raskladkiActivity"
         android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.RaskladkiMainFragment"
         android:label="RaskladkiActivity" />
+    <fragment
+        android:id="@+id/new_exercise"
+        android:name="ru.barcats.tempo_leader_javanew.ui.craeation.NewExerciseFragment"
+        android:label="@string/create_raskl"
+        tools:layout="@layout/frafment_new_exercise" >
+        <action
+            android:id="@+id/action_newExerciseFragment_to_nav_rascladki"
+            app:destination="@id/nav_rascladki" />
+    </fragment>
 
 </navigation>

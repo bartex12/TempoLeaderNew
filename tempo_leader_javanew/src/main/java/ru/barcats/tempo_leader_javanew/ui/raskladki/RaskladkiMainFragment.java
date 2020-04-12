@@ -17,20 +17,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 public class RaskladkiMainFragment extends Fragment {
 
     static String TAG = "33333";
     private SectionsPagerAdapter pagerAdapter;
-    public ViewPager viewPager;
+    private ViewPager viewPager;
     private Fragment secFrag, tempFrag, likeFrag;
     int currentItem;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_raskladki,container, false);
+        View view = inflater.inflate(R.layout.fragment_tab_raskladki,container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //создаём фрагменты
         secFrag = TabBarSecFragment.newInstance(0);
         tempFrag = TabBarTempFragment.newInstance(1);
@@ -50,13 +58,39 @@ public class RaskladkiMainFragment extends Fragment {
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);
         tabs.setupWithViewPager(viewPager);
 
-        return view;
+        //initFab(view);
+
     }
 
-//    @Override
+    private void initFab(View view) {
+        FloatingActionButton fab = view.findViewById(R.id.fab_rascladki);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentItem = viewPager.getCurrentItem();
+                switch (currentItem){
+                    case 0:
+                     //TODO
+                        Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        //TODO
+                        Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        //TODO
+                        Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+    }
+
+
+    //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_raskladki);
+//        setContentView(R.layout.fragment_tab_raskladki);
 //
 //
 //        //создаём фрагменты

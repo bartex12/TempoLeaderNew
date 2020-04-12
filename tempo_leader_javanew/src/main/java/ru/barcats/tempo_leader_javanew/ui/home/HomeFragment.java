@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
@@ -55,6 +58,17 @@ public class HomeFragment extends Fragment {
                         showMainList(dataHomes);
                     }
                 });
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_rascladki);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+               // Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_nav_home_to_newExerciseFragment);
+            }
+        });
     }
 
     private void showMainList(ArrayList<DataHome> dataHomes) {

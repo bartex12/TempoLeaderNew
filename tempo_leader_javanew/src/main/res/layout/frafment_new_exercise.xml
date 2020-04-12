@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80cff2da"
-    tools:context=".ui.creation.NewExerciseActivity">
+    tools:context="ru.barcats.tempo_leader_javanew.ui.main.MainActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/linearLayout4"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  app:layout_constraintEnd_toEndOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintTop_toTopOf="parent"
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
 
         <LinearLayout
@@ -37,19 +37,20 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:text="@string/FileName"
-                android:textSize="20dp"/>
+                android:textSize="20sp"
+                tools:ignore="RtlHardcoded" />
 
             <EditText
                 android:id="@+id/etFileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:width="70dp"
                 android:gravity="left"
                 android:hint="@string/FileNameInput"
                 android:inputType="text"
                 android:textColor="#0f1af3"
-                android:textSize="25dp"/>
+                android:textSize="25sp"/>
 
 
         </LinearLayout>
@@ -66,7 +67,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:text="@string/DelayOfStart"
-                android:textSize="20dp"/>
+                android:textSize="20sp"
+                tools:ignore="RtlHardcoded" />
 
             <EditText
                 android:id="@+id/etDelay"
@@ -79,7 +81,7 @@
                 android:inputType="number"
                 android:text="@string/DelayValue"
                 android:textColor="#0f1af3"
-                android:textSize="25dp"/>
+                android:textSize="25sp"/>
 
         </LinearLayout>
 
@@ -90,7 +92,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="RtlHardcoded">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/Fragment"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/mark100"
@@ -112,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/OfSet"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/mark1"
@@ -123,7 +126,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="@string/FragmentOfSet1"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/mark2"
@@ -134,7 +137,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="@string/FragmentOfSet2"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/mark3"
@@ -145,7 +148,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="@string/FragmentOfSet3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/mark4"
@@ -156,7 +159,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="@string/FragmentOfSet4"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/mark5"
@@ -167,7 +170,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:text="@string/FragmentOfSet5"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
 
             </LinearLayout>
@@ -185,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/lebelTime"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/tvTime2"
@@ -193,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/Sec"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/time1"
@@ -205,7 +208,7 @@
                     android:inputType="numberDecimal"
                     android:text="@string/timeValue_item1"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/time2"
@@ -217,7 +220,7 @@
                     android:inputType="numberDecimal"
                     android:text="@string/timeValue_item2"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/time3"
@@ -229,7 +232,7 @@
                     android:inputType="numberDecimal"
                     android:text="@string/timeValue_item3"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/time4"
@@ -240,7 +243,7 @@
                     android:inputType="numberDecimal"
                     android:text="@string/timeValue_item4"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/time5"
@@ -251,7 +254,7 @@
                     android:inputType="numberDecimal"
                     android:text="@string/timeValue_item5"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -269,7 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/lebelCount"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/tvReps2"
@@ -277,7 +280,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/lebelCountN"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/reps1"
@@ -288,7 +291,7 @@
                     android:inputType="number"
                     android:text="@string/repsValue_item1"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/reps2"
@@ -300,7 +303,7 @@
                     android:numeric="integer"
                     android:text="@string/repsValue_item2"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/reps3"
@@ -311,7 +314,7 @@
                     android:inputType="number"
                     android:text="@string/repsValue_item3"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/reps4"
@@ -322,7 +325,7 @@
                     android:inputType="number"
                     android:text="@string/repsValue_item4"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <EditText
                     android:id="@+id/reps5"
@@ -333,7 +336,7 @@
                     android:inputType="number"
                     android:text="@string/repsValue_item5"
                     android:textColor="#0f1af3"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -358,4 +361,4 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4"/>
 
 
-</androidx.constraintlayout.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

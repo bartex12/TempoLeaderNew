@@ -2,7 +2,10 @@ package ru.barcats.tempo_leader_javanew.ui.main;
 
 
 import android.os.Bundle;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Toolbar toolbar;
     private  BottomNavigationView bottomNavigation;
+   // private CollapsingToolbarLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,29 +53,35 @@ public class MainActivity extends AppCompatActivity {
         // правильно инициализируется и получит настройки по умолчанию
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
+        //layout = findViewById(R.id.collapsing_toolbar_layout);
         drawerLayout = findViewById(R.id.drawer_layout);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         toolbar = findViewById(R.id.toolbar);
-
         //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
         appBarConfiguration =
                 new AppBarConfiguration.Builder(
                         navController.getGraph())
                         .setDrawerLayout(drawerLayout)
                         .build();
+
+        //обработка событий CollapsingToolbarLayout с помощью NavigationUI
+        //NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
         //обработка событий нижней навигации с помощью NavigationUI
         NavigationUI.setupWithNavController(bottomNavigation, navController);
         //обработка событий тулбара с помощью NavigationUI
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         //обработка событий меню шторки - если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
+
         //добавляем слушатель изменений пункта назначения в NavController,
         //в методе обратного вызова проводим манипуляции с bottomNavigation и toolbar
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+        navController.addOnDestinationChangedListener(
+                new NavController.OnDestinationChangedListener() {
             @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+            public void onDestinationChanged(
+                    @NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                switch (destination.getId()){
                    case R.id.nav_home:
                        toolbar.setVisibility(View.VISIBLE);
@@ -85,10 +95,32 @@ public class MainActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
                        break;
+                   case R.id.nav_rascladki:
+                       toolbar.setVisibility(View.VISIBLE);
+                       bottomNavigation.setVisibility(View.VISIBLE);
+                       break;
+
                }
             }
         });
+
     }
+
+
+
+
+
+//    private void initFab(View view) {
+//        FloatingActionButton fab = view.findViewById(R.id.fab_rascladki);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //TODO
+//                Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
 
     @Override
     public void onBackPressed() {

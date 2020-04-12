@@ -50,7 +50,7 @@
             android:name="ru.bartex.tempoleader.ChangeTempActivity"
             android:label="@string/change_name">
         </activity>
-        <activity android:name="ru.bartex.tempoleader.NewExerciseActivity"
+        <activity android:name="ru.bartex.tempoleader.ui.creation.NewExerciseActivity"
                   android:label="@string/new_name">
         </activity>
     </application>
