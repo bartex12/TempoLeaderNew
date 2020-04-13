@@ -53,7 +53,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
     static String TAG = "33333";
     private SQLiteDatabase database;
-    LinearLayout mNameLayout; // Layout для имени файла - на нём щелчок для вызова списка имён
 
     private Button mStartButton;
     private Button mStopButton;
@@ -109,8 +108,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
     private int  timeOfDelay = 0; //задержка в секундах
-
-    TempDBHelper mTempDBHelper = new TempDBHelper(this);
     //имя файла с раскладкой
     private String finishFileName;
     //id файла, загруженного в темполидер
@@ -420,7 +417,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
     }
     //**********************   конец onCreate    ************************//
 
-    @Override
+       @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "SingleFragmentActivity  onResume ");

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataHome;
+import ru.barcats.tempo_leader_javanew.model.P;
 
 public class HomeFragment extends Fragment {
 

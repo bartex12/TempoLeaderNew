@@ -1,6 +1,8 @@
 package ru.barcats.tempo_leader_javanew.ui.main;
 
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -10,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -120,6 +123,25 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //    }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //включаем звук
+        AudioManager audioManager =(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+    }
+
+//    //отслеживание нажатия кнопки HOME
+//    @Override
+//    public void onUserLeaveHint() {
+//        Log.d(TAG, "SingleFragmentActivity - onUserLeaveHint");
+//        //включаем звук
+//        AudioManager audioManager =(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+//        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+//
+//        super.onUserLeaveHint();
+//    }
 
     @Override
     public void onBackPressed() {

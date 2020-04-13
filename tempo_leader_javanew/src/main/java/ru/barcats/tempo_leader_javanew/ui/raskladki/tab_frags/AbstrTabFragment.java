@@ -85,7 +85,6 @@ public abstract class AbstrTabFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(P.NAME_OF_FILE, fileName);
                 bundle.putInt(P.FROM_ACTIVITY, P.TAB_BAR_ACTIVITY);  //333 - TabBarActivity
-                bundle.putInt(P.FINISH_FILE_ID, 1); // не помню
                 Navigation.findNavController(view)
                         .navigate(R.id.action_nav_rascladki_to_nav_tempoleader, bundle);
             }

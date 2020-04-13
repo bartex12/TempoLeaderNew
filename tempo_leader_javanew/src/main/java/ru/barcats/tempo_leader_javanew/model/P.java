@@ -17,7 +17,7 @@ public class P {
     //идентификатор интента : Откуда пришёл?
     public static final String FROM_ACTIVITY = "ru.bartex.p010_train_from_activity";
     //пришёл от MainActivity
-    public static final int MAIN_ACTIVITY = 111;
+    public static final int HOME_ACTIVITY = 111;
     //пришёл от TimeGrafactivity
     public static final int TIME_GRAF_ACTIVITY = 222;
     //пришёл от TabBarActivity
