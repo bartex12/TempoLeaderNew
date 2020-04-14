@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +45,9 @@ import static android.content.Context.MODE_PRIVATE;
 public class TempoleaderFragment extends Fragment {
 
     public static final String TAG ="33333";
-    private TempoleaderViewModel slideshowViewModel;
+    private TempoleaderViewModel dataSetViewModel;
+    private TempoleaderViewModel delayViewModel;
+
     private SQLiteDatabase database;
 
     private Button mStartButton;
@@ -61,9 +65,9 @@ public class TempoleaderFragment extends Fragment {
     private TextView mtextViewCountDown;
     private TextView mNameOfFile;
 
-   // private Timer mTimer;
+    private Timer mTimer;
     private Timer mTimerRest;
-    //private TimerTask mTimerTask;
+    private TimerTask mTimerTask;
     private ToneGenerator mToneGenerator;
 
     private float countMilliSecond =1000; //колич миллисекунд, получаемое из mEditTextTime
@@ -85,6 +89,7 @@ public class TempoleaderFragment extends Fragment {
     private int mCountFragment = 0;  //номер фрагмента подхода
     private int mTotalCountFragment = 0;  //количество фрагментов в подходе
 
+    private boolean delayOn = false; //признак начала задержки
     private boolean workOn = false; //признак начала работы
     private boolean restOn = false; //признак начала отдыха
     private boolean end = false; //признак окончания подхода
@@ -99,46 +104,17 @@ public class TempoleaderFragment extends Fragment {
     boolean sound = true; // включение / выключение звука
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
-    private int  timeOfDelay = 0; //задержка в секундах
+    private int  timeOfDelay = 6; //задержка в секундах
     //имя файла с раскладкой
     private String finishFileName;
     //id файла, загруженного в темполидер
     long fileId;
-    //количество фрагментов подхода
-    int countOfSet ;
-
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tempoleader, container, false);
-    }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "TempoleaderFragment onViewCreated.onClick");
-
-        database = new TempDBHelper(getActivity()).getWritableDatabase();
-        //разрешить только портретную ориентацию экрана
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        //находим вьюхи
-        initViews(view);
-
-        //обработка нажатия на кнопку Задержка
-        pressDelayButton();
-        //обработка нажатия на кнопку Старт
-        pressStartButton(view);
-        //обработка нажатия на кнопку Стоп
-        onStopButton();
-        //обработка нажатия на кнопку Сброс
-        onResetButton();
-        //выставляем доступность кнопок
-        buttonsEnable (true,false,false);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //************** Получение интента/ аргументов  с данными *************
         // когда грузим с главного экрана или со шторки, аргументы = null
-       //TODO заменить на finishFileName
         if (getArguments() != null) {
             Log.d(TAG, "** TempoleaderFragment onViewCreated " +
                     " NAME_OF_FILE = " + getArguments().getString(P.NAME_OF_FILE) +
@@ -158,7 +134,7 @@ public class TempoleaderFragment extends Fragment {
         Log.d(TAG, " @@@TempoleaderFragment fromActivity =  " +
                 fromActivity +" mNameOfFile = " + finishFileName);
         //если интент пришел от TimeGrafActivity, он принёс с собой  отсечеки в файле
-       if (fromActivity == 222){
+        if (fromActivity == 222){
             //TODO раскоментировать
 //            Log.d(TAG, " SingleFragmentActivity fromActivity =  " + fromActivity);
 //            //получаем имя файла из интента
@@ -176,17 +152,46 @@ public class TempoleaderFragment extends Fragment {
 //            timeOfDelay = TabFile.getFileDelayFromTabFile(database, finishFileName);
 //            mDelayButton.setText(String.valueOf(timeOfDelay));
         }else Log.d(TAG, " intentTransfer = null ");
+        //для фрагментов требуется так разрешить появление  меню
+        setHasOptionsMenu(true);
+    }
 
-        //получаем id файла
-        fileId = TabFile.getIdFromFileName(database, finishFileName);
-        //количество фрагментов подхода
-        countOfSet =TabSet.getSetFragmentsCount(database, fileId);
-        Log.d(TAG, " getSetFragmentsCount =  " + countOfSet);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_tempoleader, container, false);
+    }
 
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(TempoleaderViewModel.class);
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "TempoleaderFragment onViewCreated.onClick");
 
-        slideshowViewModel.loadDataSet(finishFileName)
+        //получаем базу данных
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
+        //разрешить только портретную ориентацию экрана
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //получаем значения точности и звека из настроек
+        getPrefSettings();
+        //находим вьюхи
+        initViews(view);
+        //обработка нажатия на кнопку Задержка
+        pressDelayButton();
+        //обработка нажатия на кнопку Старт
+        pressStartButton(view);
+        //обработка нажатия на кнопку Стоп
+        pressStopButton();
+        //обработка нажатия на кнопку Сброс
+        pressResetButton();
+        //выставляем доступность кнопок
+        buttonsEnable (true,false,false);
+
+        //получаем  ViewModel для TempoleaderFragment
+        dataSetViewModel =
+                ViewModelProviders.of(this).get("loadDataSet", TempoleaderViewModel.class);
+        delayViewModel =
+                ViewModelProviders.of(this).get("loadDelay", TempoleaderViewModel.class);
+
+        dataSetViewModel.loadDataSet(finishFileName)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
@@ -197,6 +202,71 @@ public class TempoleaderFragment extends Fragment {
             }
         });
        }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "TempoleaderFragment  onResume ");
+
+        //включаем/выключаем звук в зависимости от состояния чекбокса в PrefActivity
+        AudioManager audioManager;
+        if(sound){
+            audioManager =(AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+        }else{
+            audioManager =    (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+        }
+
+        //выводим имя файла на экран
+        mNameOfFile.setText(finishFileName);
+
+        //получаем id  файла с раскладкой по его имени finishFileName из интента
+        fileId = TabFile.getIdFromFileName(database, finishFileName);
+
+        Log.d(TAG, "fileId  = " + fileId);
+        //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
+        //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
+        mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
+
+        //посчитаем общее врямя выполнения подхода в секундах
+        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
+        Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
+
+        //посчитаем общее количество повторений в подходе
+        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
+        Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps + " fileId = " + fileId);
+
+        //покажем общее время подхода и общее число повторений в подходе
+        showTotalValues(mTimeOfSet,mTotalReps, mKvant);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "TempoleaderFragment - onDestroy");
+        //записываем последнее имя файла на экране в преференсис активности
+        shp = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor edit = shp.edit();
+        edit.putString(P.KEY_FILENAME, finishFileName);
+        edit.putInt(P.KEY_DELAY, timeOfDelay);
+        edit.apply();
+
+        database.close();
+        //отключаем таймер
+        if (mTimer!=null)mTimer.cancel();
+    }
+
+    private void getPrefSettings() {
+        //получаем настройки из активности настроек
+        prefSetting = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //получаем из файла настроек количество знаков после запятой
+        accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
+        Log.d(TAG,"TempoleaderFragment onResume accurancy = " + accurancy);
+        //получаем из файла настроек наличие звука
+        sound = prefSetting.getBoolean("cbSound",true);
+        Log.d(TAG,"TempoleaderFragment onResume sound = " + sound);
+    }
 
     private void initViews(@NonNull View view) {
         //текстовая метка  для названия файла
@@ -242,85 +312,16 @@ public class TempoleaderFragment extends Fragment {
         });
     }
 
-    private void onResetButton() {
-        mResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Pressed ResetButton");
-                //TODO if (mTimer!=null)mTimer.cancel()
-                //if (mTimer!=null)mTimer.cancel();
-                mCurrentRep = 0;
-                mCurrentTotalReps = 0;
-                mTotalKvant = 0;
-                mCurrentDelay = 0;  //устанавливаем текущее время задержки в 0
-                mTotalTime = 0;
-                mTotalReps = 0;
-                mCountFragment = 0;
-                mCurrentReps.setText("");
-                mCurrentTime.setText("");
-                mProgressBarTime.setProgress(100);
-                //mProgressBarTotal.setProgress(100);
-                //выставляем доступность кнопок
-                buttonsEnable (true,false,false);
-                mtextViewCountDown.setText("");
-                //признак начала работы
-                workOn = false;
-                //признак окончания подхода в Нет
-                end = false;
-                restOn = false; //признак начала отдыха
-                mTimeRestCurrent = 0; //текущее время отдыха
-                mTextViewDelay.setText(R.string.textViewDelay); //задержка,сек
-                mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
-                mtextViewCountDown.setTextColor(Color.RED);
-                mtextViewCountDown.setText(String.valueOf(timeOfDelay));// величина задержки из поля timeOfDelay
-
-                //устанавливаем цвет маркера фрагмента подхода в исходный цвет, обновляя адаптер
-               // changeMarkColor(R.id.fragment_container, mCountFragment, end);
-                start = false;
-                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара
-                //getActivity().invalidateOptionsMenu();
-            }
-        });
-    }
-
-    private void onStopButton() {
-        mStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Pressed StopButton");
-                //TODO if (mTimer!=null)mTimer.cancel()
-                //if (mTimer!=null)mTimer.cancel();
-                //выставляем доступность кнопок
-                buttonsEnable (true,false,true);
-                mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 500);
-                //выставляем флаг нажатия на Старт = нет
-                start = false;
-                restOn = true; //признак начала отдыха
-                mTimeRestCurrent = 0; //обнуляем текущее время отдыха
-                //фиксируем момент начала отдыха
-                mTimeRestStart = System.currentTimeMillis();
-                //делаем имя файла доступным для щелчка
-                // mNameLayout.setEnabled(true);
-                //делаем изменение задержки доступным
-                mDelayButton.setEnabled(true);
-                mTextViewRest.setText(R.string.textViewRestTime);  //Время отдыха, сек
-
-                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара если стоп
-                //invalidateOptionsMenu();
-            }
-        });
-    }
 
     private void pressStartButton(@NonNull View view) {
 
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
                 Log.d(TAG, " mStartButton.onClick");
-               // if (mTimer!=null)mTimer.cancel();
-               // mTimer =new Timer();
-                //mTimerTask = new MyTimerTask();
+                if (mTimer!=null)mTimer.cancel();
+                mTimer =new Timer();
+                mTimerTask = new MyTimerTask();
                 mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
 
                 //Выполняем начальные установки параметров, которые могли измениться
@@ -354,21 +355,29 @@ public class TempoleaderFragment extends Fragment {
                 //Покажем таймер задержки
                 mtextViewCountDown.setText(String.valueOf(timeOfDelay));
 
-                //Выставляем флаг "работа"
-                workOn = false;
-
-                //Выставляем флаг конец работы - нет
-                end = false;
-
+                delayOn = true;  //Выставляем флаг "задержка"
+                workOn = false; //Выставляем флаг "работа"
                 restOn = false; //признак начала отдыха
-                mTimeRestCurrent = 0; //текущее время отдыха
+                end = false;  //Выставляем флаг конец работы - нет
 
+                mTimeRestCurrent = 0; //текущее время отдыха
                 //играем мелодию начала подхода  с задержкой
                 mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 200);
 
-                //TODO запускаем TimerTask на выполнение с периодом mKvant
                 //запускаем TimerTask на выполнение с периодом mKvant
-                //mTimer.scheduleAtFixedRate(mTimerTask, mKvant,mKvant);
+                mTimer.scheduleAtFixedRate(mTimerTask, mKvant,mKvant);
+
+//                //*********************
+//                //запрашиваем задержку у delayViewModel
+//                delayViewModel.getDelay(countMillisDelay).observe(getViewLifecycleOwner(),
+//                        new Observer<Float>() {
+//                            @Override
+//                            public void onChanged(Float delay) {
+//                                countMillisDelay = delay;
+//                                Log.d(TAG, "delayViewModel countMillisDelay = " + delay);
+//                            }
+//                        });
+//                //*****************************
 
                 //выставляем доступность кнопок
                 buttonsEnable (false,true,false);
@@ -382,9 +391,96 @@ public class TempoleaderFragment extends Fragment {
                 mTextViewDelay.setText(R.string.textViewDelay); //Задержка, сек
                 mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
 
+                //TODO если будет меню тулбара
                 //вызываем onPrepareOptionsMenu чтобы скрыть элементы тулбара пока старт
-                getActivity().invalidateOptionsMenu();
+                //getActivity().invalidateOptionsMenu();
+
+            }
+        });
+    }
+
+    private void pressStopButton() {
+        mStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Pressed StopButton");
+                if (mTimer!=null)mTimer.cancel();
+                //выставляем доступность кнопок
+                buttonsEnable (true,false,true);
+                mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 500);
+
+                mTimeRestCurrent = 0; //обнуляем текущее время отдыха
+                //фиксируем момент начала отдыха
+                mTimeRestStart = System.currentTimeMillis();
+                //делаем имя файла доступным для щелчка
+                // mNameLayout.setEnabled(true);
+                //делаем изменение задержки доступным
+                mDelayButton.setEnabled(true);
+
+                if (delayOn &&(!workOn)){
+                    mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
+                }else if(workOn&&(!delayOn)) {
+                    Log.d(TAG, "Pressed StopButton workOn = " + workOn);
+                    mTextViewRest.setText(""); //До старта, сек
+                    mtextViewCountDown.setTextColor(Color.BLUE);
+                    mtextViewCountDown.setText(getResources().getString(R.string.stop));
+                }else {
+                    mTextViewRest.setText(R.string.textViewRestTime);  //Время отдыха, сек
+                }
+
+                Log.d(TAG, "Pressed StopButton workOn = " + workOn);
+
+                delayOn = false; //Выставляем флаг "задержка"
+                start = false;  //выставляем флаг нажатия на Старт = нет
+                workOn = false; //Выставляем флаг "работа"
+                restOn = true; //признак начала отдыха
+
+                //TODO если будет меню тулбара
+                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара если стоп
                 //invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void  pressResetButton() {
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Pressed ResetButton");
+                if (mTimer!=null)mTimer.cancel();
+                mCurrentRep = 0;
+                mCurrentTotalReps = 0;
+                mTotalKvant = 0;
+                mCurrentDelay = 0;  //устанавливаем текущее время задержки в 0
+                mTotalTime = 0;
+                mTotalReps = 0;
+                mCountFragment = 0;
+                mCurrentReps.setText("");
+                mCurrentTime.setText("");
+                mProgressBarTime.setProgress(100);
+                //mProgressBarTotal.setProgress(100);
+                //выставляем доступность кнопок
+                buttonsEnable (true,false,false);
+                mtextViewCountDown.setText("");
+
+                delayOn = false; //Выставляем флаг "задержка"
+                workOn = false;  //признак начала работы
+                restOn = false; //признак начала отдыха
+                end = false;  //признак окончания подхода в Нет
+
+                mTimeRestCurrent = 0; //текущее время отдыха
+                mTextViewDelay.setText(R.string.textViewDelay); //задержка,сек
+                mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
+                mtextViewCountDown.setTextColor(Color.RED);
+                mtextViewCountDown.setText(String.valueOf(timeOfDelay));// величина задержки из поля timeOfDelay
+
+                //TODO через адаптер
+                //устанавливаем цвет маркера фрагмента подхода в исходный цвет, обновляя адаптер
+                // changeMarkColor(R.id.fragment_container, mCountFragment, end);
+                start = false;
+                //TODO если будет меню тулбара
+                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара
+                //getActivity().invalidateOptionsMenu();
             }
         });
     }
@@ -393,68 +489,11 @@ public class TempoleaderFragment extends Fragment {
            RecyclerView recyclerView = view.findViewById(R.id.recycler_tempoleader);
            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
            recyclerView.setLayoutManager(manager);
-           RecyclerViewTempoleaderAdapter adapter = new RecyclerViewTempoleaderAdapter( dataSets);
+           RecyclerViewTempoleaderAdapter adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
            recyclerView.setAdapter(adapter);
        }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "TempoleaderFragment  onResume ");
 
-        //получаем настройки из активности настроек
-        prefSetting = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        //получаем из файла настроек количество знаков после запятой
-        accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
-        Log.d(TAG,"TempoleaderFragment onResume accurancy = " + accurancy);
-        //получаем из файла настроек наличие звука
-        sound = prefSetting.getBoolean("cbSound",true);
-        Log.d(TAG,"TempoleaderFragment onResume sound = " + sound);
-        //включаем/выключаем звук в зависимости от состояния чекбокса в PrefActivity
-        AudioManager audioManager;
-        if(sound){
-            audioManager =(AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-        }else{
-            audioManager =    (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-        }
-
-        //выводим имя файла на экран
-        mNameOfFile.setText(finishFileName);
-
-        //получаем id  файла с раскладкой по его имени finishFileName из интента
-        fileId = TabFile.getIdFromFileName(database, finishFileName);
-
-        Log.d(TAG, "fileId  = " + fileId);
-        //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
-        //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
-        mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
-
-        //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
-        Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
-
-        //посчитаем общее количество повторений в подходе
-        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
-        Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps + " fileId = " + fileId);
-
-        //покажем общее время подхода и общее число повторений в подходе
-        showTotalValues(mTimeOfSet,mTotalReps, mKvant);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "TempoleaderFragment - onDestroy");
-        //записываем последнее имя файла на экране в преференсис активности
-        shp = getActivity().getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor edit = shp.edit();
-        edit.putString(P.KEY_FILENAME, finishFileName);
-        edit.apply();
-
-        database.close();
-    }
 
     //покажем общее время подхода и общее число повторений в подходе
     private void showTotalValues(float timeOfSet,int totalReps, long kvant){
@@ -486,4 +525,184 @@ public class TempoleaderFragment extends Fragment {
         mResetButton.setEnabled(reset);
     }
 
+    //======================class MyTimerTask=================================//
+
+    public class MyTimerTask extends TimerTask{
+        @Override
+        public void run() {  //запускаем MyTimerTask в методе run()
+
+            //фиксируем изменения на экране (в пользовательском потоке)
+            doChangeOnViThread();
+
+            mCurrentDelay += mKvant;
+
+            //если не отдых
+            if (!restOn){
+
+                if ((mCurrentDelay<=countMillisDelay-500)&&(mCurrentDelay>countMillisDelay-600)){
+                    //играем мелодию начала подхода
+                    mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 150);
+                    SystemClock.sleep(250);
+                    mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 300);
+                }
+                if (mCurrentDelay>=countMillisDelay){
+                    workOn = true;
+                    delayOn = false;
+                }
+                // если отдых
+            }else {
+                mTimeRestCurrent = System.currentTimeMillis() - mTimeRestStart;
+                //Log.d(TAG, "mTimeRestCurrent = " + mTimeRestCurrent); //10 раз в сек вывод
+
+                //фиксируем изменения на экране (в пользовательском потоке)
+                doChangeOnViThread();
+            }
+
+            if (workOn&&!restOn) {
+
+                mTotalKvant += mKvant;  // добавляем 100мс пока не будет больше времени между повторами
+                mTotalTime += mKvant;  //добавляем 100мс к текущему времени подхода
+                if (mTotalKvant >= countMilliSecond) {
+                    mCurrentRep++; // если стало больше, переходим к следующему повтору
+                    Log.d(TAG, "mCurrentRep = " + mCurrentRep);
+                    mCurrentTotalReps++; //считаем количество выполненных повторений
+                    mTotalKvant = 0;  //при этом обнуляя текущее время между повторами
+                    mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 200);
+                }//переходим к следующему фрагменту
+                if ((mCurrentRep >= countReps) && (mCountFragment < mTotalCountFragment - 1)) {
+                    mCountFragment++;
+                    countMilliSecond = TabSet.
+                            getTimeOfRepInPosition(database, fileId, mCountFragment)*1000;
+                    countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
+                    Log.d(TAG, "countMilliSecond = " + countMilliSecond + "  countReps = " + countReps);
+                    mTotalKvant = 0;
+                    mCurrentRep = 0;
+                }
+                //если в последнем фрагменте - прекращаем выполнение
+                if ((mCurrentRep >= countReps) && (mCountFragment >= mTotalCountFragment - 1)) {
+                    //if (mTimer != null) mTimer.cancel();
+                    Log.d(TAG, "mTimer.cancel");
+                    mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 500);
+                    //выставляем начальные значения - для повторного старта
+                    mProgressBarTime.setProgress(0);
+                    //mProgressBarTotal.setProgress(0);
+                    mCurrentRep = 0;
+                    mTotalKvant = 0;
+                    mTotalReps = 0;
+                    mCountFragment = 0;
+                    end = true;
+                    start = false; //это для разблокировки кнопки BACK
+                    workOn = false;  //признак начала работы
+                    restOn = true; //признак начала отдыха
+                    //фиксируем момент начала отдыха
+                    mTimeRestStart = System.currentTimeMillis();
+
+                    //изменяем свойство кнопок и сбрасываем цвет, восстанавливаем меню
+                    // в пользовательском потоке
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //чтобы не оставался последний фрагмент подхода со старым цветом
+                            //TODO сделать через адаптер
+                            //changeMarkColor(R.id.fragment_container, mCountFragment, end);
+                            buttonsEnable(true, false, true);
+                            mDelayButton.setEnabled(true);
+                        }
+                    });
+                }
+            }
+        }
     }
+
+    // показать изменения в пользовательском потоке
+    private void doChangeOnViThread(){
+
+    try{
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String time = showFormatString(mTotalTime, mKvant);
+                //показ текущ времени
+                mCurrentTime.setText(time);
+
+                //показ текущ количества повторений
+                mCurrentReps.setText(Integer.toString(mCurrentTotalReps));
+
+                //показываем текущую задержку
+                float f =(countMillisDelay - mCurrentDelay)/1000;
+                if (f>=0) {
+                    if (!restOn){
+                        mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
+                        mtextViewCountDown.setTextColor(Color.RED);
+                        mtextViewCountDown.setText(Float.toString((f)));
+                    }else {
+                        mTextViewRest.setText(R.string.textViewRestTime);  //Время отдыха, сек
+                        String timeRest = showFormatString(mTimeRestCurrent, mKvant);
+                        mtextViewCountDown.setTextColor(Color.BLUE);
+                        mtextViewCountDown.setText(timeRest);
+                    }
+                }else{
+                    //если работа а не отдых
+                    if (workOn&&!restOn){
+                        mTextViewRest.setText(""); //До старта, сек
+                        mtextViewCountDown.setTextColor(Color.RED);
+                        mtextViewCountDown.setText(getResources().getString(R.string.workOn));
+
+                    }
+                    //если отдых
+                    if (restOn) {
+                        mTextViewRest.setText(R.string.textViewRestTime);  //Время отдыха, сек
+                        String timeRest = showFormatString(mTimeRestCurrent, mKvant);
+                        mtextViewCountDown.setTextColor(Color.BLUE);
+                        mtextViewCountDown.setText(timeRest);
+                    }
+                }
+
+                //при переходе к следующему фрагменту подхода меняем цвет маркера,
+                // затем текущий фрагмент подхода обозначаем как предыдущий
+                if (mCountFragment!=mCountFragmentLast) {
+                    //посылаем в SetListFragment  mCountFragment и признак  end и обновляем адаптер списка
+                    //TODO сделать через адаптер
+                    //changeMarkColor(R.id.fragment_container, mCountFragment, end);
+                    mCountFragmentLast = mCountFragment;
+                }
+
+                //Показываем прогресс текущего времени фрагмента подхода
+                if (countMilliSecond == 0){
+                    mProgressBarTime.setProgress(100);
+                }else {
+                    String s = Float.toString(((float) mTotalKvant) * 100 / countMilliSecond);
+                    float i = Float.parseFloat(s);
+                    //прогресс текущ времени
+                    mProgressBarTime.setProgress(100 - (int) i);
+                }
+            }
+        });
+        }catch (NullPointerException e){
+        e.getStackTrace();
+        }
+    }
+
+    private String showFormatString (long total, long kvant) {
+        //формируем формат строки показа времени
+        int minut = ((int)total/60000)%60;
+        int second = ((int)total/1000)%60;
+        int decim = (int)((total%1000)/kvant);
+        int hour = (int)((total/3600000)%24);
+
+        // общее время подхода
+        String time = "";
+        if (hour<1){
+            if(minut<10) {
+                time = String.format(Locale.ENGLISH,"%d:%02d.%d",minut, second, decim);
+            }else if (minut<60){
+                time = String.format(Locale.ENGLISH,"%02d:%02d.%d",minut,second,decim);
+            }
+        }else {
+            time = String.format(Locale.ENGLISH,"%d:%02d:%02d.%d",hour,minut,second,decim);
+        }
+        return time;
+    }
+
+
+}

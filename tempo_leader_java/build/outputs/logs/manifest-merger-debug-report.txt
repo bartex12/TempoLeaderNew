@@ -104,26 +104,26 @@ category#android.intent.category.LAUNCHER
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:19:17-76
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:19:27-74
-activity#ru.bartex.tempoleader.TimeMeterActivity
+activity#ru.bartex.tempoleader.ui.secundomer.TimeMeterActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:9-23:20
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:19-73
-activity#ru.bartex.tempoleader.TimeGrafActivity
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:19-87
+activity#ru.bartex.tempoleader.ui.secundomer.TimeGrafActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:9-25:20
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:19-72
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:19-86
 activity#ru.bartex.tempoleader.PrefActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:26:9-27:20
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:26:19-68
-activity#ru.bartex.tempoleader.SetListActivity
+activity#ru.bartex.tempoleader.ui.tempoleader.SetListActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:28:9-35:20
 	android:parentActivityName
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:30:13-84
 	android:windowSoftInputMode
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:31:13-54
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:29:13-65
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:29:13-80
 meta-data#android.support.PARENT_ACTIVITY
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:32:13-34:77
 	android:value
@@ -142,26 +142,26 @@ ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\A
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:42:13-29
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:41:13-74
-activity#ru.bartex.tempoleader.TabBarActivity
+activity#ru.bartex.tempoleader.ui.raskladki.TabBarActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:44:9-48:20
 	android:label
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:46:13-59
 	android:theme
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:47:13-56
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:45:13-64
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:45:13-77
 activity#ru.bartex.tempoleader.ChangeTempActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:49:9-52:20
 	android:label
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:51:13-48
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:50:13-68
-activity#ru.bartex.tempoleader.NewExerciseActivity
+activity#ru.bartex.tempoleader.ui.creation.NewExerciseActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:9-55:20
 	android:label
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:54:19-51
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:19-75
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:19-87
 uses-sdk
 INJECTED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml

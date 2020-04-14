@@ -117,7 +117,7 @@ public class SetListFragment extends Fragment {
         //имя файла из аргументов - оно остаётся тем же после редактирования в отличие от id  файла
         //который надо вычислять снова после возврата из редактирования
         finishFileName = getArguments().getString(P.ARG_NAME_OF_FILE);
-        //для фрагментов требуется так разрешить появление контекстного меню
+        //для фрагментов требуется так разрешить появление  меню
         setHasOptionsMenu(true);
     }
 
@@ -326,17 +326,16 @@ public class SetListFragment extends Fragment {
         @Override
         public boolean setViewValue(View view, Object o, String s) {
             int i;
-            switch (view.getId()) {
-                case R.id.mark_item_set_textview:
-                    i = ((Integer) o).intValue();
-                    //Log.d(TAG, "SetListFragment:  i == mCountFragment =  " + i + "  " + mCountFragment);
-                    if (!end) {
-                        if (i >= mCountFragment) {
-                            //оставляем как есть, если нужно сделать другого цвета, то
-                        } else view.setBackgroundColor(Color.YELLOW);
-                    }else view.setBackgroundColor(Color.YELLOW);
+            if (view.getId() == R.id.mark_item_set_textview) {
+                i = (Integer) o;
+                //Log.d(TAG, "SetListFragment:  i == mCountFragment =  " + i + "  " + mCountFragment);
+                if (!end) {
+                    if (i < mCountFragment) {
+                        view.setBackgroundColor(Color.YELLOW);
+                    }
+                } else view.setBackgroundColor(Color.YELLOW);
             }
-            //если поставить true? почемуто работает неправильно
+            //если поставить true, почемуто работает неправильно
             return false;
         }
     }

@@ -2153,6 +2153,7 @@ string InputAnotherName
 string InputNameOfSchelule
 string ListOfTimeReps
 string LowMinus
+string NN
 string Name
 string NumberLap
 string OfSet
@@ -2163,6 +2164,9 @@ string Send
 string Settings
 string Share
 string Timemeter
+string _0
+string _0_00_0
+string _555
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description

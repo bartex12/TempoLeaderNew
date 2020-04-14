@@ -12,8 +12,8 @@ import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 public class TempoleaderStorageImpl implements TempoleaderStorage {
-    public static final String TAG ="33333";
-    SQLiteDatabase database;
+    private static final String TAG ="33333";
+    private SQLiteDatabase database;
 
     public TempoleaderStorageImpl( Application application) {
         database = new TempDBHelper(application).getWritableDatabase();
@@ -21,13 +21,11 @@ public class TempoleaderStorageImpl implements TempoleaderStorage {
 
     @Override
     public ArrayList<DataSet> getDataSet(String fileName) {
-        //TODO реально получать DataSet
+
         //получаем id записи с таким именем
         long fileId = TabFile.getIdFromFileName (database, fileName);
         Log.d(TAG,"TempoleaderStorageImpl  имя =" + fileName + "  Id = " + fileId );
-
-        ArrayList<DataSet> arr = TabSet.getAllSetFragments(database,fileId);
-        
+        final ArrayList<DataSet> arr = TabSet.getAllSetFragments(database, fileId);
         return arr;
     }
 }

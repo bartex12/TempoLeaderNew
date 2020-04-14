@@ -1,12 +1,15 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
@@ -19,10 +22,13 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     private ArrayList<DataSet> listOfSet;
     private Context context;
     private OnSetListClickListener onSetListClickListener;
+    private int accurancy; //точность отсечек - количество знаков после запятой
 
-    public RecyclerViewTempoleaderAdapter(ArrayList<DataSet> listOfSet){
+    public RecyclerViewTempoleaderAdapter(ArrayList<DataSet> listOfSet,  int accurancy){
         this.listOfSet =listOfSet;
-        Log.d(TAG, "RecyclerViewTempoleaderAdapter listOfSet.size() = " + listOfSet.size());
+        this.accurancy = accurancy;
+        Log.d(TAG, "RecyclerViewTempoleaderAdapter listOfSet.size() = "
+                + listOfSet.size()+ " accurancy = " + accurancy);
     }
 
     //интерфейс слушателя щелчков на списке
@@ -38,8 +44,10 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public RecyclerViewTempoleaderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
+
         View view = LayoutInflater.from(context).inflate(
                 R.layout.list_item_set_textview, parent, false);
+
         return new ViewHolder(view) ;
     }
 
@@ -47,7 +55,7 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.time_item_set_textview.setText(
-                String.valueOf(listOfSet.get(position).getTimeOfRep()));
+                getTimeAccur(listOfSet.get(position).getTimeOfRep()));
         holder.reps_item_set_textview.setText(
                 String.valueOf(listOfSet.get(position).getReps()));
         holder.mark_item_set_textview.setText(
@@ -79,4 +87,23 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
             mark_item_set_textview = itemView.findViewById(R.id.mark_item_set_textview);
         }
     }
+
+    private String getTimeAccur(float time_now){
+        String s_delta = "";
+        switch (accurancy){
+            case 1:
+                s_delta = String.format(Locale.ENGLISH,"%.01f",time_now);
+                break;
+            case 2:
+                s_delta = String.format(Locale.ENGLISH,"%.02f",time_now);
+                break;
+            case 3:
+                s_delta = String.format(Locale.ENGLISH,"%.03f",time_now);
+                break;
+            default:
+                s_delta =String.format(Locale.ENGLISH,"%.01f",time_now);
+        }
+        return s_delta;
+    }
+
 }

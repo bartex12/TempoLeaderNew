@@ -29,14 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ru.bartex.tempoleader.TimeMeterActivity" >
+        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeMeterActivity" >
         </activity>
-        <activity android:name="ru.bartex.tempoleader.TimeGrafActivity" >
+        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeGrafActivity" >
         </activity>
         <activity android:name="ru.bartex.tempoleader.PrefActivity" >
         </activity>
         <activity
-            android:name="ru.bartex.tempoleader.SetListActivity"
+            android:name="ru.bartex.tempoleader.ui.tempoleader.SetListActivity"
             android:parentActivityName="ru.bartex.tempoleader.ui.main.MainActivity"
             android:windowSoftInputMode="stateHidden" >
             <meta-data
@@ -52,7 +52,7 @@
             android:label="" >
         </activity>
         <activity
-            android:name="ru.bartex.tempoleader.TabBarActivity"
+            android:name="ru.bartex.tempoleader.ui.raskladki.TabBarActivity"
             android:label="@string/title_activity_tab_bar"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
@@ -61,7 +61,7 @@
             android:label="@string/change_name" >
         </activity>
         <activity
-            android:name="ru.bartex.tempoleader.NewExerciseActivity"
+            android:name="ru.bartex.tempoleader.ui.creation.NewExerciseActivity"
             android:label="@string/new_name" >
         </activity>
     </application>

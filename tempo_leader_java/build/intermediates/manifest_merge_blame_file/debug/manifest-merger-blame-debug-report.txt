@@ -50,13 +50,13 @@
 29-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:19:27-74
 30            </intent-filter>
 31        </activity>
-32        <activity android:name="ru.bartex.tempoleader.TimeMeterActivity" >
+32        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeMeterActivity" >
 32-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:9-23:20
-32-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:19-73
+32-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:22:19-87
 33        </activity>
-34        <activity android:name="ru.bartex.tempoleader.TimeGrafActivity" >
+34        <activity android:name="ru.bartex.tempoleader.ui.secundomer.TimeGrafActivity" >
 34-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:9-25:20
-34-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:19-72
+34-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:24:19-86
 35        </activity>
 36        <activity android:name="ru.bartex.tempoleader.PrefActivity" >
 36-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:26:9-27:20
@@ -64,8 +64,8 @@
 37        </activity>
 38        <activity
 38-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:28:9-35:20
-39            android:name="ru.bartex.tempoleader.SetListActivity"
-39-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:29:13-65
+39            android:name="ru.bartex.tempoleader.ui.tempoleader.SetListActivity"
+39-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:29:13-80
 40            android:parentActivityName="ru.bartex.tempoleader.ui.main.MainActivity"
 40-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:30:13-84
 41            android:windowSoftInputMode="stateHidden" >
@@ -93,8 +93,8 @@
 53        </activity>
 54        <activity
 54-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:44:9-48:20
-55            android:name="ru.bartex.tempoleader.TabBarActivity"
-55-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:45:13-64
+55            android:name="ru.bartex.tempoleader.ui.raskladki.TabBarActivity"
+55-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:45:13-77
 56            android:label="@string/title_activity_tab_bar"
 56-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:46:13-59
 57            android:theme="@style/AppTheme.NoActionBar" >
@@ -109,8 +109,8 @@
 62        </activity>
 63        <activity
 63-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:9-55:20
-64            android:name="ru.bartex.tempoleader.NewExerciseActivity"
-64-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:19-75
+64            android:name="ru.bartex.tempoleader.ui.creation.NewExerciseActivity"
+64-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:19-87
 65            android:label="@string/new_name" >
 65-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:54:19-51
 66        </activity>

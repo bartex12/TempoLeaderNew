@@ -241,10 +241,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
                 //Выставляем флаг "работа"
                 workOn = false;
-
                 //Выставляем флаг конец работы - нет
                 end = false;
-
                 restOn = false; //признак начала отдыха
                 mTimeRestCurrent = 0; //текущее время отдыха
 
