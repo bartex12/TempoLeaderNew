@@ -127,7 +127,7 @@ public class TempoleaderFragment extends Fragment {
             if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
                 //считываем значение FROM_ACTIVITY из интента
                 //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
-                //444 -DetailActivity  555 - NewExerciseActivity
+                //444 -DetailActivity  555 - NewExerciseActivity 777 - DialogSetDelay
                 fromActivity =getArguments().getInt(P.FROM_ACTIVITY,111);
 
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку

@@ -3,8 +3,8 @@ package ru.barcats.tempo_leader_javanew.ui.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +26,7 @@ import ru.barcats.tempo_leader_javanew.model.P;
 public class DialogSetDelay extends DialogFragment {
 
     private static final String TAG = "33333";
-
-    EditText editTextDelay;
-    //Context context;
+    private EditText editTextDelay;
 
     public static DialogSetDelay newInstance(String delay){
         Bundle args = new Bundle();
@@ -38,26 +36,9 @@ public class DialogSetDelay extends DialogFragment {
         return fragment;
     }
 
-    //интерфейс для передачи данных из фрагмента в активность
-    public interface DelayListener{
-        void onDelayTransmit(int delay);
-    }
-
-    DelayListener mDelayListener;
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-       // this.context = context;
-        //mDelayListener = (DelayListener)context;
-        //Log.d(TAG, "DialogSetDelay -  onAttach mDelayListener = " + mDelayListener);
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //Log.d(TAG, "DialogSetDelay -  onCreateDialog mDelayListener = " + mDelayListener);
         // в макете сделана установка фокуса, выделение цветом  и цифровая клавиатура
         //android:focusable="true"
         // android:selectAllOnFocus="true"
@@ -126,7 +107,7 @@ public class DialogSetDelay extends DialogFragment {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public  boolean getDelay(){
+    private boolean getDelay(){
         boolean d;
         if (editTextDelay.getText().toString().equals("")) {
             d = false;
@@ -142,7 +123,7 @@ public class DialogSetDelay extends DialogFragment {
         }
         return d;
     }
-    void myToast (String s){
+    private void myToast (String s){
         Toast mToast = Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER,0,0);
         mToast.show();

@@ -106,7 +106,8 @@
         tools:layout="@layout/set_delay" >
         <action
             android:id="@+id/action_dialogSetDelay_to_nav_tempoleader"
-            app:destination="@id/nav_tempoleader" />
+            app:destination="@id/nav_tempoleader"
+            app:launchSingleTop="true" />
     </dialog>
 
 </navigation>

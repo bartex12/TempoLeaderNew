@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Toolbar toolbar;
     private  BottomNavigationView bottomNavigation;
-   // private CollapsingToolbarLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         // правильно инициализируется и получит настройки по умолчанию
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        //layout = findViewById(R.id.collapsing_toolbar_layout);
         drawerLayout = findViewById(R.id.drawer_layout);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         navigationView = findViewById(R.id.nav_view);
@@ -73,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
                         .setDrawerLayout(drawerLayout)
                         .build();
 
-        //обработка событий CollapsingToolbarLayout с помощью NavigationUI
-        //NavigationUI.setupWithNavController(layout, toolbar, navController, appBarConfiguration);
         //обработка событий нижней навигации с помощью NavigationUI
         NavigationUI.setupWithNavController(bottomNavigation, navController);
         //обработка событий тулбара - например смена заголовка - с помощью NavigationUI
@@ -104,10 +100,6 @@ public class MainActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
                        break;
-//                   case R.id.nav_help:
-//                       toolbar.setVisibility(View.GONE);
-//                       bottomNavigation.setVisibility(View.GONE);
-//                       break;
                }
             }
         });
@@ -121,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         AudioManager audioManager =(AudioManager)getSystemService(Context.AUDIO_SERVICE);
         audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -160,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //здесь будем менять опции меню для каждого CurrentDestination
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         int id = navController.getCurrentDestination().getId();
@@ -184,13 +176,5 @@ public class MainActivity extends AppCompatActivity {
                 || super.onOptionsItemSelected(item);
     }
 
-
-//    //обработка событий тулбара
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        return NavigationUI.navigateUp(navController, appBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
 
 }
