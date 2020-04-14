@@ -104,9 +104,9 @@ public class TabFile {
     /**
      * Возвращает задержку старта файла по его ID
      */
-    public static int  getFileDelayFromTabFile(SQLiteDatabase database,  String name) throws SQLException {
+    public static int  getFileDelayFromTabFile(SQLiteDatabase database,  String name)  {
 
-        long rowId = TabFile.getIdFromFileName(database, name);
+        long rowId = getIdFromFileName(database, name);
 
         Cursor mCursor = database.query(true, TABLE_NAME,
                 null,

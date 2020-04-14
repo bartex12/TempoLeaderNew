@@ -64,8 +64,6 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-               // Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.action_nav_home_to_newExerciseFragment);
             }

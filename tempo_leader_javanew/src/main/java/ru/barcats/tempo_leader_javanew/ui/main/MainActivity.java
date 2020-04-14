@@ -13,6 +13,8 @@ import com.google.android.material.snackbar.Snackbar;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
         appBarConfiguration =
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         //обработка событий меню шторки - если id меню совпадает с id в navigation
         NavigationUI.setupWithNavController(navigationView, navController);
+        //обработка событий экшенбара
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         //добавляем слушатель изменений пункта назначения в NavController,
         //в методе обратного вызова проводим манипуляции с bottomNavigation и toolbar
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.VISIBLE);
                        break;
+                   case R.id.nav_help:
                    case R.id.nav_home:
                    case R.id.nav_set:
                    case R.id.nav_secundomer:
@@ -98,31 +104,15 @@ public class MainActivity extends AppCompatActivity {
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
                        break;
-                   case R.id.nav_help:
-                       toolbar.setVisibility(View.GONE);
-                       bottomNavigation.setVisibility(View.GONE);
-                       break;
+//                   case R.id.nav_help:
+//                       toolbar.setVisibility(View.GONE);
+//                       bottomNavigation.setVisibility(View.GONE);
+//                       break;
                }
             }
         });
 
     }
-
-
-
-
-
-//    private void initFab(View view) {
-//        FloatingActionButton fab = view.findViewById(R.id.fab_rascladki);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Snackbar.make(view, "Переделать", Snackbar.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
 
     @Override
     protected void onStop() {
@@ -132,16 +122,6 @@ public class MainActivity extends AppCompatActivity {
         audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
     }
 
-//    //отслеживание нажатия кнопки HOME
-//    @Override
-//    public void onUserLeaveHint() {
-//        Log.d(TAG, "SingleFragmentActivity - onUserLeaveHint");
-//        //включаем звук
-//        AudioManager audioManager =(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-//        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-//
-//        super.onUserLeaveHint();
-//    }
 
     @Override
     public void onBackPressed() {
@@ -173,5 +153,44 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        int id = navController.getCurrentDestination().getId();
+        switch (id){
+            case R.id.nav_set:
+                menu.findItem(R.id.nav_set).setVisible(false);
+                menu.findItem(R.id.nav_help).setVisible(true);
+                break;
+            case R.id.nav_help:
+                menu.findItem(R.id.nav_help).setVisible(false);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    //переопределение метода обработки пунктов верхнего меню - через NavController
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
+    }
+
+
+//    //обработка событий тулбара
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        return NavigationUI.navigateUp(navController, appBarConfiguration)
+//                || super.onSupportNavigateUp();
+//    }
 
 }

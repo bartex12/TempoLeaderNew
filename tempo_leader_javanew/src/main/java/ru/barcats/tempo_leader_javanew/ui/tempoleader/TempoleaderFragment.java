@@ -1,7 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,9 +26,10 @@ import java.util.TimerTask;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
@@ -39,6 +38,7 @@ import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
+
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -66,7 +66,6 @@ public class TempoleaderFragment extends Fragment {
     private TextView mNameOfFile;
 
     private Timer mTimer;
-    private Timer mTimerRest;
     private TimerTask mTimerTask;
     private ToneGenerator mToneGenerator;
 
@@ -75,7 +74,7 @@ public class TempoleaderFragment extends Fragment {
     private float mTimeOfSet = 0;   //общее время выполнения подхода в секундах
     private int countReps = 2; //количество повторений,получаемое из текста mEditTextReps
 
-    public final static long mKvant = 100;//время в мс между срабатываниями TimerTask
+    private final static long mKvant = 100;//время в мс между срабатываниями TimerTask
     private long mTotalKvant = 0;//текущее суммарное время для фрагмента подхода
     private long mTotalTime = 0; //текущее суммарное время для подхода
     private long mCurrentDelay = 0; //текущее время для задержки
@@ -93,14 +92,14 @@ public class TempoleaderFragment extends Fragment {
     private boolean workOn = false; //признак начала работы
     private boolean restOn = false; //признак начала отдыха
     private boolean end = false; //признак окончания подхода
-    public static boolean start = false;//признак нажатия на старт: public static для доступа из фрагмента
+    private static boolean start = false;//признак нажатия на старт: public static для доступа из фрагмента
 
-    int mCountFragmentLast = 0;
+    private int mCountFragmentLast = 0;
     //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
     //444 -DetailActivity  555 - NewExerciseActivity
-    int fromActivity;
+    private int fromActivity;
 
-    int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
+    private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
     boolean sound = true; // включение / выключение звука
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
@@ -108,50 +107,44 @@ public class TempoleaderFragment extends Fragment {
     //имя файла с раскладкой
     private String finishFileName;
     //id файла, загруженного в темполидер
-    long fileId;
+    private long fileId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //************** Получение интента/ аргументов  с данными *************
-        // когда грузим с главного экрана или со шторки, аргументы = null
+
+        //получаем базу данных
+        database = new TempDBHelper(getActivity()).getWritableDatabase();
+
         if (getArguments() != null) {
-            Log.d(TAG, "** TempoleaderFragment onViewCreated " +
-                    " NAME_OF_FILE = " + getArguments().getString(P.NAME_OF_FILE) +
-                    " FROM_ACTIVITY = " +  getArguments().getInt(P.FROM_ACTIVITY));
-            //получаем NAME_OF_FILE из аргументов
-            finishFileName = getArguments().getString(P.NAME_OF_FILE,P.FILENAME_OTSECHKI_SEC);
-            //считываем значение FROM_ACTIVITY из интента
-            //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
-            //444 -DetailActivity  555 - NewExerciseActivity
-            fromActivity =getArguments().getInt(P.FROM_ACTIVITY,111);
+            //Log.d(TAG, " ### TempoleaderFragment onCreate getArguments = "  + getArguments());
+            //************** Получение интента/ аргументов  с данными *************
+            // когда грузим с главного экрана или со шторки, аргументы = null
+            if ( getArguments().getString(P.NAME_OF_FILE) != null) {
+                //получаем NAME_OF_FILE из аргументов
+                finishFileName = getArguments().getString(P.NAME_OF_FILE,P.FILENAME_OTSECHKI_SEC);
+            }
+            if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
+                //считываем значение FROM_ACTIVITY из интента
+                //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
+                //444 -DetailActivity  555 - NewExerciseActivity
+                fromActivity =getArguments().getInt(P.FROM_ACTIVITY,111);
+
+                //если интент пришел от DialogSetDelay, он принёс с собой  задержку
+                if (fromActivity == 777){
+                    timeOfDelay = getArguments().getInt(P.ARG_DELAY,6);
+                }
+            }
         }else {
             //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
             shp = getActivity().getPreferences(MODE_PRIVATE);
             //грузим последний файл темполидера  или автосохранение секундомера
             finishFileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
+            timeOfDelay = shp.getInt(P.KEY_DELAY, 6);
         }
         Log.d(TAG, " @@@TempoleaderFragment fromActivity =  " +
-                fromActivity +" mNameOfFile = " + finishFileName);
-        //если интент пришел от TimeGrafActivity, он принёс с собой  отсечеки в файле
-        if (fromActivity == 222){
-            //TODO раскоментировать
-//            Log.d(TAG, " SingleFragmentActivity fromActivity =  " + fromActivity);
-//            //получаем имя файла из интента
-//            finishFileName = intent.getStringExtra(P.FINISH_FILE_NAME);
-//            //finishFileName=null, если не было записи в преференсис- тогда присваиваем имя
-//            //единственной записи в базе, сделанной в onCreate MainActivity
-//            if (finishFileName==null){
-//                finishFileName = P.FILENAME_OTSECHKI_SEC;
-//            }
-            //если интент пришёл от NewExerciseActivity
-        } else if(fromActivity == 555) {
-            //TODO раскоментировать
-//            //получаем имя файла из интента
-//            finishFileName = intent.getStringExtra(P.FINISH_FILE_NAME);
-//            timeOfDelay = TabFile.getFileDelayFromTabFile(database, finishFileName);
-//            mDelayButton.setText(String.valueOf(timeOfDelay));
-        }else Log.d(TAG, " intentTransfer = null ");
+                fromActivity +" mNameOfFile = " + finishFileName + " timeOfDelay = " + timeOfDelay);
+
         //для фрагментов требуется так разрешить появление  меню
         setHasOptionsMenu(true);
     }
@@ -166,8 +159,6 @@ public class TempoleaderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "TempoleaderFragment onViewCreated.onClick");
 
-        //получаем базу данных
-        database = new TempDBHelper(getActivity()).getWritableDatabase();
         //разрешить только портретную ориентацию экрана
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //получаем значения точности и звека из настроек
@@ -175,7 +166,7 @@ public class TempoleaderFragment extends Fragment {
         //находим вьюхи
         initViews(view);
         //обработка нажатия на кнопку Задержка
-        pressDelayButton();
+        pressDelayButton(view);
         //обработка нажатия на кнопку Старт
         pressStartButton(view);
         //обработка нажатия на кнопку Стоп
@@ -262,10 +253,10 @@ public class TempoleaderFragment extends Fragment {
         prefSetting = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //получаем из файла настроек количество знаков после запятой
         accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
-        Log.d(TAG,"TempoleaderFragment onResume accurancy = " + accurancy);
+        Log.d(TAG,"TempoleaderFragment getPrefSettings accurancy = " + accurancy);
         //получаем из файла настроек наличие звука
         sound = prefSetting.getBoolean("cbSound",true);
-        Log.d(TAG,"TempoleaderFragment onResume sound = " + sound);
+        Log.d(TAG,"TempoleaderFragment getPrefSettings sound = " + sound);
     }
 
     private void initViews(@NonNull View view) {
@@ -278,8 +269,7 @@ public class TempoleaderFragment extends Fragment {
         mTextViewRest.setText(R.string.textViewTimeRemain);
 
         mDelayButton = view.findViewById(R.id.buttonDelay);
-        shp = getActivity().getPreferences(MODE_PRIVATE);
-        timeOfDelay = shp.getInt(P.KEY_DELAY, 6);
+        mDelayButton.setText(String.valueOf(timeOfDelay));
 
         mProgressBarTime = view.findViewById(R.id.progressBarTime);
         //mProgressBarTime.setBackgroundColor();
@@ -300,18 +290,19 @@ public class TempoleaderFragment extends Fragment {
         mDelayButton.setText(String.valueOf(timeOfDelay));
     }
 
-    private void pressDelayButton() {
+    private void pressDelayButton(View view) {
         mDelayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-//                String delay = mDelayButton.getText().toString();
-//                DialogSetDelay dialogFragment = DialogSetDelay.newInstance(delay);
-//                dialogFragment.show(getSupportFragmentManager(),"delayDialog");
+                //передаём задержку в диалог, имя файла гоняем туда и обратно
+                NavController navController = Navigation.findNavController(view);
+                Bundle bundle = new Bundle();
+                bundle.putString(P.NAME_OF_FILE, finishFileName );
+                bundle.putString(P.ARG_DELAY, mDelayButton.getText().toString() );
+                navController.navigate(R.id.action_nav_tempoleader_to_dialogSetDelay, bundle);
             }
         });
     }
-
 
     private void pressStartButton(@NonNull View view) {
 

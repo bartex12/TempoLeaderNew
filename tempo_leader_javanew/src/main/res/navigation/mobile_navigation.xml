@@ -41,7 +41,11 @@
         android:id="@+id/nav_tempoleader"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment"
         android:label="@string/PaceMaker"
-        tools:layout="@layout/fragment_tempoleader" />
+        tools:layout="@layout/fragment_tempoleader" >
+        <action
+            android:id="@+id/action_nav_tempoleader_to_dialogSetDelay"
+            app:destination="@id/dialogSetDelay" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_rascladki"
@@ -92,8 +96,17 @@
         android:label="@string/create_raskl"
         tools:layout="@layout/frafment_new_exercise" >
         <action
-            android:id="@+id/action_newExerciseFragment_to_nav_rascladki"
-            app:destination="@id/nav_rascladki" />
+            android:id="@+id/action_new_exercise_to_nav_tempoleader"
+            app:destination="@id/nav_tempoleader" />
     </fragment>
+    <dialog
+        android:id="@+id/dialogSetDelay"
+        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogSetDelay"
+        android:label="set_delay"
+        tools:layout="@layout/set_delay" >
+        <action
+            android:id="@+id/action_dialogSetDelay_to_nav_tempoleader"
+            app:destination="@id/nav_tempoleader" />
+    </dialog>
 
 </navigation>

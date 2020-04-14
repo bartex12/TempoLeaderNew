@@ -28,6 +28,8 @@ public class P {
     public static final int NEW_EXERCISE_ACTIVITY = 555;
     // MainActivity =111   TIME_GRAF_ACTIVITY = 222    TabBarActivity = 333 DetailActivity =444
     //NewExerciseActivity = 555
+    //пришёл от DialogSetDelay
+    public static final int DIALOG_DELAY = 777;
 
     // идёт к расчёту количества прожитых дней
     public final static int TO_SEC = 1111;

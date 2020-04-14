@@ -15,6 +15,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TabSet;
@@ -39,7 +41,7 @@ public class NewExerciseFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tempDBHelper = new TempDBHelper(getActivity());
         database = tempDBHelper.getWritableDatabase();
@@ -142,14 +144,16 @@ public class NewExerciseFragment extends Fragment {
                         }
                     }
                     TabSet.rerangeSetFragments(database, file1_id);
-                    Log.d(TAG, "MyDatabaseHelper.create count = " +
+                    Log.d(TAG, "NewExerciseFragment count = " +
                             TabSet.getSetFragmentsCount(database, file1_id));
                 }
 
-//                Intent intent = new Intent(NewExerciseFragment.this, SetListActivity.class);
-//                intent.putExtra(P.FINISH_FILE_NAME, fileNameStr);
-//                intent.putExtra(P.FROM_ACTIVITY, P.NEW_EXERCISE_ACTIVITY);
-//                startActivity(intent);
+                //переходим в темполидер с созданным файлом
+                NavController controller = Navigation.findNavController(view);
+                Bundle bundle = new Bundle();
+                bundle.putString(P.NAME_OF_FILE, fileNameStr);
+                bundle.putInt(P.FROM_ACTIVITY, P.NEW_EXERCISE_ACTIVITY);  //555 - NewExerciseFragment
+                controller.navigate(R.id.action_new_exercise_to_nav_tempoleader, bundle);
             }
         });
     }
