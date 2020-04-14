@@ -2,6 +2,7 @@ package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,17 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     private Context context;
     private OnSetListClickListener onSetListClickListener;
     private int accurancy; //точность отсечек - количество знаков после запятой
+    private int item = 0;
+    private boolean isEnd = false;
+
+    public void setEnd(boolean end) {
+        isEnd = end;
+    }
+
+    public void setItem(int item) {
+        this.item = item;
+        Log.d(TAG, " +++ RecyclerViewTempoleaderAdapter item = " + item);
+    }
 
     public RecyclerViewTempoleaderAdapter(ArrayList<DataSet> listOfSet,  int accurancy){
         this.listOfSet =listOfSet;
@@ -60,6 +72,9 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
                 String.valueOf(listOfSet.get(position).getReps()));
         holder.mark_item_set_textview.setText(
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
+            if (position < item){
+                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+            }
 
 //        holder.card_mainmenu.setOnClickListener(new View.OnClickListener() {
 //            @Override

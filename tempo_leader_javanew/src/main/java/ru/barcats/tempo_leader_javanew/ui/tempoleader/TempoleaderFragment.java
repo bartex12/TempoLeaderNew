@@ -49,6 +49,7 @@ public class TempoleaderFragment extends Fragment {
     private TempoleaderViewModel delayViewModel;
 
     private SQLiteDatabase database;
+    private RecyclerViewTempoleaderAdapter adapter;
 
     private Button mStartButton;
     private Button mStopButton;
@@ -438,7 +439,7 @@ public class TempoleaderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Pressed ResetButton");
-                if (mTimer!=null)mTimer.cancel();
+
                 mCurrentRep = 0;
                 mCurrentTotalReps = 0;
                 mTotalKvant = 0;
@@ -458,6 +459,7 @@ public class TempoleaderFragment extends Fragment {
                 workOn = false;  //признак начала работы
                 restOn = false; //признак начала отдыха
                 end = false;  //признак окончания подхода в Нет
+                start = false;
 
                 mTimeRestCurrent = 0; //текущее время отдыха
                 mTextViewDelay.setText(R.string.textViewDelay); //задержка,сек
@@ -467,8 +469,11 @@ public class TempoleaderFragment extends Fragment {
 
                 //TODO через адаптер
                 //устанавливаем цвет маркера фрагмента подхода в исходный цвет, обновляя адаптер
+                adapter.setEnd(end);
+                adapter.setItem(mCountFragment);
+                adapter.notifyDataSetChanged();
                 // changeMarkColor(R.id.fragment_container, mCountFragment, end);
-                start = false;
+                if (mTimer!=null)mTimer.cancel();
                 //TODO если будет меню тулбара
                 //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара
                 //getActivity().invalidateOptionsMenu();
@@ -480,7 +485,7 @@ public class TempoleaderFragment extends Fragment {
            RecyclerView recyclerView = view.findViewById(R.id.recycler_tempoleader);
            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
            recyclerView.setLayoutManager(manager);
-           RecyclerViewTempoleaderAdapter adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
+            adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
            recyclerView.setAdapter(adapter);
        }
 
@@ -595,6 +600,9 @@ public class TempoleaderFragment extends Fragment {
                         public void run() {
                             //чтобы не оставался последний фрагмент подхода со старым цветом
                             //TODO сделать через адаптер
+                            adapter.setEnd(end);
+                            adapter.setItem(mCountFragment);
+                            adapter.notifyDataSetChanged();
                             //changeMarkColor(R.id.fragment_container, mCountFragment, end);
                             buttonsEnable(true, false, true);
                             mDelayButton.setEnabled(true);
@@ -649,16 +657,13 @@ public class TempoleaderFragment extends Fragment {
                     }
                 }
 
-                //при переходе к следующему фрагменту подхода меняем цвет маркера,
-                // затем текущий фрагмент подхода обозначаем как предыдущий
-                if (mCountFragment!=mCountFragmentLast) {
-                    //посылаем в SetListFragment  mCountFragment и признак  end и обновляем адаптер списка
-                    //TODO сделать через адаптер
-                    //changeMarkColor(R.id.fragment_container, mCountFragment, end);
-                    mCountFragmentLast = mCountFragment;
-                }
+                //при переходе к следующему фрагменту подхода меняем цвет маркера, для чего
+                //передаём в адаптер end и mCountFragment и обновляем адаптер
+                adapter.setEnd(end);
+                adapter.setItem(mCountFragment);
+                adapter.notifyDataSetChanged();
 
-                //Показываем прогресс текущего времени фрагмента подхода
+               //Показываем прогресс текущего времени фрагмента подхода
                 if (countMilliSecond == 0){
                     mProgressBarTime.setProgress(100);
                 }else {
