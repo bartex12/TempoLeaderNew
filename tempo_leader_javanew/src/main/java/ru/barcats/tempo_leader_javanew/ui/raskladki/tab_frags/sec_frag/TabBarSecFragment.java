@@ -2,6 +2,8 @@ package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.sec_frag;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -44,8 +46,51 @@ public class TabBarSecFragment extends AbstrTabFragment {
                     }
                 });
 
-        //объявляем о регистрации контекстного меню
-        registerForContextMenu(recyclerView);
+}
+
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.tab_temp_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private boolean handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_delete_sec: {
+                adapter.deleteLine();
+                break;
+            }
+            case R.id.menu_change_sec: {
+                item.setVisible(false);
+                item.setEnabled(false);
+                Log.d(TAG, "//TabBarSecFragment handleMenuItemClick menu_change// " );
+                return true;
+            }
+            case R.id.menu_move_temp_sec: {
+
+                return true;
+            }
+            case R.id.menu_move_like_sec: {
+                //TODO
+                return true;
+            }
+            case R.id.menu_cancel_sec: {
+                //TODO
+               return true;
+            }
+            default:
+                return super.onContextItemSelected(item);
+        }
+        return super.onContextItemSelected(item);
     }
 
 }

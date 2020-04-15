@@ -4,12 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -28,7 +31,7 @@ public abstract class AbstrTabFragment extends Fragment {
     private SQLiteDatabase database;
 
     protected RecyclerView recyclerView;
-    private RecyclerViewTabAdapter adapter;
+    protected RecyclerViewTabAdapter adapter;
     public View view;
 
     @Override
@@ -42,6 +45,8 @@ public abstract class AbstrTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_raskladki, container, false);
         recyclerView = view.findViewById(R.id.recycler_rascladki);
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
         return view;
     }
 

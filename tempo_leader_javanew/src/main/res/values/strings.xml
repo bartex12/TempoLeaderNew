@@ -158,5 +158,10 @@
     <string name="_5">5</string>
     <string name="workOn">РАБОТА</string>
     <string name="stop"> СТОП</string>
+    <string name="action_delete">Удалить запись</string>
+    <string name="action_change">Изменить запись</string>
+    <string name="action_move_temp">Переместить в темполидер</string>
+    <string name="action_move_like">Переместить в избранное</string>
+    <string name="action_cancel">Отменить</string>
 
 </resources>

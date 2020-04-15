@@ -1,5 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.raskladki.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import ru.barcats.tempo_leader_javanew.R;
 public class RecyclerViewTabAdapter extends
         RecyclerView.Adapter<RecyclerViewTabAdapter.ViewHolder> {
 
-    ArrayList<String> data;
-    OnClickOnLineListener onLineListener;
+    private static final String TAG = "33333";
+    private ArrayList<String> data;
+    private  OnClickOnLineListener onLineListener;
+    private int posItem;
 
 
     public RecyclerViewTabAdapter(ArrayList<String> data) {
@@ -32,6 +35,10 @@ public class RecyclerViewTabAdapter extends
 
     public void setOnClickOnLineListener(OnClickOnLineListener onLineListener){
         this.onLineListener = onLineListener;
+    }
+
+    public void deleteLine(){
+        Log.d(TAG, "%%% RecyclerViewTabAdapter deleteLine posItem = " + posItem);
     }
 
     @NonNull
@@ -52,6 +59,15 @@ public class RecyclerViewTabAdapter extends
             public void onClick(View v) {
                 String fileName = data.get(position);
                 onLineListener.onClickOnLineListener(fileName);
+            }
+        });
+        // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
+        //запоминаем позицию в списке - нужно при удалении, например
+        holder.name_of_rasckadka.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                posItem = position;
+                return false;
             }
         });
     }
