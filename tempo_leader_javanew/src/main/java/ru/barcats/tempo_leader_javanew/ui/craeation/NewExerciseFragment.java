@@ -97,9 +97,10 @@ public class NewExerciseFragment extends Fragment {
                 }
 
                 double resalt = 0;
-                for (float value : timeArray) {
-                    resalt += value * repsArray[1];
+                for (int i = 0; i< timeArray.length; i++) {
+                    resalt += timeArray[i] * repsArray[i];
                 }
+                Log.d(TAG, "  *****  resalt  *****  = " +resalt);
 
                 String fileNameStr = fileName.getText().toString();
                 long fileId = TabFile.getIdFromFileName(database, fileNameStr);
@@ -146,14 +147,14 @@ public class NewExerciseFragment extends Fragment {
                     TabSet.rerangeSetFragments(database, file1_id);
                     Log.d(TAG, "NewExerciseFragment count = " +
                             TabSet.getSetFragmentsCount(database, file1_id));
-                }
 
-                //переходим в темполидер с созданным файлом
-                NavController controller = Navigation.findNavController(view);
-                Bundle bundle = new Bundle();
-                bundle.putString(P.NAME_OF_FILE, fileNameStr);
-                bundle.putInt(P.FROM_ACTIVITY, P.NEW_EXERCISE_ACTIVITY);  //555 - NewExerciseFragment
-                controller.navigate(R.id.action_new_exercise_to_nav_tempoleader, bundle);
+                    //переходим в темполидер с созданным файлом
+                    NavController controller = Navigation.findNavController(view);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(P.NAME_OF_FILE, fileNameStr);
+                    bundle.putInt(P.FROM_ACTIVITY, P.NEW_EXERCISE_ACTIVITY);  //555 - NewExerciseFragment
+                    controller.navigate(R.id.action_new_exercise_to_nav_tempoleader, bundle);
+                }
             }
         });
     }
