@@ -94,11 +94,9 @@ public class TempDBHelper extends SQLiteOpenHelper {
         //***********************************
 
     //Удалить запись в таблице TabFile и все записи в таблице TabSet с id удалённой записи в TabFile
-    public void deleteFileAndSets(long rowId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TabFile.TABLE_NAME, TabFile._ID + "=" + rowId, null);
-        db.delete(TabSet.TABLE_NAME, TabSet.COLUMN_SET_FILE_ID + "=" + rowId, null);
-        db.close();
+    public void deleteFileAndSets(SQLiteDatabase database, long rowId) {
+        database.delete(TabFile.TABLE_NAME, TabFile._ID + "=" + rowId, null);
+        database.delete(TabSet.TABLE_NAME, TabSet.COLUMN_SET_FILE_ID + "=" + rowId, null);
     }
 
     //вывод в лог всех строк базы

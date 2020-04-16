@@ -31,12 +31,19 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
     public ArrayList<String> getRaskladkiList() {
             //получаем все файлы для вкладки темполидер
             data = TabFile.getArrayListFilesWhithType(database,  P.TYPE_TEMPOLEADER);
+        return data;
+    }
 
-//
-//        for (int i = 0; i <20 ; i++) {
-//            data.add("файл " + i*10);
-//        }
-
+    @Override
+    public ArrayList<String> deleteItem(String fileName) {
+        Log.d(TAG, "RaskladkiTempStorageImpl deleteItem");
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileName);
+        //Удаление записи из базы данных
+        tempDBHelper.deleteFileAndSets(database, fileId);
+        Log.d(TAG, "deleteItem удален файл  " +fileName + " id = " +fileId );
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database,  P.TYPE_TEMPOLEADER);
         return data;
     }
 }

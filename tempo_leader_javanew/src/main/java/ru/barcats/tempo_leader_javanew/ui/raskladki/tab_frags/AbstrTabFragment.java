@@ -1,21 +1,21 @@
 package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,15 +27,23 @@ import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdap
 public abstract class AbstrTabFragment extends Fragment {
 
     public static final String TAG = "33333";
-    private int positionItem;
-    private SQLiteDatabase database;
-
-    protected RecyclerView recyclerView;
-    protected RecyclerViewTabAdapter adapter;
     public View view;
 
+    private SQLiteDatabase database;
+    private RecyclerView recyclerView;
+    private RecyclerViewTabAdapter adapter;
+    private String fileName;
+
+    protected String getFileName() {
+        return fileName;
+    }
+    protected RecyclerViewTabAdapter getAdapter(){
+        return adapter;
+    }
+    protected abstract void doDeleteAction(String fileName);
+
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         database = new TempDBHelper(context).getWritableDatabase();
     }
@@ -73,19 +81,17 @@ public abstract class AbstrTabFragment extends Fragment {
         // получаем слушатель щелчков на списке смете работ  - абстрактный метод
         RecyclerViewTabAdapter.OnClickOnLineListener listener =
                 getOnClickOnLineListener();
+        RecyclerViewTabAdapter.OnLongClickLikeListener likeListener =
+                getOnLongClickLikeListener();
         adapter.setOnClickOnLineListener(listener);
+        adapter.setOnLongClickLikeListenerr(likeListener);
         recyclerView.setAdapter(adapter);
-    }
-
-    public RecyclerViewTabAdapter getAdapter(){
-        return adapter;
     }
 
     private RecyclerViewTabAdapter.OnClickOnLineListener getOnClickOnLineListener() {
         return new RecyclerViewTabAdapter.OnClickOnLineListener() {
             @Override
             public void onClickOnLineListener(String fileName) {
-                //TODO у каждого фрагмента свой вариант действий если через диалог
                 //передаём имя файла в пункт назначения - во фрагмент темполидера
                 Bundle bundle = new Bundle();
                 bundle.putString(P.NAME_OF_FILE, fileName);
@@ -96,4 +102,41 @@ public abstract class AbstrTabFragment extends Fragment {
         };
     }
 
+    //слушатель долгих нажатий на списке адаптера для получения имени файла
+    private RecyclerViewTabAdapter.OnLongClickLikeListener getOnLongClickLikeListener() {
+        //устанавливаем слушатель долгих нажатий для передачи имени файла
+        return new RecyclerViewTabAdapter.OnLongClickLikeListener() {
+            @Override
+            public void onLongClickLike(String nameItem) {
+                fileName = nameItem;
+                Log.d(TAG, "// onLongClickLike nameItem = " + nameItem );
+            }
+        };
+    }
+
+    protected void showDeleteDialog(){
+
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
+        deleteDialog.setTitle("Удалить: Вы уверены?");
+        deleteDialog.setPositiveButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //ничего не делаем
+            }
+        });
+        deleteDialog.setNegativeButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //поручаем удаление файла ViewModel
+                doDeleteAction(getFileName());
+            }
+        });
+        if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)){
+            Toast.makeText(getActivity(), "Системный файл. Удаление запрещено.",
+                    Toast.LENGTH_SHORT).show();
+        }else {
+            deleteDialog.show();
+        }
+
+    }
 }

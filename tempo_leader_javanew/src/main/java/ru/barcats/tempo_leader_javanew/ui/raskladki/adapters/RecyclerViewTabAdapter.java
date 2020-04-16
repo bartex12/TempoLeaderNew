@@ -9,8 +9,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.LikeViewModel;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.TabBarLikeFragment;
 
 public class RecyclerViewTabAdapter extends
         RecyclerView.Adapter<RecyclerViewTabAdapter.ViewHolder> {
@@ -18,7 +21,9 @@ public class RecyclerViewTabAdapter extends
     private static final String TAG = "33333";
     private ArrayList<String> data;
     private  OnClickOnLineListener onLineListener;
-    private int posItem;
+    private OnLongClickLikeListener onLongClickLikeListener;
+    private int posItem;  //позиция выбранного элемента списка
+    private String fileName;  //имя выбранного элемента списка
 
 
     public RecyclerViewTabAdapter(ArrayList<String> data) {
@@ -32,13 +37,33 @@ public class RecyclerViewTabAdapter extends
     public interface OnClickOnLineListener{
         void onClickOnLineListener(String nameItem);
     }
-
     public void setOnClickOnLineListener(OnClickOnLineListener onLineListener){
         this.onLineListener = onLineListener;
     }
 
-    public void deleteLine(){
-        Log.d(TAG, "%%% RecyclerViewTabAdapter deleteLine posItem = " + posItem);
+    public interface OnLongClickLikeListener{
+        void onLongClickLike(String nameItem);
+    }
+    public void setOnLongClickLikeListenerr(OnLongClickLikeListener onLongClickLikeListener){
+        this.onLongClickLikeListener = onLongClickLikeListener;
+    }
+
+    public void deleteLine(int idFrag){
+
+        Log.d(TAG, "%%% RecyclerViewTabAdapter deleteLine posItem = " + posItem+
+                " fileName = " + fileName);
+//
+//        switch (idFrag){
+//            case 0:
+//
+//                break;
+//            case 1:
+//
+//                break;
+//            case 2:
+//
+//                break;
+//        }
     }
 
     @NonNull
@@ -57,7 +82,8 @@ public class RecyclerViewTabAdapter extends
         holder.name_of_rasckadka.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fileName = data.get(position);
+                posItem = position;
+                fileName = data.get(position);
                 onLineListener.onClickOnLineListener(fileName);
             }
         });
@@ -67,6 +93,8 @@ public class RecyclerViewTabAdapter extends
             @Override
             public boolean onLongClick(View v) {
                 posItem = position;
+                fileName = data.get(position);
+                onLongClickLikeListener.onLongClickLike(fileName);
                 return false;
             }
         });

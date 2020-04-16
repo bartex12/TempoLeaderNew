@@ -27,9 +27,11 @@ public class SecViewModel extends AndroidViewModel {
         }
         return data;
     }
-
     private void loadData(){
         data.setValue(storage.getRaskladkiList());
     }
 
+    public void loadDataDeleteItem(String fileName){
+        data.setValue(storage.deleteItem(fileName));
+    }
 }

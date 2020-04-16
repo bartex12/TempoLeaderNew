@@ -1,22 +1,20 @@
 package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag;
 
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
 
 public class TabBarLikeFragment extends AbstrTabFragment {
@@ -34,7 +32,7 @@ public class TabBarLikeFragment extends AbstrTabFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
+        Log.d(TAG, "// TabBarLikeFragment onViewCreated // " );
 
         //TODO у каждого фрагмента свой ViewModel
         likeViewModel =
@@ -48,11 +46,16 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 });
     }
 
-    //создаём контекстное меню для списка
+    //создаём контекстное меню для списка - не из hml файла, так как разные пункты на вкладках
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(
+            @NotNull ContextMenu menu, @NotNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.tab_like_menu, menu);
+        menu.add(0, P.DELETE_ACTION_LIKE, 10, "Удалить запись");
+        menu.add(0, P.CHANGE_ACTION_LIKE, 20, "Изменить запись");
+        menu.add(0, P.MOVE_SEC_ACTION_LIKE, 30, "Переместить в секундомер");
+        menu.add(0, P.MOVE_TEMP_ACTION_LIKE, 40, "Переместить в темполидер");
+        menu.add(0, P.CANCEL_ACTION_LIKE, 50, "Отмена");
     }
 
     @Override
@@ -61,32 +64,38 @@ public class TabBarLikeFragment extends AbstrTabFragment {
         return super.onContextItemSelected(item);
     }
 
-    private boolean handleMenuItemClick(MenuItem item) {
+    private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.menu_delete_like: {
-                adapter.deleteLine();
+            case P.DELETE_ACTION_LIKE: {
+                showDeleteDialog();
+                getAdapter().notifyDataSetChanged();
                 break;
             }
-            case R.id.menu_change_like: {
-                return true;
-            }
-            case R.id.menu_move_sec_like: {
+            case P.CHANGE_ACTION_LIKE: {
 
-                return true;
+                break;
             }
-            case R.id.menu_move_temp_like: {
+            case  P.MOVE_SEC_ACTION_LIKE: {
+
+                break;
+            }
+            case P.MOVE_TEMP_ACTION_LIKE: {
                 //TODO
-                return true;
+                break;
             }
-            case R.id.menu_cancel_like: {
+            case  P.CANCEL_ACTION_LIKE: {
                 //TODO
-                return true;
+                break;
             }
-            default:
-                return super.onContextItemSelected(item);
         }
-        return super.onContextItemSelected(item);
     }
+
+    @Override
+    protected void doDeleteAction(String fileName) {
+        //поручаем удаление файла ViewModel
+        likeViewModel.loadDataDeleteItem(getFileName());
+    }
+
 }

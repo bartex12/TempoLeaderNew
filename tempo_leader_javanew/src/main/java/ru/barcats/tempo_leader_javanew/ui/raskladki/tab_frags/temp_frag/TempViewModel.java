@@ -32,4 +32,7 @@ public class TempViewModel extends AndroidViewModel {
     private void loadData(){
         data.setValue(storage.getRaskladkiList());
     }
+
+    public void loadDataDeleteItem(String fileName){
+        data.setValue(storage.deleteItem(fileName));}
 }

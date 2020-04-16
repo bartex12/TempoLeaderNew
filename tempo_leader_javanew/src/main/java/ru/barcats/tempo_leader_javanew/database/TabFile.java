@@ -96,9 +96,7 @@ public class TabFile {
             currentID = -1;
         }
         Log.d(TAG, "getIdFromName currentID = " + currentID);
-        if (cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         return currentID;
     }
     /**

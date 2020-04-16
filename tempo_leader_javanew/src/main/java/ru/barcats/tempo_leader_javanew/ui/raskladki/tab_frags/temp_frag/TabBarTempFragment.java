@@ -49,7 +49,11 @@ public class TabBarTempFragment extends AbstrTabFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.tab_temp_menu, menu);
+        menu.add(0, P.DELETE_ACTION_TEMP, 10, "Удалить запись");
+        menu.add(0, P.CHANGE_ACTION_TEMP, 20, "Изменить запись");
+        menu.add(0, P.MOVE_SEC_ACTION_TEMP, 30, "Переместить в секундомер");
+        menu.add(0, P.MOVE_LIKE_ACTION_TEMP, 40, "Переместить в избранное");
+        menu.add(0, P.CANCEL_ACTION_TEMP, 50, "Отмена");
     }
 
     @Override
@@ -58,32 +62,37 @@ public class TabBarTempFragment extends AbstrTabFragment {
         return super.onContextItemSelected(item);
     }
 
-    private boolean handleMenuItemClick(MenuItem item) {
+    private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.menu_delete_temp: {
-                adapter.deleteLine();
+            case P.DELETE_ACTION_TEMP: {
+                showDeleteDialog();
+                getAdapter().notifyDataSetChanged();
                 break;
             }
-            case R.id.menu_change_temp: {
-                return true;
-            }
-            case R.id.menu_move_sec_temp: {
+            case P.CHANGE_ACTION_TEMP: {
 
-                return true;
+                break;
             }
-            case R.id.menu_move_like_temp: {
+            case P.MOVE_SEC_ACTION_TEMP: {
+
+                break;
+            }
+            case P.MOVE_LIKE_ACTION_TEMP: {
                 //TODO
-                return true;
+                break;
             }
-            case R.id.menu_cancel_temp: {
+            case P.CANCEL_ACTION_TEMP: {
                 //TODO
-                return true;
+                break;
             }
-            default:
-                return super.onContextItemSelected(item);
         }
-        return super.onContextItemSelected(item);
     }
+
+    @Override
+    protected void doDeleteAction(String fileName) {
+        tempViewModel.loadDataDeleteItem(fileName);
+    }
+
 }
