@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 public class TempViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<String>> data;
+    private MutableLiveData<ArrayList<String>> data =new MutableLiveData<>();;
     private RaskladkiTempStorage storage;
 
     public TempViewModel(@NonNull Application application) {
@@ -22,10 +22,7 @@ public class TempViewModel extends AndroidViewModel {
 
 
     public LiveData<ArrayList<String>> getRascladki() {
-        if (data == null) {
-            data = new MutableLiveData<>();
-            loadData();
-        }
+        loadData();
         return data;
     }
 
@@ -34,5 +31,15 @@ public class TempViewModel extends AndroidViewModel {
     }
 
     public void loadDataDeleteItem(String fileName){
-        data.setValue(storage.deleteItem(fileName));}
+        data.setValue(storage.deleteItem(fileName));
+    }
+
+    public void  moveItemInLike(String fileName){
+        data.setValue(storage.moveItemInLike(fileName));
+    }
+
+    public void moveItemInSec(String fileName){
+        data.setValue(storage.moveItemInSec(fileName));
+    }
+
 }

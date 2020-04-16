@@ -5,4 +5,6 @@ import java.util.ArrayList;
 public interface RaskladkiLikeStorage {
    ArrayList<String> getRaskladkiList();
    ArrayList<String> deleteItem(String fileName);
+   ArrayList<String> moveItemInTemp(String fileName);
+   ArrayList<String> moveItemInSec(String fileName);
 }

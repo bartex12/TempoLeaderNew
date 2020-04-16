@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 public class SecViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<String>> data;
+    private MutableLiveData<ArrayList<String>> data = new MutableLiveData<>();
     private RaskladkiSecStorage storage;
 
     public SecViewModel(@NonNull Application application) {
@@ -21,17 +21,16 @@ public class SecViewModel extends AndroidViewModel {
     }
 
     public LiveData<ArrayList<String>> getRascladki() {
-        if (data == null) {
-            data = new MutableLiveData<>();
-            loadData();
-        }
+        loadData();
         return data;
     }
     private void loadData(){
+        //
         data.setValue(storage.getRaskladkiList());
     }
 
     public void loadDataDeleteItem(String fileName){
+        //
         data.setValue(storage.deleteItem(fileName));
     }
 }

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 public class LikeViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<String>> data;
+    private MutableLiveData<ArrayList<String>> data = new MutableLiveData<>();
     private RaskladkiLikeStorage storage;
 
     public LikeViewModel(@NonNull Application application) {
@@ -22,17 +22,26 @@ public class LikeViewModel extends AndroidViewModel {
 
 
     public LiveData<ArrayList<String>> getRascladki() {
-        if (data == null) {
-            data = new MutableLiveData<>();
-            loadData();
-        }
+        loadData();
         return data;
     }
 
-    private void loadData(){
+    private void loadData()
+    {
         data.setValue(storage.getRaskladkiList());
     }
 
-    public void loadDataDeleteItem(String fileName){data.setValue(storage.deleteItem(fileName));}
+    void loadDataDeleteItem(String fileName)
+    {
+        data.setValue(storage.deleteItem(fileName));
+    }
 
+    void  moveItemInTemp(String fileName)
+    {
+        data.setValue(storage.moveItemInTemp(fileName));
+    }
+
+    void moveItemInSec(String fileName){
+        data.setValue(storage.moveItemInSec(fileName));
+    }
 }

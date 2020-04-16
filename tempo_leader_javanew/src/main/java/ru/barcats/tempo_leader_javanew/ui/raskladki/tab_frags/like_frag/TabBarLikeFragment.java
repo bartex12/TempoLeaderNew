@@ -41,7 +41,8 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
-                        initRecycler(strings);
+                        initRecyclerAdapter(strings);
+
                     }
                 });
     }
@@ -78,11 +79,21 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 break;
             }
             case  P.MOVE_SEC_ACTION_LIKE: {
-
+                //поручаем перемещение файла ViewModel
+                likeViewModel.moveItemInSec(getFileName());
+                //обновляем список вкладки после перемещения файла
+                getAdapter().notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case P.MOVE_TEMP_ACTION_LIKE: {
-                //TODO
+                //поручаем перемещение файла ViewModel
+                likeViewModel.moveItemInTemp(getFileName());
+                //обновляем список вкладки после перемещения файла
+                getAdapter().notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case  P.CANCEL_ACTION_LIKE: {
@@ -95,7 +106,7 @@ public class TabBarLikeFragment extends AbstrTabFragment {
     @Override
     protected void doDeleteAction(String fileName) {
         //поручаем удаление файла ViewModel
-        likeViewModel.loadDataDeleteItem(getFileName());
+        likeViewModel.loadDataDeleteItem(fileName);
     }
 
 }

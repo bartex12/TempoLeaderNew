@@ -32,7 +32,7 @@ public class TabBarTempFragment extends AbstrTabFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
+        Log.d(TAG, "// TabBarTempFragment onViewCreated // " );
 
         tempViewModel =
                 ViewModelProviders.of(this).get(TempViewModel.class);
@@ -40,7 +40,7 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
-                        initRecycler(strings);
+                        initRecyclerAdapter(strings);
                     }
                 });
     }
@@ -76,15 +76,23 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 break;
             }
             case P.MOVE_SEC_ACTION_TEMP: {
-
+                //поручаем перемещение файла ViewModel
+                tempViewModel.moveItemInSec(getFileName());
+                //обновляем список вкладки после перемещения файла
+                getAdapter().notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case P.MOVE_LIKE_ACTION_TEMP: {
-                //TODO
-                break;
+                //поручаем перемещение файла ViewModel
+                tempViewModel.moveItemInLike(getFileName());
+                //обновляем список вкладки после перемещения файла
+                getAdapter().notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
             }
             case P.CANCEL_ACTION_TEMP: {
-                //TODO
                 break;
             }
         }
@@ -94,5 +102,4 @@ public class TabBarTempFragment extends AbstrTabFragment {
     protected void doDeleteAction(String fileName) {
         tempViewModel.loadDataDeleteItem(fileName);
     }
-
 }

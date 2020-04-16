@@ -29,7 +29,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
+        Log.d(TAG, "// TabBarSecFragment onViewCreated // " );
 
         secViewModel =
                 ViewModelProviders.of(this).get(SecViewModel.class);
@@ -37,7 +37,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
                     public void onChanged(ArrayList<String> strings) {
-                        initRecycler(strings);
+                        initRecyclerAdapter(strings);
                     }
                 });
 
@@ -92,7 +92,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
     @Override
     protected void doDeleteAction(String fileName) {
         //поручаем удаление файла ViewModel
-        secViewModel.loadDataDeleteItem(getFileName());
+        secViewModel.loadDataDeleteItem(fileName);
     }
 
 }

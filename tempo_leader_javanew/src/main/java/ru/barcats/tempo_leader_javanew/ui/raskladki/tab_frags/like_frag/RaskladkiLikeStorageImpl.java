@@ -2,6 +2,7 @@ package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,6 +31,7 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         data = new ArrayList<>();
     }
 
+    //получаем все файлы для вкладки темполидер
     @Override
     public ArrayList<String> getRaskladkiList() {
         //получаем все файлы для вкладки темполидер
@@ -46,6 +48,33 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         //Удаление записи из базы данных
         tempDBHelper.deleteFileAndSets(database, fileId);
         Log.d(TAG, "deleteDialog удален файл  " +fileName + " id = " +fileId );
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
+        return data;
+    }
+
+    //перемещение из избранного в темполидер
+    @Override
+    public ArrayList<String> moveItemInTemp(String fileName) {
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileName);
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(TabFile.COLUMN_TYPE_FROM, P.TYPE_TEMPOLEADER);
+        database.update(TabFile.TABLE_NAME, updatedValues,
+                TabFile._ID + "=" + fileId, null);
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
+        return data;
+    }
+
+    @Override
+    public ArrayList<String> moveItemInSec(String fileName) {
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileName);
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(TabFile.COLUMN_TYPE_FROM, P.TYPE_TIMEMETER);
+        database.update(TabFile.TABLE_NAME, updatedValues,
+                TabFile._ID + "=" + fileId, null);
         //получаем обновлённый список данных и отдаём его в LiveData
         data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
         return data;

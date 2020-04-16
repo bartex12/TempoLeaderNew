@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.P;
@@ -34,10 +35,17 @@ public abstract class AbstrTabFragment extends Fragment {
     private RecyclerViewTabAdapter adapter;
     private String fileName;
 
-    protected String getFileName() {
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
+
+    private ViewPager viewPager;
+
+    public String getFileName() {
         return fileName;
     }
-    protected RecyclerViewTabAdapter getAdapter(){
+
+    public RecyclerViewTabAdapter getAdapter(){
         return adapter;
     }
     protected abstract void doDeleteAction(String fileName);
@@ -53,6 +61,8 @@ public abstract class AbstrTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_raskladki, container, false);
         recyclerView = view.findViewById(R.id.recycler_rascladki);
+        //находим ViewPager - он нужен для обновления вкладок после перемещения файлов
+        viewPager = container.findViewById(R.id.container_raskladki_activity);
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
         return view;
@@ -71,7 +81,7 @@ public abstract class AbstrTabFragment extends Fragment {
         Log.d(TAG, "// AbstrTabFragment onDestroy // " );
     }
 
-    public void initRecycler(ArrayList<String> strings) {
+    public void initRecyclerAdapter(ArrayList<String> strings) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
@@ -128,10 +138,10 @@ public abstract class AbstrTabFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //поручаем удаление файла ViewModel
-                doDeleteAction(getFileName());
+                doDeleteAction(fileName);
             }
         });
-        if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)){
+        if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
             Toast.makeText(getActivity(), "Системный файл. Удаление запрещено.",
                     Toast.LENGTH_SHORT).show();
         }else {
