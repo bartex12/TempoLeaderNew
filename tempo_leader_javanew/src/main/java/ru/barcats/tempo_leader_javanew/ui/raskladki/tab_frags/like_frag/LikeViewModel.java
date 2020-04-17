@@ -8,16 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+
 
 public class LikeViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<String>> data = new MutableLiveData<>();
+    private MutableLiveData<String> dateTime = new MutableLiveData<>();
     private RaskladkiLikeStorage storage;
+    private DateTimeLikeStorage storageDateTime;
 
     public LikeViewModel(@NonNull Application application) {
         super(application);
         storage = new RaskladkiLikeStorageImpl(application);
+        storageDateTime = new DateTimeLikeStorageImpl(application);
+
     }
 
 
@@ -43,5 +47,14 @@ public class LikeViewModel extends AndroidViewModel {
 
     void moveItemInSec(String fileName){
         data.setValue(storage.moveItemInSec(fileName));
+    }
+
+    public void  doChangeAction(String fileNameOld, String fileNameNew){
+        data.setValue(storage.doChangeAction(fileNameOld, fileNameNew));
+    }
+
+    public String  getDateAndTime(String fileName){
+        dateTime.setValue(storageDateTime.getDateAndTime(fileName));
+        return dateTime.getValue();
     }
 }

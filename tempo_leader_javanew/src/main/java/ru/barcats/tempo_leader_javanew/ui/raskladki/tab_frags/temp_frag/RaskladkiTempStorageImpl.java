@@ -50,7 +50,7 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
 
     @Override
     public ArrayList<String> moveItemInLike(String fileName) {
-        Log.d(TAG, "RaskladkiTempStorageImpl deleteItem");
+        Log.d(TAG, "RaskladkiTempStorageImpl moveItemInLike");
         //получаем id по имени
         long fileId = TabFile.getIdFromFileName(database,fileName);
         ContentValues updatedValues = new ContentValues();
@@ -64,6 +64,7 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
 
     @Override
     public ArrayList<String> moveItemInSec(String fileName) {
+        Log.d(TAG, "RaskladkiTempStorageImpl moveItemInSec");
         //получаем id по имени
         long fileId = TabFile.getIdFromFileName(database,fileName);
         ContentValues updatedValues = new ContentValues();
@@ -72,6 +73,18 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
                 TabFile._ID + "=" + fileId, null);
         //получаем обновлённый список данных и отдаём его в LiveData
         data = TabFile.getArrayListFilesWhithType(database,  P.TYPE_TEMPOLEADER);
+        return data;
+    }
+
+    @Override
+    public ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew) {
+        Log.d(TAG, "RaskladkiTempStorageImpl doChangeAction");
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileNameOld);
+        //изменяем имя файла
+        TabFile.updateFileName(database, fileNameNew, fileId);
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database, P.TYPE_TEMPOLEADER);
         return data;
     }
 }

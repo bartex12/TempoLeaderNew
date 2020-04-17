@@ -14,8 +14,8 @@ public class SecViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<String>> data = new MutableLiveData<>();
     private MutableLiveData<String> dateTime = new MutableLiveData<>();
-    private RaskladkiSecStorage storage;
     private DateTimeSecStorage storageDateTime;
+    private RaskladkiSecStorage storage;
 
     public SecViewModel(@NonNull Application application) {
         super(application);

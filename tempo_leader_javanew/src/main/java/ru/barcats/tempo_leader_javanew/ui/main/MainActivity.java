@@ -162,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
                 menu.findItem(R.id.nav_help).setVisible(false);
                 menu.findItem(R.id.nav_set).setVisible(true);
                 break;
+                default:
+                    menu.findItem(R.id.nav_help).setVisible(true);
+                    menu.findItem(R.id.nav_set).setVisible(true);
+                    break;
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -173,6 +177,4 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
-
-
 }

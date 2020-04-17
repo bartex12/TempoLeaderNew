@@ -9,15 +9,19 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.sec_frag.DateTimeSecStorage;
 
 public class TempViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<String>> data =new MutableLiveData<>();;
     private RaskladkiTempStorage storage;
+    private MutableLiveData<String> dateTime = new MutableLiveData<>();
+    private DateTimeTempStorage storageDateTime;
 
     public TempViewModel(@NonNull Application application) {
         super(application);
         storage = new RaskladkiTempStorageImpl(application);
+        storageDateTime = new DateTimeTempStorageImpl(application);
     }
 
 
@@ -40,6 +44,15 @@ public class TempViewModel extends AndroidViewModel {
 
     public void moveItemInSec(String fileName){
         data.setValue(storage.moveItemInSec(fileName));
+    }
+
+    public String  getDateAndTime(String fileName){
+        dateTime.setValue(storageDateTime.getDateAndTime(fileName));
+        return dateTime.getValue();
+    }
+
+    public void  doChangeAction(String fileNameOld, String fileNameNew){
+        data.setValue(storage.doChangeAction(fileNameOld, fileNameNew));
     }
 
 }

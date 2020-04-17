@@ -70,15 +70,19 @@ public class TabBarLikeFragment extends AbstrTabFragment {
 
         switch (id) {
             case P.DELETE_ACTION_LIKE: {
+                Log.d(TAG, "// TabBarLikeFragment DELETE_ACTION_LIKE getFileName() = " + getFileName());
                 showDeleteDialog();
                 getAdapter().notifyDataSetChanged();
                 break;
             }
             case P.CHANGE_ACTION_LIKE: {
-
+                Log.d(TAG, "// TabBarLikeFragment CHANGE_ACTION_LIKE getFileName() = " + getFileName());
+                showChangeDialog();
+                getAdapter().notifyDataSetChanged();
                 break;
             }
             case  P.MOVE_SEC_ACTION_LIKE: {
+                Log.d(TAG, "// TabBarLikeFragment MOVE_SEC_ACTION_LIKE getFileName() = " + getFileName());
                 //поручаем перемещение файла ViewModel
                 likeViewModel.moveItemInSec(getFileName());
                 //обновляем список вкладки после перемещения файла
@@ -88,6 +92,7 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 break;
             }
             case P.MOVE_TEMP_ACTION_LIKE: {
+                Log.d(TAG, "// TabBarLikeFragment MOVE_TEMP_ACTION_LIKE getFileName() = " + getFileName());
                 //поручаем перемещение файла ViewModel
                 likeViewModel.moveItemInTemp(getFileName());
                 //обновляем список вкладки после перемещения файла
@@ -110,12 +115,13 @@ public class TabBarLikeFragment extends AbstrTabFragment {
 
     @Override
     protected String getDateAndTime(String fileName) {
-        return "";
+        return likeViewModel.getDateAndTime(fileName);
     }
 
     @Override
     protected void doChangeAction(String fileNameOld, String fileNameNew) {
-        //TODO
+        //поручаем удаление файла ViewModel
+        likeViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
 }

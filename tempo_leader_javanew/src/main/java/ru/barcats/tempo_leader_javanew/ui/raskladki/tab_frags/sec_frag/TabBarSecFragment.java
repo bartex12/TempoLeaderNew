@@ -75,32 +75,19 @@ public class TabBarSecFragment extends AbstrTabFragment {
 
         switch (id) {
             case P.DELETE_ACTION_SEC: {
+                Log.d(TAG, "// TabBarSecFragment DELETE_ACTION_SEC getFileName() = " + getFileName());
                 showDeleteDialog();
                 getAdapter().notifyDataSetChanged();
                 break;
             }
             case P.CHANGE_ACTION_SEC: {
                 Log.d(TAG, "// TabBarSecFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
-//                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-//                    Snackbar.make(getRecyclerView(), getResources()
-//                            .getString(R.string.system_file_change),Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.recycler_rascladki).show();
-//                }else {
-//                    //showChangeDialog();
-//                    NavController navController = Navigation.findNavController(view);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(P.NAME_OF_FILE, getFileName());
-//                    //переходим в диалог
-//                    navController.navigate(R.id.action_nav_rascladki_to_dialogChangeFileName, bundle);
-//                }
                 showChangeDialog();
                 getAdapter().notifyDataSetChanged();
-                // обновляем вкладки после перемещения файла
-                //getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case P.MOVE_TEMP_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
+                Log.d(TAG, "// TabBarSecFragment  MOVE_TEMP_ACTION_SEC getFileName() = " + getFileName());
                 if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
                     Snackbar.make(getRecyclerView(), getResources()
                                     .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
@@ -116,7 +103,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
                 break;
             }
             case P.MOVE_LIKE_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
+                Log.d(TAG, "// TabBarSecFragment MOVE_LIKE_ACTION_SEC getFileName() = " + getFileName());
                 if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
                     Snackbar.make(getRecyclerView(), getResources()
                             .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)

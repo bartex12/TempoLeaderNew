@@ -34,6 +34,7 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
     //получаем все файлы для вкладки темполидер
     @Override
     public ArrayList<String> getRaskladkiList() {
+        Log.d(TAG, "RaskladkiLikeStorageImpl getRaskladkiList");
         //получаем все файлы для вкладки темполидер
         data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
         return data;
@@ -56,6 +57,7 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
     //перемещение из избранного в темполидер
     @Override
     public ArrayList<String> moveItemInTemp(String fileName) {
+        Log.d(TAG, "RaskladkiLikeStorageImpl moveItemInTemp");
         //получаем id по имени
         long fileId = TabFile.getIdFromFileName(database,fileName);
         ContentValues updatedValues = new ContentValues();
@@ -69,6 +71,7 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
 
     @Override
     public ArrayList<String> moveItemInSec(String fileName) {
+        Log.d(TAG, "RaskladkiLikeStorageImpl moveItemInSec");
         //получаем id по имени
         long fileId = TabFile.getIdFromFileName(database,fileName);
         ContentValues updatedValues = new ContentValues();
@@ -79,4 +82,18 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
         return data;
     }
+
+    @Override
+    public ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew) {
+        Log.d(TAG, "RaskladkiSecStorageImpl doChangeAction");
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileNameOld);
+        //изменяем имя файла
+        TabFile.updateFileName(database, fileNameNew, fileId);
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database, P.TYPE_LIKE);
+        return data;
+    }
+
+
 }

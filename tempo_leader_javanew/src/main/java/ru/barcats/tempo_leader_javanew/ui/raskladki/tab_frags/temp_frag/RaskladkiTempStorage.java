@@ -7,4 +7,5 @@ public interface RaskladkiTempStorage {
    ArrayList<String> deleteItem(String fileName);
    ArrayList<String> moveItemInLike(String fileName);
    ArrayList<String> moveItemInSec(String fileName);
+   ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew);
 }

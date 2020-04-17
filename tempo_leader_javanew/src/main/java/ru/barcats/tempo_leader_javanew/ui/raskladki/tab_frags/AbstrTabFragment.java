@@ -242,7 +242,7 @@ public abstract class AbstrTabFragment extends Fragment {
         dialog.setCanceledOnTouchOutside(false);
 
         if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, getResources().getString(R.string.system_file),
+            Snackbar.make(recyclerView, getResources().getString(R.string.system_file_change),
                     Snackbar.LENGTH_SHORT).setAnchorView(R.id.recycler_rascladki).show();
         }else {
             dialog.show();
