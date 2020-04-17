@@ -67,6 +67,7 @@ public class DialogSetDelay extends DialogFragment {
                 if (tempDelay){
                     //читаем задержку в строке ввода
                     delay = Integer.parseInt(editTextDelay.getText().toString());
+
                     //находим NavController в диалоге
                     NavController controller =
                             Navigation.findNavController(getParentFragment().getView());

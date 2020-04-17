@@ -36,6 +36,7 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
+import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
 
@@ -124,6 +125,7 @@ public class TempoleaderFragment extends Fragment {
             if ( getArguments().getString(P.NAME_OF_FILE) != null) {
                 //получаем NAME_OF_FILE из аргументов
                 finishFileName = getArguments().getString(P.NAME_OF_FILE,P.FILENAME_OTSECHKI_SEC);
+                timeOfDelay = TabFile.getFileDelayFromTabFile(database,finishFileName);
             }
             if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
                 //считываем значение FROM_ACTIVITY из интента
@@ -134,6 +136,9 @@ public class TempoleaderFragment extends Fragment {
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку
                 if (fromActivity == 777){
                     timeOfDelay = getArguments().getInt(P.ARG_DELAY,6);
+                    long fileId = TabFile.getIdFromFileName(database, finishFileName);
+                    //записываем задержку в базу
+                    TabFile.updateDelay(database,timeOfDelay,fileId);
                 }
             }
         }else {
@@ -187,7 +192,7 @@ public class TempoleaderFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
-                //TODO
+                
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 showSetList(view, dataSets);
@@ -358,18 +363,6 @@ public class TempoleaderFragment extends Fragment {
 
                 //запускаем TimerTask на выполнение с периодом mKvant
                 mTimer.scheduleAtFixedRate(mTimerTask, mKvant,mKvant);
-
-//                //*********************
-//                //запрашиваем задержку у delayViewModel
-//                delayViewModel.getDelay(countMillisDelay).observe(getViewLifecycleOwner(),
-//                        new Observer<Float>() {
-//                            @Override
-//                            public void onChanged(Float delay) {
-//                                countMillisDelay = delay;
-//                                Log.d(TAG, "delayViewModel countMillisDelay = " + delay);
-//                            }
-//                        });
-//                //*****************************
 
                 //выставляем доступность кнопок
                 buttonsEnable (false,true,false);
