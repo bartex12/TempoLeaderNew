@@ -5,14 +5,11 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                        bottomNavigation.setVisibility(View.VISIBLE);
                        break;
                    case R.id.nav_help:
+                   case R.id.nav_change_name:
                    case R.id.nav_home:
                    case R.id.nav_set:
                    case R.id.nav_secundomer:

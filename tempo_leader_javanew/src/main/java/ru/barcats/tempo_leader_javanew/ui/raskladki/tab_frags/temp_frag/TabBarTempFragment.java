@@ -102,4 +102,14 @@ public class TabBarTempFragment extends AbstrTabFragment {
     protected void doDeleteAction(String fileName) {
         tempViewModel.loadDataDeleteItem(fileName);
     }
+
+    @Override
+    protected String getDateAndTime(String fileName) {
+        return "";
+    }
+
+    @Override
+    protected void doChangeAction(String fileNameOld, String fileNameNew) {
+
+    }
 }

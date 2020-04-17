@@ -5,18 +5,27 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
 
 public class TabBarSecFragment extends AbstrTabFragment {
 
+    public static final String TAG = "33333";
     private SecViewModel secViewModel;
+    private View view;
 
     public static TabBarSecFragment newInstance(int numberItem) {
         Bundle args = new Bundle();
@@ -27,10 +36,10 @@ public class TabBarSecFragment extends AbstrTabFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "// TabBarSecFragment onViewCreated // " );
-
+        this.view = view;
         secViewModel =
                 ViewModelProviders.of(this).get(SecViewModel.class);
         secViewModel.getRascladki()
@@ -71,19 +80,59 @@ public class TabBarSecFragment extends AbstrTabFragment {
                 break;
             }
             case P.CHANGE_ACTION_SEC: {
-
+                Log.d(TAG, "// TabBarSecFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
+//                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+//                    Snackbar.make(getRecyclerView(), getResources()
+//                            .getString(R.string.system_file_change),Snackbar.LENGTH_SHORT)
+//                            .setAnchorView(R.id.recycler_rascladki).show();
+//                }else {
+//                    //showChangeDialog();
+//                    NavController navController = Navigation.findNavController(view);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(P.NAME_OF_FILE, getFileName());
+//                    //переходим в диалог
+//                    navController.navigate(R.id.action_nav_rascladki_to_dialogChangeFileName, bundle);
+//                }
+                showChangeDialog();
+                getAdapter().notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                //getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case P.MOVE_TEMP_ACTION_SEC: {
-
+                Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
+                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+                    Snackbar.make(getRecyclerView(), getResources()
+                                    .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
+                                    .setAnchorView(R.id.recycler_rascladki).show();
+                }else {
+                    //поручаем перемещение файла ViewModel
+                    secViewModel.moveItemInTemp(getFileName());
+                    //обновляем список вкладки после перемещения файла
+                    getAdapter().notifyDataSetChanged();
+                    // обновляем вкладки после перемещения файла
+                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+                }
                 break;
             }
             case P.MOVE_LIKE_ACTION_SEC: {
-                //TODO
+                Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
+                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+                    Snackbar.make(getRecyclerView(), getResources()
+                            .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.recycler_rascladki).show();
+                }else {
+                    //поручаем перемещение файла ViewModel
+                    secViewModel.moveItemInLike(getFileName());
+                    //обновляем список вкладки после перемещения файла
+                    getAdapter().notifyDataSetChanged();
+                    // обновляем вкладки после перемещения файла
+                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+                }
+
                 break;
             }
             case P.CANCEL_ACTION_SEC: {
-                //TODO
                 break;
             }
         }
@@ -93,6 +142,17 @@ public class TabBarSecFragment extends AbstrTabFragment {
     protected void doDeleteAction(String fileName) {
         //поручаем удаление файла ViewModel
         secViewModel.loadDataDeleteItem(fileName);
+    }
+
+    @Override
+    protected String getDateAndTime(String fileName) {
+        return secViewModel.getDateAndTime(fileName);
+    }
+
+    @Override
+    protected void doChangeAction(String fileNameOld, String fileNameNew) {
+        //поручаем удаление файла ViewModel
+        secViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
 }

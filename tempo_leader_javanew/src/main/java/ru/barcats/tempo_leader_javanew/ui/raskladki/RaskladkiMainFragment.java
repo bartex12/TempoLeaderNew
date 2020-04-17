@@ -57,29 +57,6 @@ public class RaskladkiMainFragment extends Fragment {
         viewPager = view.findViewById(R.id.container_raskladki_activity);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(0);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-                Log.d(TAG, "// addOnPageChangeListener onPageSelected position = "+ position);
-            switch (position){
-                case 0:
-
-                    break;
-                case 1:
-
-                    break;
-                case 2:
-
-                    break;
-            }
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
 
         TabLayout tabs = view.findViewById(R.id.tabs_raskladki_activity);
         tabs.setTabTextColors(Color.WHITE, Color.GREEN);

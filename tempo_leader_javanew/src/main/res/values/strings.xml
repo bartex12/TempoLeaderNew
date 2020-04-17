@@ -163,5 +163,12 @@
     <string name="action_move_temp">Переместить в темполидер</string>
     <string name="action_move_like">Переместить в избранное</string>
     <string name="action_cancel">Отменить</string>
+    <string name="system_file">Системный файл. Удаление запрещено.</string>
+    <string name="system_file_move">Системный файл. Перемещение запрещено.</string>
+    <string name="system_file_change">Системный файл. Изменение запрещено.</string>
+    <string name="name_file_dialog">Имя файла</string>
+    <string name="date_time">Дата и время записи</string>
+    <string name="addDateTime">Добавить дату и время</string>
+    <string name="action_save">Сохранить</string>
 
 </resources>

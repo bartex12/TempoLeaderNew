@@ -52,7 +52,7 @@ public class DialogSetDelay extends DialogFragment {
         final View view = inflater.inflate(R.layout.set_delay, null);
 
         editTextDelay = view.findViewById(R.id.editTextDelay);
-        editTextDelay.setText( getArguments().getString(P.ARG_DELAY));
+        editTextDelay.setText( getArguments().getString(P.ARG_DELAY)); //получаем из аргументов
         //так как в макете это уже есть, здесь не надо
         //editTextDelay.requestFocus();
         //editTextDelay.setInputType(InputType.TYPE_CLASS_NUMBER);

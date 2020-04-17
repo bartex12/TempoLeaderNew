@@ -21,7 +21,6 @@ public class TempoleaderStorageImpl implements TempoleaderStorage {
 
     @Override
     public ArrayList<DataSet> getDataSet(String fileName) {
-
         //получаем id записи с таким именем
         long fileId = TabFile.getIdFromFileName (database, fileName);
         Log.d(TAG,"TempoleaderStorageImpl  имя =" + fileName + "  Id = " + fileId );

@@ -97,7 +97,6 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 break;
             }
             case  P.CANCEL_ACTION_LIKE: {
-                //TODO
                 break;
             }
         }
@@ -107,6 +106,16 @@ public class TabBarLikeFragment extends AbstrTabFragment {
     protected void doDeleteAction(String fileName) {
         //поручаем удаление файла ViewModel
         likeViewModel.loadDataDeleteItem(fileName);
+    }
+
+    @Override
+    protected String getDateAndTime(String fileName) {
+        return "";
+    }
+
+    @Override
+    protected void doChangeAction(String fileNameOld, String fileNameNew) {
+        //TODO
     }
 
 }

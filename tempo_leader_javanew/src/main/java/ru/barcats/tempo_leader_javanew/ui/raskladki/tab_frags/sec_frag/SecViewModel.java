@@ -13,11 +13,14 @@ import androidx.lifecycle.ViewModel;
 public class SecViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<String>> data = new MutableLiveData<>();
+    private MutableLiveData<String> dateTime = new MutableLiveData<>();
     private RaskladkiSecStorage storage;
+    private DateTimeSecStorage storageDateTime;
 
     public SecViewModel(@NonNull Application application) {
         super(application);
         storage = new RaskladkiSecStorageImpl(application);
+        storageDateTime = new DateTimeSecStorageImpl(application);
     }
 
     public LiveData<ArrayList<String>> getRascladki() {
@@ -33,4 +36,24 @@ public class SecViewModel extends AndroidViewModel {
         //
         data.setValue(storage.deleteItem(fileName));
     }
+
+    public void  moveItemInTemp(String fileName){
+        //
+        data.setValue(storage.moveItemInTemp(fileName));
+    }
+
+    public void  moveItemInLike(String fileName){
+        //
+        data.setValue(storage.moveItemInLike(fileName));
+    }
+
+    public void  doChangeAction(String fileNameOld, String fileNameNew){
+        data.setValue(storage.doChangeAction(fileNameOld, fileNameNew));
+    }
+
+    public String  getDateAndTime(String fileName){
+        dateTime.setValue(storageDateTime.getDateAndTime(fileName));
+        return dateTime.getValue();
+    }
+
 }
