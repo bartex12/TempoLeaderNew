@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +31,7 @@ import androidx.viewpager.widget.ViewPager;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
-import ru.barcats.tempo_leader_javanew.model.DataFile;
+
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.TabBarLikeFragment;
@@ -54,7 +54,7 @@ public abstract class AbstrTabFragment extends Fragment {
     protected abstract String getDateAndTime(String fileName);
     protected abstract void doChangeAction(String fileNameOld, String fileNameNew);
 
-    public RecyclerView getRecyclerView() {
+    protected RecyclerView getRecyclerView() {
         return recyclerView;
     }
 
@@ -64,7 +64,7 @@ public abstract class AbstrTabFragment extends Fragment {
         return view;
     }
 
-    public ViewPager getViewPager() {
+    protected ViewPager getViewPager() {
         return viewPager;
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstrTabFragment extends Fragment {
         return fileName;
     }
 
-    public RecyclerViewTabAdapter getAdapter(){
+    protected RecyclerViewTabAdapter getAdapter(){
         return adapter;
     }
 
