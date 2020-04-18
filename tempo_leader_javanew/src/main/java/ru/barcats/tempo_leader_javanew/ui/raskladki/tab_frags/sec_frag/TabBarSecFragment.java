@@ -5,18 +5,14 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
@@ -49,8 +45,7 @@ public class TabBarSecFragment extends AbstrTabFragment {
                         initRecyclerAdapter(strings);
                     }
                 });
-
-}
+    }
 
     //создаём контекстное меню для списка onCreateContextMenu вызывается один раз
     @Override
@@ -81,22 +76,8 @@ public class TabBarSecFragment extends AbstrTabFragment {
             }
             case P.CHANGE_ACTION_SEC: {
                 Log.d(TAG, "// TabBarSecFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
-//                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-//                    Snackbar.make(getRecyclerView(), getResources()
-//                            .getString(R.string.system_file_change),Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.recycler_rascladki).show();
-//                }else {
-//                    //showChangeDialog();
-//                    NavController navController = Navigation.findNavController(view);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(P.NAME_OF_FILE, getFileName());
-//                    //переходим в диалог
-//                    navController.navigate(R.id.action_nav_rascladki_to_dialogChangeFileName, bundle);
-//                }
                 showChangeDialog();
                 getAdapter().notifyDataSetChanged();
-                // обновляем вкладки после перемещения файла
-                //getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
             }
             case P.MOVE_TEMP_ACTION_SEC: {

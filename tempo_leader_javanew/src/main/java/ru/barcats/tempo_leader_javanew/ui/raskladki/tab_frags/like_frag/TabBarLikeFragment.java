@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +32,6 @@ public class TabBarLikeFragment extends AbstrTabFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "// TabBarLikeFragment onViewCreated // " );
 
-        //TODO у каждого фрагмента свой ViewModel
         likeViewModel =
                 ViewModelProviders.of(this).get(LikeViewModel.class);
         likeViewModel.getRascladki()

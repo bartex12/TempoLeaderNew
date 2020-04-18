@@ -10,11 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,6 +34,9 @@ import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.TabBarLikeFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.sec_frag.TabBarSecFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.TabBarTempFragment;
 
 public abstract class AbstrTabFragment extends Fragment {
 
@@ -88,7 +89,19 @@ public abstract class AbstrTabFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_rascladki);
         //находим ViewPager - он нужен для обновления вкладок после перемещения файлов
         viewPager = container.findViewById(R.id.container_raskladki_activity);
-        //объявляем о регистрации контекстного меню
+
+        int position;
+       if(this instanceof TabBarSecFragment){
+           position = 0;
+       }else if(this instanceof TabBarTempFragment){
+           position = 1;
+       }else if(this instanceof TabBarLikeFragment){
+           position = 2;
+       }else {
+           position = 0;
+       }
+        Log.d(TAG, "// AbstrTabFragment onCreateView position = " + position);
+           //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
         return view;
     }
