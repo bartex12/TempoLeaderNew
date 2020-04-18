@@ -135,6 +135,9 @@ public class TempoleaderFragment extends Fragment {
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку
                 if (fromActivity == 777){
                     timeOfDelay = getArguments().getInt(P.ARG_DELAY,6);
+                    long fileId = TabFile.getIdFromFileName(database, finishFileName);
+                    //записываем задержку в базу
+                    TabFile.updateDelay(database,timeOfDelay,fileId);
                 }
             }
         }else {
