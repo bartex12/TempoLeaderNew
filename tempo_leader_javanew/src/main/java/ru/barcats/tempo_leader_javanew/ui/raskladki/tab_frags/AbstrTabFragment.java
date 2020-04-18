@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,8 +98,7 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
         }
         Log.d(TAG, "//// AbstrTabFragment onViewCreated tabType = " + tabType);
 
-        viewModel =
-                ViewModelProviders.of(this).get(TabViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(TabViewModel.class);
         viewModel.getRascladki(tabType)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override
