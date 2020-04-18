@@ -34,6 +34,9 @@ import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.SectionsPagerAdapter;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.TabBarLikeFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.sec_frag.TabBarSecFragment;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.TabBarTempFragment;
 
 
 public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.onGetPositionListener {
@@ -60,22 +63,6 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
         Log.d(TAG, "//***// AbstrTabFragment position =" +position);
     }
 
-//    @Override
-//    public void onGetPosition(int position) {
-//        switch (position){
-////                    case 0:
-////                    tabType = P.TYPE_TIMEMETER;
-////                    break;
-////                    case 1:
-////                    tabType = P.TYPE_TEMPOLEADER;
-////                    break;
-////                    case 2:
-////                        tabType = P.TYPE_LIKE;
-////                        break;
-//                }
-//        Log.d(TAG, "//***// AbstrTabFragment tabType =" +tabType);
-//    }
-
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
@@ -101,22 +88,15 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
 
-        SectionsPagerAdapter pagerAdapter = (SectionsPagerAdapter)viewPager.getAdapter();
-        int positionTab =  pagerAdapter.getPosition();
-        Log.d(TAG, "// AbstrTabFragment onViewCreated positionTab = " + positionTab);
-        int position = viewPager.getCurrentItem();
-        Log.d(TAG, "//// AbstrTabFragment onViewCreated position = " + position);
-        switch (position){
-            case 0:
-                tabType = P.TYPE_TIMEMETER;
-                break;
-            case 1:
-                tabType = P.TYPE_TEMPOLEADER;
-                break;
-            case 2:
-                tabType = P.TYPE_LIKE;
-                break;
+        if (this instanceof TabBarSecFragment){
+            tabType = P.TYPE_TIMEMETER;
+        }else  if (this instanceof TabBarTempFragment){
+            tabType = P.TYPE_TEMPOLEADER;
+        }else  if (this instanceof TabBarLikeFragment){
+            tabType = P.TYPE_LIKE;
         }
+        Log.d(TAG, "//// AbstrTabFragment onViewCreated tabType = " + tabType);
+
         viewModel =
                 ViewModelProviders.of(this).get(TabViewModel.class);
         viewModel.getRascladki(tabType)
@@ -196,7 +176,7 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
         }
     }
 
-    public void initRecyclerAdapter(ArrayList<String> strings) {
+    private void initRecyclerAdapter(ArrayList<String> strings) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
@@ -239,7 +219,7 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
         };
     }
 
-    protected void showDeleteDialog(){
+    private void showDeleteDialog(){
 
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setTitle("Удалить: Вы уверены?");
@@ -268,7 +248,7 @@ public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.
     //диалог изменения имени файла через AlertDialog.Builder - чтобы было плавающее окно
     //если делать через Navigation? окно будет просто фрагмент а не диалог
     //возможно нужно попробовать активность в диалоговом режиме
-    protected void  showChangeDialog(){
+    private void  showChangeDialog(){
         final AlertDialog.Builder changeDialog = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View viewDialog = inflater.inflate(R.layout.fragment_dialog_chahge_name, null);
