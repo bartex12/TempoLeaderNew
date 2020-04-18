@@ -79,4 +79,16 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         data = TabFile.getArrayListFilesWhithType(database,P.TYPE_LIKE);
         return data;
     }
+
+    @Override
+    public ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew) {
+        Log.d(TAG, "RaskladkiSecStorageImpl doChangeAction");
+        //получаем id по имени
+        long fileId = TabFile.getIdFromFileName(database,fileNameOld);
+        //изменяем имя файла
+        TabFile.updateFileName(database, fileNameNew, fileId);
+        //получаем обновлённый список данных и отдаём его в LiveData
+        data = TabFile.getArrayListFilesWhithType(database, P.TYPE_LIKE);
+        return data;
+    }
 }

@@ -75,7 +75,8 @@ public class TabBarLikeFragment extends AbstrTabFragment {
                 break;
             }
             case P.CHANGE_ACTION_LIKE: {
-
+                showChangeDialog();
+                getAdapter().notifyDataSetChanged();
                 break;
             }
             case  P.MOVE_SEC_ACTION_LIKE: {
@@ -108,14 +109,15 @@ public class TabBarLikeFragment extends AbstrTabFragment {
         likeViewModel.loadDataDeleteItem(fileName);
     }
 
-    @Override
+        @Override
     protected String getDateAndTime(String fileName) {
-        return "";
+        return likeViewModel.getDateAndTime(fileName);
     }
 
     @Override
     protected void doChangeAction(String fileNameOld, String fileNameNew) {
-        //TODO
+        //поручаем удаление файла ViewModel
+        likeViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
 }

@@ -72,7 +72,8 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 break;
             }
             case P.CHANGE_ACTION_TEMP: {
-
+                showChangeDialog();
+                getAdapter().notifyDataSetChanged();
                 break;
             }
             case P.MOVE_SEC_ACTION_TEMP: {
@@ -103,13 +104,15 @@ public class TabBarTempFragment extends AbstrTabFragment {
         tempViewModel.loadDataDeleteItem(fileName);
     }
 
-    @Override
+        @Override
     protected String getDateAndTime(String fileName) {
-        return "";
+        return tempViewModel.getDateAndTime(fileName);
     }
 
     @Override
     protected void doChangeAction(String fileNameOld, String fileNameNew) {
-
+        //поручаем удаление файла ViewModel
+        tempViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
+
 }
