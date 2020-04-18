@@ -66,6 +66,14 @@ public class TabFile {
     }
 
     //Метод для изменения имени файла
+    public static void updateDelay(SQLiteDatabase database, int delay, long fileId) {
+
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(COLUMN_DELAY, delay);
+        database.update(TABLE_NAME, updatedValues,_ID + "=" + fileId, null);
+    }
+
+    //Метод для изменения имени файла
     public static void updateFileName(SQLiteDatabase database, String nameFile, long fileId) {
 
         ContentValues updatedValues = new ContentValues();
