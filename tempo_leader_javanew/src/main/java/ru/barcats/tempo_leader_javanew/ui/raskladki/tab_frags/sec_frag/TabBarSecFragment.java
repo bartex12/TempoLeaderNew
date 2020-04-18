@@ -35,22 +35,22 @@ public class TabBarSecFragment extends AbstrTabFragment {
         return fragment;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// TabBarSecFragment onViewCreated // " );
-        this.view = view;
-        secViewModel =
-                ViewModelProviders.of(this).get(SecViewModel.class);
-        secViewModel.getRascladki()
-                .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-                    @Override
-                    public void onChanged(ArrayList<String> strings) {
-                        initRecyclerAdapter(strings);
-                    }
-                });
-
-}
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        Log.d(TAG, "// TabBarSecFragment onViewCreated // " );
+//        this.view = view;
+//        secViewModel =
+//                ViewModelProviders.of(this).get(SecViewModel.class);
+//        secViewModel.getRascladki()
+//                .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+//                    @Override
+//                    public void onChanged(ArrayList<String> strings) {
+//                        initRecyclerAdapter(strings);
+//                    }
+//                });
+//
+//}
 
     //создаём контекстное меню для списка onCreateContextMenu вызывается один раз
     @Override
@@ -61,85 +61,88 @@ public class TabBarSecFragment extends AbstrTabFragment {
         menu.add(0, P.CHANGE_ACTION_SEC, 20, "Изменить запись");
         menu.add(0, P.MOVE_TEMP_ACTION_SEC, 30, "Переместить в темполидер");
         menu.add(0, P.MOVE_LIKE_ACTION_SEC, 40, "Переместить в избранное");
-        menu.add(0, P.CANCEL_ACTION_SEC, 50, "Отмена");
     }
 
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        handleMenuItemClick(item);
-        return super.onContextItemSelected(item);
-    }
+//    @Override
+//    public boolean onContextItemSelected(@NonNull MenuItem item) {
+//        handleMenuItemClick(item);
+//        return super.onContextItemSelected(item);
+//    }
+//
+//    private void handleMenuItemClick(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case P.DELETE_ACTION_SEC: {
+//                Log.d(TAG, "// TabBarSecFragment DELETE_ACTION_SEC getFileName() = " + getFileName());
+//                showDeleteDialog();
+//                getAdapter().notifyDataSetChanged();
+//                break;
+//            }
+//            case P.CHANGE_ACTION_SEC: {
+//                Log.d(TAG, "// TabBarSecFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
+//                showChangeDialog();
+//                getAdapter().notifyDataSetChanged();
+//                break;
+//            }
+//            case P.MOVE_TEMP_ACTION_SEC: {
+//                Log.d(TAG, "// TabBarSecFragment  MOVE_TEMP_ACTION_SEC getFileName() = " + getFileName());
+//                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+//                    Snackbar.make(getRecyclerView(), getResources()
+//                                    .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
+//                                    .setAnchorView(R.id.recycler_rascladki).show();
+//                }else {
+//                    //поручаем перемещение файла ViewModel
+//                    secViewModel.moveItemInTemp(getFileName());
+//                    //обновляем список вкладки после перемещения файла
+//                    getAdapter().notifyDataSetChanged();
+//                    // обновляем вкладки после перемещения файла
+//                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+//                }
+//                break;
+//            }
+//            case P.MOVE_LIKE_ACTION_SEC: {
+//                Log.d(TAG, "// TabBarSecFragment MOVE_LIKE_ACTION_SEC getFileName() = " + getFileName());
+//                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+//                    Snackbar.make(getRecyclerView(), getResources()
+//                            .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
+//                            .setAnchorView(R.id.recycler_rascladki).show();
+//                }else {
+//                    //поручаем перемещение файла ViewModel
+//                    secViewModel.moveItemInLike(getFileName());
+//                    //обновляем список вкладки после перемещения файла
+//                    getAdapter().notifyDataSetChanged();
+//                    // обновляем вкладки после перемещения файла
+//                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+//                }
+//
+//                break;
+//            }
+//            case P.CANCEL_ACTION_SEC: {
+//                break;
+//            }
+//        }
+//    }
 
-    private void handleMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case P.DELETE_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment DELETE_ACTION_SEC getFileName() = " + getFileName());
-                showDeleteDialog();
-                getAdapter().notifyDataSetChanged();
-                break;
-            }
-            case P.CHANGE_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
-                showChangeDialog();
-                getAdapter().notifyDataSetChanged();
-                break;
-            }
-            case P.MOVE_TEMP_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment  MOVE_TEMP_ACTION_SEC getFileName() = " + getFileName());
-                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-                    Snackbar.make(getRecyclerView(), getResources()
-                                    .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
-                                    .setAnchorView(R.id.recycler_rascladki).show();
-                }else {
-                    //поручаем перемещение файла ViewModel
-                    secViewModel.moveItemInTemp(getFileName());
-                    //обновляем список вкладки после перемещения файла
-                    getAdapter().notifyDataSetChanged();
-                    // обновляем вкладки после перемещения файла
-                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-                }
-                break;
-            }
-            case P.MOVE_LIKE_ACTION_SEC: {
-                Log.d(TAG, "// TabBarSecFragment MOVE_LIKE_ACTION_SEC getFileName() = " + getFileName());
-                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-                    Snackbar.make(getRecyclerView(), getResources()
-                            .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.recycler_rascladki).show();
-                }else {
-                    //поручаем перемещение файла ViewModel
-                    secViewModel.moveItemInLike(getFileName());
-                    //обновляем список вкладки после перемещения файла
-                    getAdapter().notifyDataSetChanged();
-                    // обновляем вкладки после перемещения файла
-                    getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-                }
-
-                break;
-            }
-            case P.CANCEL_ACTION_SEC: {
-                break;
-            }
-        }
-    }
-
-    @Override
-    protected void doDeleteAction(String fileName) {
-        //поручаем удаление файла ViewModel
-        secViewModel.loadDataDeleteItem(fileName);
-    }
-
-    @Override
-    protected String getDateAndTime(String fileName) {
-        return secViewModel.getDateAndTime(fileName);
-    }
-
-    @Override
-    protected void doChangeAction(String fileNameOld, String fileNameNew) {
-        //поручаем удаление файла ViewModel
-        secViewModel.doChangeAction(fileNameOld, fileNameNew);
-    }
-
+//    @Override
+//    protected void doDeleteAction(String fileName) {
+//        //поручаем удаление файла ViewModel
+//        secViewModel.loadDataDeleteItem(fileName);
+//    }
+//
+//    @Override
+//    protected void doDeleteAction(String fileName, String tabType) {
+//
+//    }
+//
+//    @Override
+//    protected String getDateAndTime(String fileName) {
+//        return secViewModel.getDateAndTime(fileName);
+//    }
+//
+//    @Override
+//    protected void doChangeAction(String fileNameOld, String fileNameNew) {
+//        //поручаем удаление файла ViewModel
+//        secViewModel.doChangeAction(fileNameOld, fileNameNew);
+//    }
 }

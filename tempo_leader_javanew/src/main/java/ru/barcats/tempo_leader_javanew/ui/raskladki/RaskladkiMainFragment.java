@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import ru.barcats.tempo_leader_javanew.R;
+import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.SectionsPagerAdapter;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
@@ -53,8 +54,12 @@ public class RaskladkiMainFragment extends Fragment {
         pagerAdapter.addFragment(secFrag, "Секундомер" );
         pagerAdapter.addFragment(tempFrag, "Темполидер" );
         pagerAdapter.addFragment(likeFrag, "Избранное" );
+        SectionsPagerAdapter.onGetPositionListener positionListener =
+                getOnGetPositionListener();
+        pagerAdapter.setPositionListener(positionListener);
 
         viewPager = view.findViewById(R.id.container_raskladki_activity);
+
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(0);
 
@@ -64,6 +69,16 @@ public class RaskladkiMainFragment extends Fragment {
 
         //initFab(view);
 
+    }
+
+    //слушатель позиции вкладки
+    private SectionsPagerAdapter.onGetPositionListener getOnGetPositionListener() {
+        return new SectionsPagerAdapter.onGetPositionListener() {
+            @Override
+            public void onGetPosition(int position) {
+                Log.d(TAG, "//***// RaskladkiMainFragment position =" +position);
+            }
+        };
     }
 
     private void initFab(View view) {

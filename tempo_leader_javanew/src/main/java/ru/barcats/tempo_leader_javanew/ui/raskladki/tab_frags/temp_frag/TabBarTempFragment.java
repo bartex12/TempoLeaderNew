@@ -29,21 +29,21 @@ public class TabBarTempFragment extends AbstrTabFragment {
         return fragment;
     }
 
-    @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "// TabBarTempFragment onViewCreated // " );
-
-        tempViewModel =
-                ViewModelProviders.of(this).get(TempViewModel.class);
-        tempViewModel.getRascladki()
-                .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-                    @Override
-                    public void onChanged(ArrayList<String> strings) {
-                        initRecyclerAdapter(strings);
-                    }
-                });
-    }
+//    @Override
+//    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        Log.d(TAG, "// TabBarTempFragment onViewCreated // " );
+//
+//        tempViewModel =
+//                ViewModelProviders.of(this).get(TempViewModel.class);
+//        tempViewModel.getRascladki()
+//                .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+//                    @Override
+//                    public void onChanged(ArrayList<String> strings) {
+//                        initRecyclerAdapter(strings);
+//                    }
+//                });
+//    }
 
     //создаём контекстное меню для списка
     @Override
@@ -53,69 +53,66 @@ public class TabBarTempFragment extends AbstrTabFragment {
         menu.add(0, P.CHANGE_ACTION_TEMP, 20, "Изменить запись");
         menu.add(0, P.MOVE_SEC_ACTION_TEMP, 30, "Переместить в секундомер");
         menu.add(0, P.MOVE_LIKE_ACTION_TEMP, 40, "Переместить в избранное");
-        menu.add(0, P.CANCEL_ACTION_TEMP, 50, "Отмена");
     }
 
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        handleMenuItemClick(item);
-        return super.onContextItemSelected(item);
-    }
+//    @Override
+//    public boolean onContextItemSelected(@NonNull MenuItem item) {
+//        handleMenuItemClick(item);
+//        return super.onContextItemSelected(item);
+//    }
+//
+//    private void handleMenuItemClick(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case P.DELETE_ACTION_TEMP: {
+//                Log.d(TAG, "// TabBarTempFragment DELETE_ACTION_TEMP getFileName() = " + getFileName());
+//                showDeleteDialog();
+//                getAdapter().notifyDataSetChanged();
+//                break;
+//            }
+//            case P.CHANGE_ACTION_TEMP: {
+//                Log.d(TAG, "// TabBarTempFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
+//                showChangeDialog();
+//                getAdapter().notifyDataSetChanged();
+//                break;
+//            }
+//            case P.MOVE_SEC_ACTION_TEMP: {
+//                Log.d(TAG, "// TabBarTempFragment MOVE_SEC_ACTION_TEMP getFileName() = " + getFileName());
+//                //поручаем перемещение файла ViewModel
+//                tempViewModel.moveItemInSec(getFileName());
+//                //обновляем список вкладки после перемещения файла
+//                getAdapter().notifyDataSetChanged();
+//                // обновляем вкладки после перемещения файла
+//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+//                break;
+//            }
+//            case P.MOVE_LIKE_ACTION_TEMP: {
+//                Log.d(TAG, "// TabBarTempFragment MOVE_LIKE_ACTION_TEMP getFileName() = " + getFileName());
+//                //поручаем перемещение файла ViewModel
+//                tempViewModel.moveItemInLike(getFileName());
+//                //обновляем список вкладки после перемещения файла
+//                getAdapter().notifyDataSetChanged();
+//                // обновляем вкладки после перемещения файла
+//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void doDeleteAction(String fileName, String tabType) {
+//        tempViewModel.loadDataDeleteItem(fileName, tabType);
+//    }
+//
+//    @Override
+//    protected String getDateAndTime(String fileName) {
+//        return tempViewModel.getDateAndTime(fileName);
+//    }
+//
+//    @Override
+//    protected void doChangeAction(String fileNameOld, String fileNameNew) {
+//        //поручаем удаление файла ViewModel
+//        tempViewModel.doChangeAction(fileNameOld, fileNameNew);
+//    }
 
-    private void handleMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case P.DELETE_ACTION_TEMP: {
-                Log.d(TAG, "// TabBarTempFragment DELETE_ACTION_TEMP getFileName() = " + getFileName());
-                showDeleteDialog();
-                getAdapter().notifyDataSetChanged();
-                break;
-            }
-            case P.CHANGE_ACTION_TEMP: {
-                Log.d(TAG, "// TabBarTempFragment CHANGE_ACTION_SEC getFileName() = " + getFileName());
-                showChangeDialog();
-                getAdapter().notifyDataSetChanged();
-                break;
-            }
-            case P.MOVE_SEC_ACTION_TEMP: {
-                Log.d(TAG, "// TabBarTempFragment MOVE_SEC_ACTION_TEMP getFileName() = " + getFileName());
-                //поручаем перемещение файла ViewModel
-                tempViewModel.moveItemInSec(getFileName());
-                //обновляем список вкладки после перемещения файла
-                getAdapter().notifyDataSetChanged();
-                // обновляем вкладки после перемещения файла
-                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-                break;
-            }
-            case P.MOVE_LIKE_ACTION_TEMP: {
-                Log.d(TAG, "// TabBarTempFragment MOVE_LIKE_ACTION_TEMP getFileName() = " + getFileName());
-                //поручаем перемещение файла ViewModel
-                tempViewModel.moveItemInLike(getFileName());
-                //обновляем список вкладки после перемещения файла
-                getAdapter().notifyDataSetChanged();
-                // обновляем вкладки после перемещения файла
-                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-            }
-            case P.CANCEL_ACTION_TEMP: {
-                break;
-            }
-        }
-    }
-
-    @Override
-    protected void doDeleteAction(String fileName) {
-        tempViewModel.loadDataDeleteItem(fileName);
-    }
-
-    @Override
-    protected String getDateAndTime(String fileName) {
-        return tempViewModel.getDateAndTime(fileName);
-    }
-
-    @Override
-    protected void doChangeAction(String fileNameOld, String fileNameNew) {
-        //поручаем удаление файла ViewModel
-        tempViewModel.doChangeAction(fileNameOld, fileNameNew);
-    }
 }

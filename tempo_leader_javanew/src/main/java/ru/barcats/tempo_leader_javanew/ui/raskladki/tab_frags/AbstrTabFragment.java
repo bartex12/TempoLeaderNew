@@ -7,25 +7,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,29 +31,23 @@ import androidx.viewpager.widget.ViewPager;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
-import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
+import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.SectionsPagerAdapter;
 
-public abstract class AbstrTabFragment extends Fragment {
+
+public  class AbstrTabFragment extends Fragment implements SectionsPagerAdapter.onGetPositionListener {
 
     public static final String TAG = "33333";
     private View view;
-
     private SQLiteDatabase database;
     private RecyclerView recyclerView;
     private RecyclerViewTabAdapter adapter;
     private String fileName;
     private ViewPager viewPager;
     private Dialog dialog;
-
-    protected abstract void doDeleteAction(String fileName);
-    protected abstract String getDateAndTime(String fileName);
-    protected abstract void doChangeAction(String fileNameOld, String fileNameNew);
-
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
+    private TabViewModel viewModel;
+    private String tabType;
 
     @Nullable
     @Override
@@ -63,27 +55,38 @@ public abstract class AbstrTabFragment extends Fragment {
         return view;
     }
 
-    public ViewPager getViewPager() {
-        return viewPager;
+    @Override
+    public void onGetPosition(int position) {
+        Log.d(TAG, "//***// AbstrTabFragment position =" +position);
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public RecyclerViewTabAdapter getAdapter(){
-        return adapter;
-    }
+//    @Override
+//    public void onGetPosition(int position) {
+//        switch (position){
+////                    case 0:
+////                    tabType = P.TYPE_TIMEMETER;
+////                    break;
+////                    case 1:
+////                    tabType = P.TYPE_TEMPOLEADER;
+////                    break;
+////                    case 2:
+////                        tabType = P.TYPE_LIKE;
+////                        break;
+//                }
+//        Log.d(TAG, "//***// AbstrTabFragment tabType =" +tabType);
+//    }
 
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
+        Log.d(TAG, "// AbstrTabFragment onAttach // " );
         database = new TempDBHelper(context).getWritableDatabase();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "// AbstrTabFragment onCreateView // " );
         view = inflater.inflate(R.layout.fragment_raskladki, container, false);
         recyclerView = view.findViewById(R.id.recycler_rascladki);
         //находим ViewPager - он нужен для обновления вкладок после перемещения файлов
@@ -91,6 +94,38 @@ public abstract class AbstrTabFragment extends Fragment {
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "// AbstrTabFragment onViewCreated // " );
+
+        SectionsPagerAdapter pagerAdapter = (SectionsPagerAdapter)viewPager.getAdapter();
+        int positionTab =  pagerAdapter.getPosition();
+        Log.d(TAG, "// AbstrTabFragment onViewCreated positionTab = " + positionTab);
+        int position = viewPager.getCurrentItem();
+        Log.d(TAG, "//// AbstrTabFragment onViewCreated position = " + position);
+        switch (position){
+            case 0:
+                tabType = P.TYPE_TIMEMETER;
+                break;
+            case 1:
+                tabType = P.TYPE_TEMPOLEADER;
+                break;
+            case 2:
+                tabType = P.TYPE_LIKE;
+                break;
+        }
+        viewModel =
+                ViewModelProviders.of(this).get(TabViewModel.class);
+        viewModel.getRascladki(tabType)
+                .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+                    @Override
+                    public void onChanged(ArrayList<String> strings) {
+                        initRecyclerAdapter(strings);
+                    }
+                });
     }
 
     @Override
@@ -104,6 +139,61 @@ public abstract class AbstrTabFragment extends Fragment {
         super.onDestroy();
         database.close();
         Log.d(TAG, "// AbstrTabFragment onDestroy // " );
+    }
+
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.CANCEL_ACTION, 50, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case P.DELETE_ACTION_TEMP: {
+                Log.d(TAG, "// AbstrTabFragment DELETE_ACTION_TEMP getFileName() = " + fileName);
+                showDeleteDialog();
+                adapter.notifyDataSetChanged();
+                break;
+            }
+            case P.CHANGE_ACTION_TEMP: {
+                Log.d(TAG, "// AbstrTabFragment CHANGE_ACTION_SEC fileName = " +
+                        fileName + "viewPager.getCurrentItem() =" + viewPager.getCurrentItem());
+                showChangeDialog();
+                adapter.notifyDataSetChanged();
+                break;
+            }
+            case P.MOVE_SEC_ACTION_TEMP: {
+                Log.d(TAG, "// AbstrTabFragment MOVE_SEC_ACTION_TEMP getFileName() = " + fileName);
+                //поручаем перемещение файла ViewModel
+                viewModel.moveFromTo(fileName, tabType, P.TYPE_TIMEMETER);
+                //обновляем список вкладки после перемещения файла
+                adapter.notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                viewPager.getAdapter().notifyDataSetChanged(); //работает !
+                break;
+            }
+            case P.MOVE_LIKE_ACTION_TEMP: {
+                Log.d(TAG, "// AbstrTabFragment MOVE_LIKE_ACTION_TEMP gfileName = " + fileName);
+                //поручаем перемещение файла ViewModel
+                viewModel.moveFromTo(fileName,tabType, P.TYPE_LIKE);
+                //обновляем список вкладки после перемещения файла
+                adapter.notifyDataSetChanged();
+                // обновляем вкладки после перемещения файла
+                viewPager.getAdapter().notifyDataSetChanged(); //работает !
+            }
+            case P.CANCEL_ACTION: {
+                break;
+            }
+        }
     }
 
     public void initRecyclerAdapter(ArrayList<String> strings) {
@@ -163,7 +253,8 @@ public abstract class AbstrTabFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //поручаем удаление файла ViewModel
-                doDeleteAction(fileName);
+                //doDeleteAction(fileName);
+                viewModel.loadDataDeleteItem(fileName, tabType);
             }
         });
         if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
@@ -187,7 +278,8 @@ public abstract class AbstrTabFragment extends Fragment {
         name.setInputType(InputType.TYPE_CLASS_TEXT);
         name.setText(fileName);  //пишем имя файла
 
-        String min = getDateAndTime(fileName);  //абстр класс
+        //String min = getDateAndTime(fileName);  //абстр класс
+        String min = viewModel.getDateAndTime(fileName);
         final EditText dateAndTime = viewDialog.findViewById(R.id.editTextDateAndTime);
         dateAndTime.setText(min);
         dateAndTime.setEnabled(false);
@@ -222,7 +314,9 @@ public abstract class AbstrTabFragment extends Fragment {
                     //если имя не повторяется, оно не пустое и не системный файл то
                 } else {
                     //поручаем смену имени ViewModel
-                    doChangeAction(fileName, newfileName);
+                    //doChangeAction(fileName, newfileName); // абстр класс
+                    //поручаем удаление файла ViewModel
+                   viewModel.doChangeAction(fileName, newfileName, tabType);
                     dialog.dismiss();  //закрывает только диалог
                 }
             }
@@ -248,5 +342,7 @@ public abstract class AbstrTabFragment extends Fragment {
             dialog.show();
         }
     }
+
+
 
 }

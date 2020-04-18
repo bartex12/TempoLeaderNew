@@ -149,7 +149,7 @@ public class P {
 
     public static final int DELETE_ACTION_TEMP = 11;
     public static final int CHANGE_ACTION_TEMP = 12;
-    public static final int CANCEL_ACTION_TEMP = 13;
+    public static final int CANCEL_ACTION = 13;
     public static final int DETAIL_ACTION_TEMP = 14;
     public static final int MOVE_LIKE_ACTION_TEMP = 15;
     public static final int MOVE_SEC_ACTION_TEMP = 16;

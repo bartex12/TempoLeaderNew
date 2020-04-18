@@ -34,8 +34,8 @@ public class TempViewModel extends AndroidViewModel {
         data.setValue(storage.getRaskladkiList());
     }
 
-    public void loadDataDeleteItem(String fileName){
-        data.setValue(storage.deleteItem(fileName));
+    public void loadDataDeleteItem(String fileName, String tabType){
+        data.setValue(storage.deleteItem(fileName, tabType));
     }
 
     public void  moveItemInLike(String fileName){

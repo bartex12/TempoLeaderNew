@@ -192,7 +192,7 @@ public class TempoleaderFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
-                
+
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 showSetList(view, dataSets);
@@ -238,6 +238,7 @@ public class TempoleaderFragment extends Fragment {
         showTotalValues(mTimeOfSet,mTotalReps, mKvant);
     }
 
+    
     @Override
     public void onDestroy() {
         super.onDestroy();

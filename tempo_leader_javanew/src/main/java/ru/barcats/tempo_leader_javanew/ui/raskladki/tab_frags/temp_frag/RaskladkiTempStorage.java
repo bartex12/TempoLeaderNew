@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface RaskladkiTempStorage {
    ArrayList<String> getRaskladkiList();
-   ArrayList<String> deleteItem(String fileName);
+   ArrayList<String> deleteItem(String fileName, String tabType);
    ArrayList<String> moveItemInLike(String fileName);
    ArrayList<String> moveItemInSec(String fileName);
    ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew);
