@@ -124,6 +124,7 @@ public class TempoleaderFragment extends Fragment {
             if ( getArguments().getString(P.NAME_OF_FILE) != null) {
                 //получаем NAME_OF_FILE из аргументов
                 finishFileName = getArguments().getString(P.NAME_OF_FILE,P.FILENAME_OTSECHKI_SEC);
+                timeOfDelay = TabFile.getFileDelayFromTabFile(database, finishFileName);
             }
             if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
                 //считываем значение FROM_ACTIVITY из интента
