@@ -86,6 +86,7 @@ public abstract class AbstrTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_raskladki, container, false);
+
         recyclerView = view.findViewById(R.id.recycler_rascladki);
         //находим ViewPager - он нужен для обновления вкладок после перемещения файлов
         viewPager = container.findViewById(R.id.container_raskladki_activity);
@@ -255,7 +256,7 @@ public abstract class AbstrTabFragment extends Fragment {
         dialog.setCanceledOnTouchOutside(false);
 
         if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, getResources().getString(R.string.system_file),
+            Snackbar.make(recyclerView, getResources().getString(R.string.system_file_change),
                     Snackbar.LENGTH_SHORT).setAnchorView(R.id.recycler_rascladki).show();
         }else {
             dialog.show();

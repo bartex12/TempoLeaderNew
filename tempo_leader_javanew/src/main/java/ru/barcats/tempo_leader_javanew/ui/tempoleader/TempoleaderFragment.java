@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -46,7 +47,6 @@ public class TempoleaderFragment extends Fragment {
 
     public static final String TAG ="33333";
     private TempoleaderViewModel dataSetViewModel;
-    private TempoleaderViewModel delayViewModel;
 
     private SQLiteDatabase database;
     private RecyclerViewTempoleaderAdapter adapter;
@@ -75,7 +75,7 @@ public class TempoleaderFragment extends Fragment {
     private float mTimeOfSet = 0;   //общее время выполнения подхода в секундах
     private int countReps = 2; //количество повторений,получаемое из текста mEditTextReps
 
-    private final static long mKvant = 100;//время в мс между срабатываниями TimerTask
+    public final static long mKvant = 100;//время в мс между срабатываниями TimerTask
     private long mTotalKvant = 0;//текущее суммарное время для фрагмента подхода
     private long mTotalTime = 0; //текущее суммарное время для подхода
     private long mCurrentDelay = 0; //текущее время для задержки
@@ -109,6 +109,18 @@ public class TempoleaderFragment extends Fragment {
     private String finishFileName;
     //id файла, загруженного в темполидер
     private long fileId;
+    private OnTransmitListener onTransmitListener;
+
+    public interface OnTransmitListener{
+        void onTransmit(String data);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        onTransmitListener = (OnTransmitListener)context;
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,18 +195,17 @@ public class TempoleaderFragment extends Fragment {
 
         //получаем  ViewModel для TempoleaderFragment
         dataSetViewModel =
-                ViewModelProviders.of(this).get("loadDataSet", TempoleaderViewModel.class);
-        delayViewModel =
-                ViewModelProviders.of(this).get("loadDelay", TempoleaderViewModel.class);
+               new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
 
         dataSetViewModel.loadDataSet(finishFileName)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
-                //TODO
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 showSetList(view, dataSets);
+                //передаём в MainActivity? чтобы засунуть в Bundle
+                onTransmitListener.onTransmit(finishFileName);
             }
         });
        }
@@ -207,10 +218,10 @@ public class TempoleaderFragment extends Fragment {
         //включаем/выключаем звук в зависимости от состояния чекбокса в PrefActivity
         AudioManager audioManager;
         if(sound){
-            audioManager =(AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager =(AudioManager)requireActivity().getSystemService(Context.AUDIO_SERVICE);
             audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
         }else{
-            audioManager =    (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager =    (AudioManager)requireActivity().getSystemService(Context.AUDIO_SERVICE);
             audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
         }
 
@@ -238,11 +249,16 @@ public class TempoleaderFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "TempoleaderFragment - onDestroy");
         //записываем последнее имя файла на экране в преференсис активности
-        shp = getActivity().getPreferences(MODE_PRIVATE);
+        shp = requireActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor edit = shp.edit();
         edit.putString(P.KEY_FILENAME, finishFileName);
         edit.putInt(P.KEY_DELAY, timeOfDelay);
@@ -389,7 +405,7 @@ public class TempoleaderFragment extends Fragment {
 
                 //TODO если будет меню тулбара
                 //вызываем onPrepareOptionsMenu чтобы скрыть элементы тулбара пока старт
-                //getActivity().invalidateOptionsMenu();
+                requireActivity().invalidateOptionsMenu();
 
             }
         });

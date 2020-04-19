@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,11 +31,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import ru.barcats.tempo_leader_javanew.R;
+import ru.barcats.tempo_leader_javanew.model.DataSet;
+import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TempoleaderFragment.OnTransmitListener{
 
     public static final String TAG ="33333";
     private boolean doubleBackToExitPressedOnce;
@@ -44,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Toolbar toolbar;
     private  BottomNavigationView bottomNavigation;
+    private String data;
+
+    @Override
+    public void onTransmit(String data) {
+        this.data = data;
+        Log.d(TAG, "//**// MainActivity onTransmit data = " + data );
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                        bottomNavigation.setVisibility(View.VISIBLE);
                        break;
                    case R.id.nav_help:
-                   case R.id.nav_change_name:
                    case R.id.nav_home:
                    case R.id.nav_set:
                    case R.id.nav_secundomer:
@@ -157,22 +168,66 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_set:
                 menu.findItem(R.id.nav_set).setVisible(false);
                 menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
                 break;
             case R.id.nav_help:
-                menu.findItem(R.id.nav_help).setVisible(false);
                 menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_help).setVisible(false);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
+                break;
+            case R.id.nav_tempoleader:
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(true);
+                menu.findItem(R.id.nav_editor).setVisible(true);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
+
+                break;
+            case R.id.nav_rascladki:
+            case R.id.nav_new_exercise:
+            case R.id.nav_home:
+            case R.id.nav_editor:
+            case R.id.nav_grafic:
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
+                break;
+            case R.id.nav_secundomer:
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(true);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);
     }
 
+
     //переопределение метода обработки пунктов верхнего меню - через NavController
+    //очень круто- если id пунктов графа и меню совпадают, переход происходит автоматически
+    //А КАК БЫТЬ С ДАННЫМИ?
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.nav_editor){
+            Bundle bundle = new Bundle();
+            bundle.putString(P.NAME_OF_FILE, data);
+            navController.navigate(R.id.nav_editor, bundle);
+            Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
+        }else {
+            return NavigationUI.onNavDestinationSelected(item, navController)
+                    || super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 
 
 }

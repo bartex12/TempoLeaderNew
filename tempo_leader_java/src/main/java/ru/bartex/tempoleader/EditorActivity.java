@@ -48,7 +48,7 @@ import ru.bartex.tempoleader.ui.dialogs.DialogChangeTemp;
 import ru.bartex.tempoleader.ui.dialogs.DialogSaveTempFragment;
 import ru.bartex.tempoleader.ui.tempoleader.SingleFragmentActivity;
 
-public class ChangeTempActivity extends AppCompatActivity implements
+public class EditorActivity extends AppCompatActivity implements
         DialogChangeTemp.ChangeTempUpDownListener, DialogSaveTempFragment.SaverFragmentListener{
 
     private static final String TAG = "33333";

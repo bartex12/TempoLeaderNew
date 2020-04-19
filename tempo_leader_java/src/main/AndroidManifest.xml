@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="ru.bartex.tempoleader.ChangeTempActivity"
+            android:name="ru.bartex.tempoleader.EditorActivity"
             android:label="@string/change_name">
         </activity>
         <activity android:name="ru.bartex.tempoleader.ui.creation.NewExerciseActivity"

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
@@ -31,7 +32,7 @@ public class TabBarTempFragment extends AbstrTabFragment {
         Log.d(TAG, "// TabBarTempFragment onViewCreated // " );
 
         tempViewModel =
-                ViewModelProviders.of(this).get(TempViewModel.class);
+               new ViewModelProvider(requireActivity()).get(TempViewModel.class);
         tempViewModel.getRascladki()
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
                     @Override

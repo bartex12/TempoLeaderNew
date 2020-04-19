@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/nav_grafic"
+        android:title="@string/action_timing"
+        android:icon="@drawable/ic_action_graf"
+        android:orderInCategory="5"
+        app:showAsAction="always" />
+
+    <item
+        android:id = "@+id/nav_rascladki"
+        android:title="@string/show_list_of_files"
+        android:orderInCategory="10"
+        android:icon="@drawable/ic_action_name"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id = "@+id/nav_editor"
+        android:title="@string/change_data"
+        android:orderInCategory="20"
+        android:icon="@drawable/ic_action_change"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/nav_set"
+        android:orderInCategory="30"
         android:icon="@drawable/ic_action_setting"
-        android:title="@string/Settings"/>
+        android:title="@string/Settings"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/nav_help"
+        android:orderInCategory="40"
         android:icon="@drawable/ic_action_help"
-        android:title="@string/Help"/>
+        android:title="@string/Help"
+        app:showAsAction="never"/>
+
 </menu>

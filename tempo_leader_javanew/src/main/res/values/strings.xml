@@ -152,7 +152,6 @@
     <string name="NN">№</string>
     <string name="_555">555</string>
     <string name="_0_00_0">0:00.0</string>
-    <string name="_0">0</string>
     <string name="create_raskl">Создать раскладку</string>
     <string name="_3">3</string>
     <string name="_5">5</string>
@@ -170,5 +169,13 @@
     <string name="date_time">Дата и время записи</string>
     <string name="addDateTime">Добавить дату и время</string>
     <string name="action_save">Сохранить</string>
+    <string name="dofromall">Выполнить для всех строк</string>
+    <string name="change_time">Изменить время</string>
+    <string name="change_count">Изменить количество</string>
+    <string name="_0">0</string>
+    <string name="_5proc">-5%</string>
+    <string name="_1proc">-1%</string>
+    <string name="_1proc_plus">+1%</string>
+    <string name="_5proc_plus">+5%</string>
 
 </resources>

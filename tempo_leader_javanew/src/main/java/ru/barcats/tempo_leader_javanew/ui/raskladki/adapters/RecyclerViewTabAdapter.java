@@ -48,24 +48,6 @@ public class RecyclerViewTabAdapter extends
         this.onLongClickLikeListener = onLongClickLikeListener;
     }
 
-    public void deleteLine(int idFrag){
-
-        Log.d(TAG, "%%% RecyclerViewTabAdapter deleteLine posItem = " + posItem+
-                " fileName = " + fileName);
-//
-//        switch (idFrag){
-//            case 0:
-//
-//                break;
-//            case 1:
-//
-//                break;
-//            case 2:
-//
-//                break;
-//        }
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

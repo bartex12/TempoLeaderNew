@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import androidx.fragment.app.Fragment;
-import ru.bartex.tempoleader.ChangeTempActivity;
+import ru.bartex.tempoleader.EditorActivity;
 import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
 import ru.bartex.tempoleader.database.TabFile;
@@ -237,7 +237,7 @@ public class SetListFragment extends Fragment {
         }else { if (item.getItemId() == CHANGE_TEMP_ID) {
                 Log.d(TAG, "SetListFragment CHANGE_TEMP_ID");
 
-                Intent intent = new Intent(getContext(), ChangeTempActivity.class);
+                Intent intent = new Intent(getContext(), EditorActivity.class);
                 //передаём id  файла на экране
                 intent.putExtra(P.FINISH_FILE_NAME, finishFileName);
                 startActivity(intent);

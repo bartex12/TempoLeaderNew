@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +29,7 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import ru.bartex.tempoleader.ChangeTempActivity;
+import ru.bartex.tempoleader.EditorActivity;
 import ru.bartex.tempoleader.PrefActivity;
 import ru.bartex.tempoleader.R;
 import ru.bartex.tempoleader.database.P;
@@ -583,7 +582,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
 
             case R.id.change_data:
                 Log.d(TAG, "change_data");
-                Intent intent = new Intent(this, ChangeTempActivity.class);
+                Intent intent = new Intent(this, EditorActivity.class);
                 intent.putExtra(P.FINISH_FILE_NAME, finishFileName);
                 startActivityForResult(intent,P.REDACT_REQUEST);
                 return true;
