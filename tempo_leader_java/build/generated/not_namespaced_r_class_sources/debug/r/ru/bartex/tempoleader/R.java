@@ -6715,12 +6715,11 @@ public final class R {
     public static final int detail=0x7f0d0003;
     public static final int list_of_files=0x7f0d0004;
     public static final int main=0x7f0d0005;
-    public static final int menu_set_list_frag=0x7f0d0006;
-    public static final int menu_tab_bar=0x7f0d0007;
-    public static final int pacemaker=0x7f0d0008;
-    public static final int singl_fragment_activity_menu=0x7f0d0009;
-    public static final int timegraf=0x7f0d000a;
-    public static final int timemeter=0x7f0d000b;
+    public static final int menu_tab_bar=0x7f0d0006;
+    public static final int pacemaker=0x7f0d0007;
+    public static final int singl_fragment_activity_menu=0x7f0d0008;
+    public static final int timegraf=0x7f0d0009;
+    public static final int timemeter=0x7f0d000a;
   }
   public static final class mipmap {
     public static final int ic_launcher=0x7f0e0000;

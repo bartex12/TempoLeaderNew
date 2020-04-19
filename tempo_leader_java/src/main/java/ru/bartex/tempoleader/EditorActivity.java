@@ -108,7 +108,7 @@ public class EditorActivity extends AppCompatActivity implements
     public void changeTempUpDown(int valueDelta, boolean up) {
 
         //если повысить темп up = true
-        float ff = (up == true) ? (1 - ((float)valueDelta/100)) : (1 + ((float)valueDelta/100));
+        float ff = (up) ? (1 - ((float)valueDelta/100)) : (1 + ((float)valueDelta/100));
         Log.d(TAG, "ChangeTempActivity changeTempUpDown ff = " + ff);
 
         //обновляем фрагменты по очереди
@@ -212,29 +212,7 @@ public class EditorActivity extends AppCompatActivity implements
         mRadioButtonTime = (RadioButton) findViewById(R.id.radioButtonTime);
         mRadioButtonCount = (RadioButton) findViewById(R.id.radioButtonCount);
         mRadioGroupTimeCount = (RadioGroup) findViewById(R.id.radioGroupTimeCount);
-        mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.radioButtonTime:
-                        redactTime = true;
-                        deltaValue.setVisibility(View.VISIBLE);
-                        changeTemp_buttonMinus5.setText("-5%");
-                        changeTemp_buttonMinus1.setText("-1%");
-                        changeTemp_buttonPlus1.setText("+1%");
-                        changeTemp_buttonPlus5.setText("+5%");
-                        break;
-                    case R.id.radioButtonCount:
-                        redactTime = false;
-                        deltaValue.setVisibility(View.INVISIBLE);
-                        changeTemp_buttonMinus5.setText("-5");
-                        changeTemp_buttonMinus1.setText("-1");
-                        changeTemp_buttonPlus1.setText("+1");
-                        changeTemp_buttonPlus5.setText("+5");
-                        break;
-                }
-            }
-        });
+        setChangeTempButtons();
 
         mCheckBoxAll = (CheckBox) findViewById(R.id.checkBox);
         mCheckBoxAll.setChecked(true);
@@ -297,22 +275,25 @@ public class EditorActivity extends AppCompatActivity implements
         changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String s;
+                if (redactTime){
+                    time += (0.95f-1f)*100;
+                     s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=-5;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
 
-                String s = reductAction(0.95f,-5);
+                reductAction(0.95f,-5);
                 updateAdapter();
                 calculateAndShowTotalValues();
                 changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
                 invalidateOptionsMenu();
-
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
-
             }
         });
         changeTemp_buttonMinus1 = (Button) findViewById(R.id.changeTemp_buttonMinus1);
@@ -320,21 +301,25 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                String s = reductAction(0.99f, -1);
+                String s;
+                if (redactTime){
+                    time += (0.99f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=-1;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                reductAction(0.99f, -1);
                 //reductAction(0.99f, -1);
                 updateAdapter();
                 calculateAndShowTotalValues();
                 changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
                 invalidateOptionsMenu();
-
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
             }
         });
 
@@ -387,21 +372,26 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                String s = reductAction(1.01f, 1);
+                String s;
+                if (redactTime){
+                    time += (1.01f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=1;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+
+               reductAction(1.01f, 1);
                 //reductAction(1.01f, 1);
                 updateAdapter();
                 calculateAndShowTotalValues();
                 changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
                 invalidateOptionsMenu();
-
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
             }
         });
         changeTemp_buttonPlus5 = (Button) findViewById(R.id.changeTemp_buttonPlus5);
@@ -409,21 +399,25 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-                String s = reductAction(1.05f, 5);
+                String s;
+                if (redactTime){
+                    time += (1.05f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=5;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                reductAction(1.05f, 5);
                 //reductAction(1.05f, 5);
                 updateAdapter();
                 calculateAndShowTotalValues();
                 changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
                 invalidateOptionsMenu();
-
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
             }
         });
 
@@ -439,6 +433,32 @@ public class EditorActivity extends AppCompatActivity implements
             changeTemp_buttonPlus1.setText("+1");
             changeTemp_buttonPlus5.setText("+5");
         }
+    }
+
+    private void setChangeTempButtons() {
+        mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radioButtonTime:
+                        redactTime = true;
+                        deltaValue.setVisibility(View.VISIBLE);
+                        changeTemp_buttonMinus5.setText("-5%");
+                        changeTemp_buttonMinus1.setText("-1%");
+                        changeTemp_buttonPlus1.setText("+1%");
+                        changeTemp_buttonPlus5.setText("+5%");
+                        break;
+                    case R.id.radioButtonCount:
+                        redactTime = false;
+                        deltaValue.setVisibility(View.INVISIBLE);
+                        changeTemp_buttonMinus5.setText("-5");
+                        changeTemp_buttonMinus1.setText("-1");
+                        changeTemp_buttonPlus1.setText("+1");
+                        changeTemp_buttonPlus5.setText("+5");
+                        break;
+                }
+            }
+        });
     }
 
     private void initDB() {
@@ -733,11 +753,8 @@ public class EditorActivity extends AppCompatActivity implements
     }
 
 
-    private String reductAction(float ff, int ii){
-
-        String delta;
+    private void reductAction(float ff, int ii){
         if (redactTime){
-            time += (ff-1f)*100;
             if (mCheckBoxAll.isChecked()){
                 //обновляем фрагменты по очереди
                 for (int i = 0; i<countOfSet; i++ ){
@@ -752,10 +769,7 @@ public class EditorActivity extends AppCompatActivity implements
                 TabSet.updateSetFragment(database, dataSet);
                 //Log.d(TAG, "ChangeTempActivity dataSet Time = " + dataSet.getTimeOfRep());
             }
-            delta = String.format("%+3.0f", time);
-
         }else {
-            count +=ii;
             //если сразу во всех строках
             if (mCheckBoxAll.isChecked()){
                 //обновляем фрагменты по очереди
@@ -779,10 +793,7 @@ public class EditorActivity extends AppCompatActivity implements
                 TabSet.updateSetFragment(database, dataSet);
                 //Log.d(TAG, "ChangeTempActivity dataSet Reps = " + dataSet.getTimeOfRep());
             }
-            delta = String.format("%+3d", count);
-
         }
-        return delta;
     }
 
 

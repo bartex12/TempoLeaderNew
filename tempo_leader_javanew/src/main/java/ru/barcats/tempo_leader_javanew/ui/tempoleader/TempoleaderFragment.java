@@ -174,7 +174,7 @@ public class TempoleaderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "TempoleaderFragment onViewCreated.onClick");
+        Log.d(TAG, "TempoleaderFragment onViewCreated");
 
         //разрешить только портретную ориентацию экрана
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -203,7 +203,8 @@ public class TempoleaderFragment extends Fragment {
             public void onChanged(ArrayList<DataSet> dataSets) {
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
-                showSetList(view, dataSets);
+                updateAdapter(view, dataSets);
+                Log.d(TAG, " /*/ dataSets getReps =  " + dataSets.get(0).getReps());
                 //передаём в MainActivity? чтобы засунуть в Bundle
                 onTransmitListener.onTransmit(finishFileName);
             }
@@ -501,7 +502,8 @@ public class TempoleaderFragment extends Fragment {
         });
     }
 
-    private  void showSetList(View view, ArrayList<DataSet> dataSets){
+    private  void updateAdapter(View view, ArrayList<DataSet> dataSets){
+            Log.d(TAG, " /*/TempoleaderFragment  showSetList dataSets size =  " + dataSets.size());
            RecyclerView recyclerView = view.findViewById(R.id.recycler_tempoleader);
            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
            recyclerView.setLayoutManager(manager);

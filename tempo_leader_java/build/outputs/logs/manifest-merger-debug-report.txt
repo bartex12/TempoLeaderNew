@@ -150,12 +150,12 @@ ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\A
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:47:13-56
 	android:name
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:45:13-77
-activity#ru.bartex.tempoleader.ChangeTempActivity
+activity#ru.bartex.tempoleader.EditorActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:49:9-52:20
 	android:label
 		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:51:13-48
 	android:name
-		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:50:13-68
+		ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:50:13-64
 activity#ru.bartex.tempoleader.ui.creation.NewExerciseActivity
 ADDED from D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:53:9-55:20
 	android:label

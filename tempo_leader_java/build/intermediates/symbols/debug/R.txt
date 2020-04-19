@@ -2110,12 +2110,11 @@ int menu activity_main_drawer 0x7f0d0002
 int menu detail 0x7f0d0003
 int menu list_of_files 0x7f0d0004
 int menu main 0x7f0d0005
-int menu menu_set_list_frag 0x7f0d0006
-int menu menu_tab_bar 0x7f0d0007
-int menu pacemaker 0x7f0d0008
-int menu singl_fragment_activity_menu 0x7f0d0009
-int menu timegraf 0x7f0d000a
-int menu timemeter 0x7f0d000b
+int menu menu_tab_bar 0x7f0d0006
+int menu pacemaker 0x7f0d0007
+int menu singl_fragment_activity_menu 0x7f0d0008
+int menu timegraf 0x7f0d0009
+int menu timemeter 0x7f0d000a
 int mipmap ic_launcher 0x7f0e0000
 int mipmap ic_launcher1 0x7f0e0001
 int mipmap ic_launcher1_round 0x7f0e0002

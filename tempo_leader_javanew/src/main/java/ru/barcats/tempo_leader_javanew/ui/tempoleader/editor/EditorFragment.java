@@ -26,6 +26,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -78,7 +80,8 @@ public class EditorFragment extends Fragment {
     private  int positionOfList = 0;
     private int pos;
     private int offset = 0;
-    private float time = 0f; //размер изменений времени
+
+    float time = 0f; //размер изменений времени
     private int count = 0; //размер изменений количества
     private int countOfSet ;//количество фрагментов подхода
     private long fileId;
@@ -89,13 +92,13 @@ public class EditorFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewTempoleaderAdapter adapter;
     private String fileName;
-    //private ViewPager viewPager;
-   // private Dialog dialog;
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private boolean sound = true; // включение / выключение звука
     private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
     private SQLiteDatabase database;
+    //показывать иконку Сохранить true - да false - нет
+    private boolean saveVision = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,6 +141,12 @@ public class EditorFragment extends Fragment {
         getPrefSettings();  //получаем значения точности и звека из настроек
         initViews(view);  //находим вьюхи
 
+        setChangeTempButtons();  // надписи на кнопкажх в зависимости от радиокнопки
+        changeTempMinus5(); //нажатие кнопки -5
+        changeTempMinus1(); //нажатие кнопки -1
+        changeTempPlus1(); //нажатие кнопки +1
+        changeTempPlus5(); //нажатие кнопки +5
+
         editorViewModel =
               new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
         editorViewModel.loadDataSet(fileName)
@@ -145,10 +154,10 @@ public class EditorFragment extends Fragment {
                     @Override
                     public void onChanged(ArrayList<DataSet> dataSets) {
                         showSetList(dataSets);
+                        Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
                     }
                 });
     }
-
 
     @Override
     public void onResume() {
@@ -182,6 +191,135 @@ public class EditorFragment extends Fragment {
         edit.apply();
         //database.close();
     }
+
+
+    private void changeTempPlus5() {
+        changeTemp_buttonPlus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //пересчитываем раскладку на +1 процентов времени или +1 раз
+                editorViewModel.minus5Action(fileName, 1.05f, 5,
+                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+
+                getDeltaValue(1.05f, 5);
+
+                //updateAdapter();
+                calculateAndShowTotalValues();
+                // changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                // invalidateOptionsMenu();
+
+            }
+        });
+    }
+
+    private void changeTempPlus1() {
+        changeTemp_buttonPlus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //пересчитываем раскладку на +1 процентов времени или +1 раз
+                editorViewModel.minus5Action(fileName, 1.01f, 1,
+                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+
+                getDeltaValue(1.01f, 1);
+
+                //updateAdapter();
+                calculateAndShowTotalValues();
+                // changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                // invalidateOptionsMenu();
+
+            }
+        });
+    }
+
+    private void changeTempMinus1() {
+        changeTemp_buttonMinus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //пересчитываем раскладку на -5 процентов времени или -5 раз
+                editorViewModel.minus5Action(fileName, 0.99f, -1,
+                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+
+               getDeltaValue(0.99f, -1);
+
+                //updateAdapter();
+                calculateAndShowTotalValues();
+                // changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                // invalidateOptionsMenu();
+
+            }
+        });
+    }
+
+
+
+    private void changeTempMinus5() {
+        changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //пересчитываем раскладку на -5 процентов времени или -5 раз
+                editorViewModel.minus5Action(fileName, 0.95f, -5,
+                        redactTime, mCheckBoxAll.isChecked(),positionOfList);
+
+               getDeltaValue(0.95f, -5);
+
+                //updateAdapter();
+                calculateAndShowTotalValues();
+               // changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+               // invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void getDeltaValue(float deltaTime, int countReps) {
+        String s;
+        if (redactTime) {
+            time += (deltaTime - 1f) * 100;
+            s = String.format(Locale.getDefault(), "%+3.0f", time);
+            deltaValue.setVisibility(View.VISIBLE);
+            String ss = s + "%";
+            deltaValue.setText(ss);
+        } else {
+            count += countReps;
+            s = String.format(Locale.getDefault(), "%+3d", count);
+            deltaValue.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setChangeTempButtons() {
+        mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radioButtonTime:
+                        redactTime = true;
+                        deltaValue.setVisibility(View.VISIBLE);
+                        changeTemp_buttonMinus5.setText("-5%");
+                        changeTemp_buttonMinus1.setText("-1%");
+                        changeTemp_buttonPlus1.setText("+1%");
+                        changeTemp_buttonPlus5.setText("+5%");
+                        break;
+                    case R.id.radioButtonCount:
+                        redactTime = false;
+                        deltaValue.setVisibility(View.INVISIBLE);
+                        changeTemp_buttonMinus5.setText("-5");
+                        changeTemp_buttonMinus1.setText("-1");
+                        changeTemp_buttonPlus1.setText("+1");
+                        changeTemp_buttonPlus5.setText("+5");
+                        break;
+                }
+            }
+        });
+    }
+
+
 
     private void initViews(@NonNull View view) {
         deltaValue = view.findViewById(R.id.deltaValue);
@@ -271,7 +409,7 @@ public class EditorFragment extends Fragment {
         if (hour<1){
             if(minut<10) {
                 time = String.format(Locale.getDefault(),"Время  %d:%02d.%d",minut, second, decim);
-            }else if (minut<60){
+            }else {
                 time = String.format(Locale.getDefault(),"Время  %02d:%02d.%d",minut,second,decim);
             }
         }else {

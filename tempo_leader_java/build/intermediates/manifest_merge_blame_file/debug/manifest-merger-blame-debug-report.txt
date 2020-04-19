@@ -102,8 +102,8 @@
 58        </activity>
 59        <activity
 59-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:49:9-52:20
-60            android:name="ru.bartex.tempoleader.ChangeTempActivity"
-60-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:50:13-68
+60            android:name="ru.bartex.tempoleader.EditorActivity"
+60-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:50:13-64
 61            android:label="@string/change_name" >
 61-->D:\AndroidStudioProjects\TempoLeader2020\tempo_leader_java\src\main\AndroidManifest.xml:51:13-48
 62        </activity>

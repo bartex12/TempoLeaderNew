@@ -2111,7 +2111,6 @@ menu activity_main_drawer
 menu detail
 menu list_of_files
 menu main
-menu menu_set_list_frag
 menu menu_tab_bar
 menu pacemaker
 menu singl_fragment_activity_menu

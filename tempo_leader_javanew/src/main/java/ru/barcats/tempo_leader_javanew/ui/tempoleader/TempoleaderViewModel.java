@@ -13,7 +13,7 @@ import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 public class TempoleaderViewModel extends AndroidViewModel {
 
-    private MutableLiveData<ArrayList<DataSet>> data;
+    private MutableLiveData<ArrayList<DataSet>>  data = new MutableLiveData<>();
     private TempoleaderStorage tempoleaderStorage;
     private MutableLiveData<Float> delay;
     private DelayStorage delayStorage;
@@ -26,22 +26,11 @@ public class TempoleaderViewModel extends AndroidViewModel {
     }
 
     public LiveData<ArrayList<DataSet>> loadDataSet(String fileName) {
-        if (data == null) {
-            data = new MutableLiveData<>();
-            getDataSet(fileName);
-        }
+        getDataSet(fileName);
         return data;
     }
 
-    public void setDataSets(ArrayList<DataSet> dataSets){
-        data.setValue(dataSets);
-    }
-
-    public LiveData<ArrayList<DataSet>> getDatas(){
-        return data;
-    }
-
-    public LiveData<ArrayList<DataSet>> getDataSet(String fileName) {
+    private LiveData<ArrayList<DataSet>> getDataSet(String fileName) {
         data.setValue(tempoleaderStorage.getDataSet(fileName));
         return data;
     }
