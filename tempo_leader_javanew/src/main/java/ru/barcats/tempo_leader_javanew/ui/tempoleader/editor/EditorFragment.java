@@ -1,12 +1,9 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader.editor;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.AudioManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,13 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -36,14 +31,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.adapters.RecyclerViewTabAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.RecyclerViewTempoleaderAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 
@@ -99,6 +91,7 @@ public class EditorFragment extends Fragment {
     private SQLiteDatabase database;
     //показывать иконку Сохранить true - да false - нет
     private boolean saveVision = false;
+    private long fileIdCopy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +134,9 @@ public class EditorFragment extends Fragment {
         getPrefSettings();  //получаем значения точности и звека из настроек
         initViews(view);  //находим вьюхи
 
+        setChackBoxListener();
+
+
         setChangeTempButtons();  // надписи на кнопкажх в зависимости от радиокнопки
         changeTempMinus5(); //нажатие кнопки -5
         changeTempMinus1(); //нажатие кнопки -1
@@ -153,11 +149,16 @@ public class EditorFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
                     @Override
                     public void onChanged(ArrayList<DataSet> dataSets) {
-                        showSetList(dataSets);
+                        updateAdapter(dataSets);
                         Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
                     }
                 });
+
+        //создаём копию файла и получаем его id
+        fileIdCopy =  editorViewModel.getCopyFile(fileName);
     }
+
+
 
     @Override
     public void onResume() {
@@ -189,7 +190,35 @@ public class EditorFragment extends Fragment {
         SharedPreferences.Editor edit = shp.edit();
         edit.putString(P.KEY_FILENAME, fileName);
         edit.apply();
-        //database.close();
+        database.close();
+    }
+
+    //слушатель на изменение ChackBox
+    private void setChackBoxListener() {
+        mCheckBoxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                editorViewModel.loadDataSet(fileName)
+                        .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
+                            @Override
+                            public void onChanged(ArrayList<DataSet> dataSets) {
+                                updateAdapter(dataSets);
+                            }
+                        });
+
+                calculateAndShowTotalValues();
+
+                //установка в нужную позицию списка
+                //changeTemp_listView.setSelectionFromTop(pos, offset);
+
+                //делаем индикатор невидимым
+                deltaValue.setVisibility(View.INVISIBLE);
+                //обнуляем показатели разности значений
+                time = 0f;
+                count = 0;
+            }
+        });
     }
 
 
@@ -376,7 +405,7 @@ public class EditorFragment extends Fragment {
         repsTotal.setText(String.format(Locale.getDefault(), "Количество  %d", mTotalReps));
     }
 
-    private  void showSetList(ArrayList<DataSet> dataSets){
+    private  void updateAdapter(ArrayList<DataSet> dataSets){
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);

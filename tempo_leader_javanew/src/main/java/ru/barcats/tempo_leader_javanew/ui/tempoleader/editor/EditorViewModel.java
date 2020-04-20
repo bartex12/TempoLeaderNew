@@ -41,4 +41,8 @@ public class EditorViewModel extends AndroidViewModel {
                             redactTime, isChecked, position));
     }
 
+    public long getCopyFile(String fileName){
+       return storageEditor.getCopyFile(fileName);
+    }
+
 }

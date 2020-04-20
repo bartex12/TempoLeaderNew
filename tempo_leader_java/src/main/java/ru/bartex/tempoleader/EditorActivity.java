@@ -216,21 +216,8 @@ public class EditorActivity extends AppCompatActivity implements
 
         mCheckBoxAll = (CheckBox) findViewById(R.id.checkBox);
         mCheckBoxAll.setChecked(true);
-        mCheckBoxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-
-                //делаем индикатор невидимым
-                deltaValue.setVisibility(View.INVISIBLE);
-                //обнуляем показатели разности значений
-                time = 0f;
-                count = 0;
-            }
-        });
+        setChackBoxListener();
 
         changeTemp_listView = (ListView)findViewById(R.id.changeTemp_listView);
         //накладываем жёлтый задний фон строки списка
@@ -272,56 +259,12 @@ public class EditorActivity extends AppCompatActivity implements
         repsTotal = (TextView)findViewById(R.id.repsTotal);
 
         changeTemp_buttonMinus5 = (Button) findViewById(R.id.changeTemp_buttonMinus5);
-        changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String s;
-                if (redactTime){
-                    time += (0.95f-1f)*100;
-                     s = String.format(Locale.getDefault(), "%+3.0f", time);
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    count +=-5;
-                    s = String.format(Locale.getDefault(), "%+3d", count);
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
 
-                reductAction(0.95f,-5);
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
-                invalidateOptionsMenu();
-            }
-        });
+        setButtonMinus5Listener();
+
         changeTemp_buttonMinus1 = (Button) findViewById(R.id.changeTemp_buttonMinus1);
-        changeTemp_buttonMinus1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                String s;
-                if (redactTime){
-                    time += (0.99f-1f)*100;
-                    s = String.format(Locale.getDefault(), "%+3.0f", time);
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    count +=-1;
-                    s = String.format(Locale.getDefault(), "%+3d", count);
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
-                reductAction(0.99f, -1);
-                //reductAction(0.99f, -1);
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
-                invalidateOptionsMenu();
-            }
-        });
+        setButtonMinus1Listener();
 
         changeReps_imageButtonRevert = (ImageButton) findViewById(R.id.changeTemp_imageButtonRevert);
         changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
@@ -368,58 +311,12 @@ public class EditorActivity extends AppCompatActivity implements
         });
 
         changeTemp_buttonPlus1 = (Button) findViewById(R.id.changeTemp_buttonPlus1);
-        changeTemp_buttonPlus1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                String s;
-                if (redactTime){
-                    time += (1.01f-1f)*100;
-                    s = String.format(Locale.getDefault(), "%+3.0f", time);
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    count +=1;
-                    s = String.format(Locale.getDefault(), "%+3d", count);
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
+        setButtonPlus1Listener();
 
-               reductAction(1.01f, 1);
-                //reductAction(1.01f, 1);
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
-                invalidateOptionsMenu();
-            }
-        });
         changeTemp_buttonPlus5 = (Button) findViewById(R.id.changeTemp_buttonPlus5);
-        changeTemp_buttonPlus5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                String s;
-                if (redactTime){
-                    time += (1.05f-1f)*100;
-                    s = String.format(Locale.getDefault(), "%+3.0f", time);
-                    deltaValue.setVisibility(View.VISIBLE);
-                    String ss = s+"%";
-                    deltaValue.setText(ss);
-                }else {
-                    count +=5;
-                    s = String.format(Locale.getDefault(), "%+3d", count);
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
-                reductAction(1.05f, 5);
-                //reductAction(1.05f, 5);
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
-                invalidateOptionsMenu();
-            }
-        });
+        setButtonPlus5Listener();
 
         //Выставляем надписи на кнопках перед началом редактирования
         if(redactTime){
@@ -435,36 +332,7 @@ public class EditorActivity extends AppCompatActivity implements
         }
     }
 
-    private void setChangeTempButtons() {
-        mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.radioButtonTime:
-                        redactTime = true;
-                        deltaValue.setVisibility(View.VISIBLE);
-                        changeTemp_buttonMinus5.setText("-5%");
-                        changeTemp_buttonMinus1.setText("-1%");
-                        changeTemp_buttonPlus1.setText("+1%");
-                        changeTemp_buttonPlus5.setText("+5%");
-                        break;
-                    case R.id.radioButtonCount:
-                        redactTime = false;
-                        deltaValue.setVisibility(View.INVISIBLE);
-                        changeTemp_buttonMinus5.setText("-5");
-                        changeTemp_buttonMinus1.setText("-1");
-                        changeTemp_buttonPlus1.setText("+1");
-                        changeTemp_buttonPlus5.setText("+5");
-                        break;
-                }
-            }
-        });
-    }
-
-    private void initDB() {
-        // вызываем здесь, закрываем в onDestroy()
-        database = new TempDBHelper(this).getWritableDatabase();
-    }
+    //******************** end onCreate  **********************
 
     @Override
     protected void onResume() {
@@ -516,6 +384,169 @@ public class EditorActivity extends AppCompatActivity implements
         mDBHelper.deleteFileAndSets(fileIdCopy);
         database.close();
     }
+
+    private void setButtonMinus5Listener() {
+        changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s;
+                if (redactTime){
+                    time += (0.95f-1f)*100;
+                     s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=-5;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+
+                reductAction(0.95f,-5);
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void setButtonMinus1Listener() {
+        changeTemp_buttonMinus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String s;
+                if (redactTime){
+                    time += (0.99f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=-1;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                reductAction(0.99f, -1);
+                //reductAction(0.99f, -1);
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void setButtonPlus5Listener() {
+        changeTemp_buttonPlus5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String s;
+                if (redactTime){
+                    time += (1.05f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=5;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                reductAction(1.05f, 5);
+                //reductAction(1.05f, 5);
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void setButtonPlus1Listener() {
+        changeTemp_buttonPlus1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String s;
+                if (redactTime){
+                    time += (1.01f-1f)*100;
+                    s = String.format(Locale.getDefault(), "%+3.0f", time);
+                    deltaValue.setVisibility(View.VISIBLE);
+                    String ss = s+"%";
+                    deltaValue.setText(ss);
+                }else {
+                    count +=1;
+                    s = String.format(Locale.getDefault(), "%+3d", count);
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+
+               reductAction(1.01f, 1);
+                //reductAction(1.01f, 1);
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = true;
+                invalidateOptionsMenu();
+            }
+        });
+    }
+
+    private void setChackBoxListener() {
+        mCheckBoxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+
+                //делаем индикатор невидимым
+                deltaValue.setVisibility(View.INVISIBLE);
+                //обнуляем показатели разности значений
+                time = 0f;
+                count = 0;
+            }
+        });
+    }
+
+    private void setChangeTempButtons() {
+        mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radioButtonTime:
+                        redactTime = true;
+                        deltaValue.setVisibility(View.VISIBLE);
+                        changeTemp_buttonMinus5.setText("-5%");
+                        changeTemp_buttonMinus1.setText("-1%");
+                        changeTemp_buttonPlus1.setText("+1%");
+                        changeTemp_buttonPlus5.setText("+5%");
+                        break;
+                    case R.id.radioButtonCount:
+                        redactTime = false;
+                        deltaValue.setVisibility(View.INVISIBLE);
+                        changeTemp_buttonMinus5.setText("-5");
+                        changeTemp_buttonMinus1.setText("-1");
+                        changeTemp_buttonPlus1.setText("+1");
+                        changeTemp_buttonPlus5.setText("+5");
+                        break;
+                }
+            }
+        });
+    }
+
+    private void initDB() {
+        // вызываем здесь, закрываем в onDestroy()
+        database = new TempDBHelper(this).getWritableDatabase();
+    }
+
+
 
     //отслеживание нажатия кнопки HOME
     @Override

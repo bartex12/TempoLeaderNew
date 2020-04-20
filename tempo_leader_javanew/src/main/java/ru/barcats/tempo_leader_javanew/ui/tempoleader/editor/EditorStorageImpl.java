@@ -47,6 +47,17 @@ public class EditorStorageImpl implements EditorStorage {
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    @Override
+    public long getCopyFile(String fileName) {
+        //добавка к имени в копии файла
+        String endName = "copy";
+        //получаем id файла
+       long fileId = TabFile.getIdFromFileName(database, fileName);
+        //создаём и записываем в базу копию файла на случай отмены изменений
+        long fileIdCopy = TabSet.createFileCopy(database, fileName, fileId, endName);
+        return fileIdCopy;
+    }
+
 
     private void reductAction(float ff, int ii, boolean redactTime, boolean isChecked,
                                 int countOfSet, long fileId, int position){

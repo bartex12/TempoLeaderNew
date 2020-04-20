@@ -8,4 +8,6 @@ public interface EditorStorage {
     ArrayList<DataSet> getDataSet(String fileName);
     ArrayList<DataSet>minus5Action(
             String fileName,float deltaTime, int countReps, boolean redactTime, boolean isChecked, int position);
+
+   long getCopyFile(String fileName);
 }
