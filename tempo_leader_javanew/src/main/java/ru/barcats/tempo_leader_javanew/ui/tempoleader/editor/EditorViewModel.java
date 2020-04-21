@@ -35,6 +35,7 @@ public class EditorViewModel extends AndroidViewModel {
         //
         data.setValue(storageEditor.getDataSet(fileName));
     }
+
     public void minus5Action(String fileName, float deltaTime, int countReps , boolean redactTime,
                              boolean isChecked, int position){
         data.setValue(storageEditor.minus5Action(fileName,deltaTime, countReps,
@@ -43,6 +44,11 @@ public class EditorViewModel extends AndroidViewModel {
 
     public long getCopyFile(String fileName){
        return storageEditor.getCopyFile(fileName);
+    }
+
+    public void revertEdit(String fileName, long fileIdCopy){
+        data.setValue(storageEditor.revertEdit(fileName, fileIdCopy));
+
     }
 
 }

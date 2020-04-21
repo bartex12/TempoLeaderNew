@@ -10,4 +10,6 @@ public interface EditorStorage {
             String fileName,float deltaTime, int countReps, boolean redactTime, boolean isChecked, int position);
 
    long getCopyFile(String fileName);
+
+    ArrayList<DataSet>revertEdit (String fileName, long fileIdCopy);
 }

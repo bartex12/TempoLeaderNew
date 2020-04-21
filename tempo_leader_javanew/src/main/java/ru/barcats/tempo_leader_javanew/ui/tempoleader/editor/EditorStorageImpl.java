@@ -16,14 +16,17 @@ import ru.barcats.tempo_leader_javanew.model.P;
 
 public class EditorStorageImpl implements EditorStorage {
 
-    public static final String TAG = "33333";
+    private static final String TAG = "33333";
+    private  String endName = "copy";  //добавка к имени в копии файла
     private SQLiteDatabase database;
+    private TempDBHelper tempDBHelper;
 
     public EditorStorageImpl(Application application) {
-        TempDBHelper tempDBHelper = new TempDBHelper(application);
+        tempDBHelper = new TempDBHelper(application);
         database =  tempDBHelper.getWritableDatabase();
     }
 
+    //получение раскладки по имени файла
     @Override
     public ArrayList<DataSet> getDataSet(String fileName) {
         //получаем id записи с таким именем
@@ -32,6 +35,7 @@ public class EditorStorageImpl implements EditorStorage {
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    //редактирование файла по кнопкам
     @Override
     public ArrayList<DataSet> minus5Action( String fileName,float deltaTime, int countReps,
                                             boolean redactTime,  boolean isChecked, int position) {
@@ -41,16 +45,16 @@ public class EditorStorageImpl implements EditorStorage {
         //количество фрагментов подхода
         int countOfSet =TabSet.getSetFragmentsCount( database,fileId);
 
-        //пересчитываем раскладку на -5 процентов времени или -5 раз
+        //пересчитываем раскладку на deltaTime процентов времени или countReps раз
         reductAction(deltaTime,countReps, redactTime, isChecked, countOfSet, fileId , position);
 
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    //создание копии файла перед редактированием
     @Override
     public long getCopyFile(String fileName) {
-        //добавка к имени в копии файла
-        String endName = "copy";
+
         //получаем id файла
        long fileId = TabFile.getIdFromFileName(database, fileName);
         //создаём и записываем в базу копию файла на случай отмены изменений
@@ -58,7 +62,27 @@ public class EditorStorageImpl implements EditorStorage {
         return fileIdCopy;
     }
 
+    //отмена внесённых при редактировании изменений
+    @Override
+    public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {
 
+        Log.d(TAG,"EditorStorageImpl  имя =" + fileName + "  fileIdCopy = " + fileIdCopy );
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, fileName);
+        Log.d(TAG,"EditorStorageImpl  имя =" + fileName + "  fileId = " + fileId );
+        //удаляем изменённый при редактировании файл - теперь такого имени нет
+        tempDBHelper.deleteFileAndSets(database, fileId);
+        //теперь первоначальный файл содержится в копии
+        //изменяем имя у копии файла на первоначальное имя
+        TabFile.updateFileName(database, fileName,fileIdCopy);
+        Log.d(TAG,"EditorStorageImpl  теперь имя стало=" +
+                TabFile.getFileNameFromTabFile(database, fileIdCopy) );
+        // возвращаем данные для обновления адаптера
+        return  TabSet.getAllSetFragments(database, fileIdCopy);
+    }
+
+
+    // собственно редактирование
     private void reductAction(float ff, int ii, boolean redactTime, boolean isChecked,
                                 int countOfSet, long fileId, int position){
         //если редактируем время

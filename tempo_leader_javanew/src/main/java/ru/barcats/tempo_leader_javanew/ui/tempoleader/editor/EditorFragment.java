@@ -143,6 +143,36 @@ public class EditorFragment extends Fragment {
         changeTempPlus1(); //нажатие кнопки +1
         changeTempPlus5(); //нажатие кнопки +5
 
+        changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //отменяем внесённые изменения
+                editorViewModel.revertEdit(fileName, fileIdCopy);
+                //создаём ещё одну копию файла - для дальнейшего редактирования и получаем его id
+                fileIdCopy =  editorViewModel.getCopyFile(fileName);
+
+                //updateAdapter();
+                calculateAndShowTotalValues();
+                //changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = false;
+                //invalidateOptionsMenu();
+
+                //делаем индикатор невидимым
+                deltaValue.setVisibility(View.INVISIBLE);
+                if (redactTime){
+                    deltaValue.setVisibility(View.VISIBLE);
+                    deltaValue.setText("0%");
+                }else {
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                //обнуляем показатели разности значений
+                time = 0f;
+                count = 0;
+            }
+        });
+
+
         editorViewModel =
               new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
         editorViewModel.loadDataSet(fileName)
@@ -157,8 +187,6 @@ public class EditorFragment extends Fragment {
         //создаём копию файла и получаем его id
         fileIdCopy =  editorViewModel.getCopyFile(fileName);
     }
-
-
 
     @Override
     public void onResume() {
