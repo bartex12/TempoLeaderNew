@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import ru.barcats.tempo_leader_javanew.database.TabFile;
-import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 
 public class SaveAsStorageImpl implements SaveAsStorage {
@@ -29,7 +28,7 @@ public class SaveAsStorageImpl implements SaveAsStorage {
         if (oldFileName.equals(newFileName)){
             Log.d(TAG, " SaveAsStorageImpl oldFileName.equals ");
             //удаляем копию файла - она больше не нужна
-            tempDBHelper.deleteFileAndSets(database, fileOldIdCopy);
+            //tempDBHelper.deleteFileAndSets(database, fileOldIdCopy);
             return TabFile.getIdFromFileName(database, oldFileName);
         }else {
             Log.d(TAG, " SaveAsStorageImpl oldFileName.NOT equals ");

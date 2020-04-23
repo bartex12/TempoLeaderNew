@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
-
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
@@ -191,7 +190,6 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
-
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
@@ -202,11 +200,9 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(true);
                 menu.findItem(R.id.nav_editor).setVisible(true);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
-
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
-
                 break;
             case R.id.nav_rascladki:
             case R.id.nav_new_exercise:
@@ -217,7 +213,6 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
-
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
@@ -228,8 +223,6 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(true);
-
-
                 break;
 
             case R.id.nav_editor:
@@ -238,7 +231,6 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
-
                 menu.findItem(R.id.menu_item_new_frag).setVisible(true);
                 menu.findItem(R.id.change_temp_up_down).setVisible(true);
                 menu.findItem(R.id.save_data_in_file).setVisible(true);
@@ -246,7 +238,6 @@ public class MainActivity extends AppCompatActivity
         }
         return super.onPrepareOptionsMenu(menu);
     }
-
 
     //переопределение метода обработки пунктов верхнего меню - через NavController
     //очень круто- если id пунктов графа и меню совпадают, переход происходит автоматически
@@ -272,7 +263,5 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
+    
 }

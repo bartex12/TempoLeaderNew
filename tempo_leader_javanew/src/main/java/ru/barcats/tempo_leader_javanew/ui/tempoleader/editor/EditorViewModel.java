@@ -8,13 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.DateTimeTempStorage;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.DateTimeTempStorageImpl;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.RaskladkiTempStorage;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.temp_frag.RaskladkiTempStorageImpl;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderStorage;
 
 public class EditorViewModel extends AndroidViewModel {
 
@@ -50,8 +44,8 @@ public class EditorViewModel extends AndroidViewModel {
         data.setValue(storageEditor.revertEdit(fileName, fileIdCopy));
     }
 
-    public void clearCopyFile(long fileIdCopy){
-        storageEditor.clearCopyFile(fileIdCopy);
+    public void clearCopyFile(long fileIdCopy, String fileName){
+        storageEditor.clearCopyFile(fileIdCopy,fileName);
     }
 
 }

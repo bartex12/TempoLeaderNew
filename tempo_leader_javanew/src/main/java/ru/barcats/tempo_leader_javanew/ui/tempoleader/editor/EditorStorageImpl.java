@@ -1,18 +1,15 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader.editor;
 
 import android.app.Application;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
-import ru.barcats.tempo_leader_javanew.model.P;
+
 
 public class EditorStorageImpl implements EditorStorage {
 
@@ -54,11 +51,19 @@ public class EditorStorageImpl implements EditorStorage {
     //создание копии файла перед редактированием
     @Override
     public long getCopyFile(String fileName) {
-
         //получаем id файла
        long fileId = TabFile.getIdFromFileName(database, fileName);
         //создаём и записываем в базу копию файла на случай отмены изменений
         return TabSet.createFileCopy(database, fileName, fileId, endName);
+    }
+
+    @Override
+    public void clearCopyFile(long fileIdCopy, String fileName) {
+        String s = TabFile.getFileNameFromTabFile(database, fileIdCopy);
+        if (!s.equals(fileName)){
+            //удаляем копию файла
+            tempDBHelper.deleteFileAndSets(database, fileIdCopy);
+        }
     }
 
     //отмена внесённых при редактировании изменений
@@ -80,12 +85,6 @@ public class EditorStorageImpl implements EditorStorage {
         return  TabSet.getAllSetFragments(database, fileIdCopy);
     }
 
-    @Override
-    public void clearCopyFile(long fileIdCopy) {
-        //удаляем копию файла
-        tempDBHelper.deleteFileAndSets(database, fileIdCopy);
-    }
-
     // собственно редактирование
     private void reductAction(float ff, int ii, boolean redactTime, boolean isChecked,
                                 int countOfSet, long fileId, int position){
@@ -97,14 +96,12 @@ public class EditorStorageImpl implements EditorStorage {
                     DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
                     dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
                     TabSet.updateSetFragment(database, dataSet);
-                    // Log.d(TAG, "ChangeTempActivity dataSet Time = " + dataSet.getTimeOfRep());
                 }
                 //если только в одной - выбранной -  строке
             }else {
                 DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, position);
                 dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
                 TabSet.updateSetFragment(database, dataSet);
-                //Log.d(TAG, "ChangeTempActivity dataSet Time = " + dataSet.getTimeOfRep());
             }
             //если редактируем количество
         }else {
@@ -118,7 +115,6 @@ public class EditorStorageImpl implements EditorStorage {
                         dataSet.setReps(0);
                     }
                     TabSet.updateSetFragment(database, dataSet);
-                    // Log.d(TAG, "ChangeTempActivity dataSet Reps = " + dataSet.getReps());
                 }
                 //если только в одной - выбранной -  строке
             }else {
@@ -128,7 +124,6 @@ public class EditorStorageImpl implements EditorStorage {
                     dataSet.setReps(0);
                 }
                 TabSet.updateSetFragment(database, dataSet);
-                //Log.d(TAG, "ChangeTempActivity dataSet Reps = " + dataSet.getTimeOfRep());
             }
         }
     }

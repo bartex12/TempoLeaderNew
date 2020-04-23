@@ -129,11 +129,8 @@ public class EditorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "/+++/  EditorFragment onCreateView" );
-
         View view = inflater.inflate(R.layout.fragment_editor, container, false);
         recyclerView = view.findViewById(R.id.recycler_editor);
-        //находим ViewPager - он нужен для обновления вкладок после перемещения файлов
-        //viewPager = container.findViewById(R.id.container_raskladki_activity);
         return view;
     }
 
@@ -149,7 +146,6 @@ public class EditorFragment extends Fragment {
         initViews(view);  //находим вьюхи
 
         setChackBoxListener();
-
 
         setChangeTempButtons();  // надписи на кнопкажх в зависимости от радиокнопки
         changeTempMinus5(); //нажатие кнопки -5
@@ -172,6 +168,48 @@ public class EditorFragment extends Fragment {
         fileIdCopy =  editorViewModel.getCopyFile(fileName);
         //передаём в MainAct id копии файла
         mSaverFragmentListener.onFileCopyTransmit(fileIdCopy);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "EditorFragment  onResume ");
+
+        //получаем настройки из активности настроек
+        prefSetting = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+        //получаем из файла настроек количество знаков после запятой
+        accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
+        Log.d(TAG,"EditorFragment accurancy = " + accurancy);
+
+        //выводим список, суммарные время и количество, устанавливаем выделение цветом
+        calculateAndShowTotalValues();
+
+        //установка в нужную позицию списка
+        //changeTemp_listView.setSelection(positionOfList);
+
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment - onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment - onDestroy");
+        //записываем последнее имя файла на экране в преференсис активности
+        shp = requireActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor edit = shp.edit();
+        edit.putString(P.KEY_FILENAME, fileName);
+        edit.apply();
+
+        //удаляем копию файла, созданную при редактировании
+        editorViewModel.clearCopyFile(fileIdCopy,fileName);
+        database.close();
     }
 
     private void revertTemp() {
@@ -203,42 +241,6 @@ public class EditorFragment extends Fragment {
                 count = 0;
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "TempoleaderFragment  onResume ");
-
-        //получаем настройки из активности настроек
-        prefSetting = PreferenceManager.getDefaultSharedPreferences(requireActivity());
-        //получаем из файла настроек количество знаков после запятой
-        accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
-        Log.d(TAG,"TimeMeterActivity accurancy = " + accurancy);
-
-        //выводим список, суммарные время и количество, устанавливаем выделение цветом
-        calculateAndShowTotalValues();
-
-        //установка в нужную позицию списка
-        //changeTemp_listView.setSelection(positionOfList);
-
-        //объявляем о регистрации контекстного меню
-        registerForContextMenu(recyclerView);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment - onDestroy");
-        //записываем последнее имя файла на экране в преференсис активности
-        shp = requireActivity().getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor edit = shp.edit();
-        edit.putString(P.KEY_FILENAME, fileName);
-        edit.apply();
-
-        //удаляем копию файла, созданную ппри редактировании
-        editorViewModel.clearCopyFile(fileIdCopy);
-        database.close();
     }
 
     //слушатель на изменение ChackBox
@@ -333,8 +335,6 @@ public class EditorFragment extends Fragment {
         });
     }
 
-
-
     private void changeTempMinus5() {
         changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -396,8 +396,6 @@ public class EditorFragment extends Fragment {
         });
     }
 
-
-
     private void initViews(@NonNull View view) {
         deltaValue = view.findViewById(R.id.deltaValue);
         deltaValue.setVisibility(View.INVISIBLE);
@@ -436,7 +434,6 @@ public class EditorFragment extends Fragment {
             changeTemp_buttonPlus5.setText("+5");
         }
     }
-
 
     private void calculateAndShowTotalValues(){
         //посчитаем общее врямя выполнения подхода в секундах
