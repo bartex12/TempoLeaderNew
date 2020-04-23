@@ -36,4 +36,25 @@
         android:title="@string/Help"
         app:showAsAction="never"/>
 
+    <item
+        android:title="@string/new_frag"
+        android:id = "@+id/menu_item_new_frag"
+        android:orderInCategory="23"
+        android:icon="@drawable/ic_action_add"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="@string/change_temp"
+        android:id = "@+id/change_temp_up_down"
+        android:orderInCategory="28"
+        android:icon="@drawable/ic_swap_vert_white_32dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:title="@string/save_data_in_file"
+        android:id = "@+id/save_data_in_file"
+        android:orderInCategory="35"
+        android:icon="@drawable/ic_action_save_in_file"
+        app:showAsAction="always"/>
+
 </menu>

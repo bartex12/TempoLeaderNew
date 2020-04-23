@@ -121,7 +121,6 @@ public class TempoleaderFragment extends Fragment {
         onTransmitListener = (OnTransmitListener)context;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

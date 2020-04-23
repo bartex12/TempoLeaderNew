@@ -58,8 +58,7 @@ public class EditorStorageImpl implements EditorStorage {
         //получаем id файла
        long fileId = TabFile.getIdFromFileName(database, fileName);
         //создаём и записываем в базу копию файла на случай отмены изменений
-        long fileIdCopy = TabSet.createFileCopy(database, fileName, fileId, endName);
-        return fileIdCopy;
+        return TabSet.createFileCopy(database, fileName, fileId, endName);
     }
 
     //отмена внесённых при редактировании изменений
@@ -81,6 +80,11 @@ public class EditorStorageImpl implements EditorStorage {
         return  TabSet.getAllSetFragments(database, fileIdCopy);
     }
 
+    @Override
+    public void clearCopyFile(long fileIdCopy) {
+        //удаляем копию файла
+        tempDBHelper.deleteFileAndSets(database, fileIdCopy);
+    }
 
     // собственно редактирование
     private void reductAction(float ff, int ii, boolean redactTime, boolean isChecked,

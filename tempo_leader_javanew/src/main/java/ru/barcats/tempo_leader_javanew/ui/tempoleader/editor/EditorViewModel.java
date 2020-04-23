@@ -48,7 +48,10 @@ public class EditorViewModel extends AndroidViewModel {
 
     public void revertEdit(String fileName, long fileIdCopy){
         data.setValue(storageEditor.revertEdit(fileName, fileIdCopy));
+    }
 
+    public void clearCopyFile(long fileIdCopy){
+        storageEditor.clearCopyFile(fileIdCopy);
     }
 
 }

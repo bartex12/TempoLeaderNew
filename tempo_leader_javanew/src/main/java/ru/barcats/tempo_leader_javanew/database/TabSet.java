@@ -369,7 +369,8 @@ public class TabSet {
     }
 
     // создать копию файла  в базе данных и получить его id
-    public static long createFileCopy(SQLiteDatabase database, String finishFileName, long fileId, String endName){
+    public static long createFileCopy(
+            SQLiteDatabase database, String finishFileName, long fileId, String endName){
 
         //количество фрагментов подхода
         int countOfSet =TabSet.getSetFragmentsCount(database,  fileId);
@@ -377,11 +378,33 @@ public class TabSet {
         Log.d(TAG, "createFileCopy newFileName = " + newFileName);
         //создаём и записываем в базу копию файла на случай отмены изменений
         DataFile dataFileCopy = TabFile.getAllFilesData(database, fileId);
-        dataFileCopy.setFileName(newFileName);
+        dataFileCopy.setFileName(newFileName); //меняем имя
         long fileIdCopy = TabFile.addFile(database, dataFileCopy);
         //записываем фрагменты подхода в файл-копию
         for (int i = 0; i<countOfSet; i++ ){
             DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
+            TabSet.addSet(database, dataSet,fileIdCopy);
+        }
+        Log.d(TAG, "createFileCopy фрагментов  = " +
+                TabSet.getSetFragmentsCount(database, fileIdCopy));
+        return  fileIdCopy;
+    }
+
+    // сохранить файл с новым именем
+    public static long saveAsFile(
+            SQLiteDatabase database, long fileIdOld, String newFileName){
+        Log.d(TAG, "saveAsFile newFileName = " + newFileName);
+        //количество фрагментов подхода
+        int countOfSet =TabSet.getSetFragmentsCount(database,  fileIdOld);
+        //создаём и записываем в базу копию файла
+        DataFile dataFileCopy = TabFile.getAllFilesData(database, fileIdOld);
+        //переписываем имя
+        dataFileCopy.setFileName(newFileName);
+        //добавляем файл в таблицу TabFile и получаем его id
+        long fileIdCopy = TabFile.addFile(database, dataFileCopy);
+        //записываем фрагменты подхода в файл-копию
+        for (int i = 0; i<countOfSet; i++ ){
+            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileIdOld, i);
             TabSet.addSet(database, dataSet,fileIdCopy);
         }
         Log.d(TAG, "createFileCopy фрагментов  = " +

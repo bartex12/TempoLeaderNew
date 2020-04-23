@@ -1,6 +1,7 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader.editor;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
@@ -92,6 +93,19 @@ public class EditorFragment extends Fragment {
     //показывать иконку Сохранить true - да false - нет
     private boolean saveVision = false;
     private long fileIdCopy;
+    private SaverFragmentListener mSaverFragmentListener;
+
+    public interface SaverFragmentListener{
+        void onFileCopyTransmit(long fileIdCopy);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+         mSaverFragmentListener = (SaverFragmentListener)context;
+        Log.d(TAG, "DialogSaveTempFragment: onAttach   mSaverFragmentListener = " +
+                mSaverFragmentListener);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,7 +156,25 @@ public class EditorFragment extends Fragment {
         changeTempMinus1(); //нажатие кнопки -1
         changeTempPlus1(); //нажатие кнопки +1
         changeTempPlus5(); //нажатие кнопки +5
+        revertTemp();   //нажатие кнопки Откатить изменения
 
+        editorViewModel =
+              new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
+        editorViewModel.loadDataSet(fileName)
+                .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
+                    @Override
+                    public void onChanged(ArrayList<DataSet> dataSets) {
+                        updateAdapter(dataSets);
+                        Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
+                    }
+                });
+        //создаём копию файла и получаем его id
+        fileIdCopy =  editorViewModel.getCopyFile(fileName);
+        //передаём в MainAct id копии файла
+        mSaverFragmentListener.onFileCopyTransmit(fileIdCopy);
+    }
+
+    private void revertTemp() {
         changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,21 +203,6 @@ public class EditorFragment extends Fragment {
                 count = 0;
             }
         });
-
-
-        editorViewModel =
-              new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
-        editorViewModel.loadDataSet(fileName)
-                .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
-                    @Override
-                    public void onChanged(ArrayList<DataSet> dataSets) {
-                        updateAdapter(dataSets);
-                        Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
-                    }
-                });
-
-        //создаём копию файла и получаем его id
-        fileIdCopy =  editorViewModel.getCopyFile(fileName);
     }
 
     @Override
@@ -212,12 +229,15 @@ public class EditorFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "EditorFragment - onDestroy");
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment - onDestroy");
         //записываем последнее имя файла на экране в преференсис активности
         shp = requireActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor edit = shp.edit();
         edit.putString(P.KEY_FILENAME, fileName);
         edit.apply();
+
+        //удаляем копию файла, созданную ппри редактировании
+        editorViewModel.clearCopyFile(fileIdCopy);
         database.close();
     }
 

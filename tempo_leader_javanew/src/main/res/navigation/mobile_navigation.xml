@@ -125,6 +125,29 @@
             android:name="fileName"
             app:argType="string"
             android:defaultValue="автосохранение_секундомера" />
+        <action
+            android:id="@+id/action_nav_editor_to_dialogSaveTempFragment"
+            app:destination="@id/dialogSaveTempFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/abstrTabFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment"
+        android:label="fragment_dialog_chahge_name"
+        tools:layout="@layout/fragment_dialog_chahge_name" />
+    <dialog
+        android:id="@+id/dialogChangeFileName"
+        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogChangeFileName"
+        android:label="fragment_dialog_chahge_name"
+        tools:layout="@layout/fragment_dialog_chahge_name" />
+    <dialog
+        android:id="@+id/dialogSaveTempFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogSaveTempFragment"
+        android:label="save_data_in_file_new"
+        tools:layout="@layout/save_data_in_file_new" >
+        <action
+            android:id="@+id/action_dialogSaveTempFragment_to_nav_tempoleader"
+            app:destination="@id/nav_tempoleader" />
+    </dialog>
 
 </navigation>

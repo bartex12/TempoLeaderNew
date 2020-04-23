@@ -12,4 +12,6 @@ public interface EditorStorage {
    long getCopyFile(String fileName);
 
     ArrayList<DataSet>revertEdit (String fileName, long fileIdCopy);
+
+    void clearCopyFile(long fileIdCopy);
 }

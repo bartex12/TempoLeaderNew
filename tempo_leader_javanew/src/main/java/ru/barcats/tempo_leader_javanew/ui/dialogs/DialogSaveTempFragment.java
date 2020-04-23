@@ -1,11 +1,9 @@
-package ru.bartex.tempoleader.ui.dialogs;
+package ru.barcats.tempo_leader_javanew.ui.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,26 +11,41 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import ru.bartex.tempoleader.R;
-import ru.bartex.tempoleader.database.P;
-import ru.bartex.tempoleader.database.TabFile;
-import ru.bartex.tempoleader.database.TempDBHelper;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import ru.barcats.tempo_leader_javanew.R;
+import ru.barcats.tempo_leader_javanew.database.TabFile;
+import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
+import ru.barcats.tempo_leader_javanew.model.DataSet;
+import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
+
 
 /**
  * Created by Андрей on 06.05.2018.
  */
 public class DialogSaveTempFragment extends DialogFragment {
 
-    static String TAG = "33333";
-    String finishFileName; //имя файла, передаваемое в аргументах фрагмента
+    private static String TAG = "33333";
+    private String finishFileName; //имя файла, передаваемое в аргументах фрагмента
 
-    TempDBHelper mTempDBHelper;
+    private  TempDBHelper mTempDBHelper;
     private SQLiteDatabase database;
+    private SaveViewModel saveViewModel;
+    private long fileIdCopy;
 
     public DialogSaveTempFragment(){}
 
@@ -44,18 +57,9 @@ public class DialogSaveTempFragment extends DialogFragment {
         return fragment;
     }
 
-    public interface SaverFragmentListener{
-        void onFileNameTransmit(String oldNameFile, String newNameFile);
-    }
-
-    SaverFragmentListener mSaverFragmentListener;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mSaverFragmentListener = (SaverFragmentListener)context;
-        Log.d(TAG, "DialogSaveTempFragment: onAttach   mSaverFragmentListener = " +
-                mSaverFragmentListener);
         mTempDBHelper = new TempDBHelper(context);
         database = new TempDBHelper(context).getWritableDatabase();
     }
@@ -73,7 +77,10 @@ public class DialogSaveTempFragment extends DialogFragment {
 
         if ((getArguments()) != null){
             //имя файла из аргументов
-            finishFileName = getArguments().getString(P.ARG_NAME_OF_FILE);
+            finishFileName = getArguments().getString(P.NAME_OF_FILE);
+            fileIdCopy = getArguments().getLong(P.FINISH_FILE_ID);
+
+            saveViewModel = new ViewModelProvider(requireActivity()).get(SaveViewModel.class);
 
         }else finishFileName = "";
     }
@@ -82,12 +89,12 @@ public class DialogSaveTempFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
-        takeOnAndOffSoftInput();
+       // takeOnAndOffSoftInput();
 
         AlertDialog.Builder bilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.save_data_in_file, null);
-        final EditText name = view.findViewById(R.id.editTextNameOfFile);
+        final View view = inflater.inflate(R.layout.save_data_in_file_new, null);
+        final EditText name = view.findViewById(R.id.editTextNameOfFile_new);
         name.setText(finishFileName);
         name.requestFocus();
         name.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -95,9 +102,9 @@ public class DialogSaveTempFragment extends DialogFragment {
         bilder.setTitle("Сохранить как");
         bilder.setIcon(R.drawable.ic_save_black_24dp);
 
-        final CheckBox date = view.findViewById(R.id.checkBoxDate);
+        final CheckBox date = view.findViewById(R.id.checkBoxDate_new);
 
-        /*
+
         date.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             String dayTimeFile = "";
             @Override
@@ -115,12 +122,11 @@ public class DialogSaveTempFragment extends DialogFragment {
                     Log.d(TAG, "nameFile = " + nameFile + "  oldName = " + oldName);
                     name.setEnabled(true);
                 }
-
             }
         });
-        */
 
-        Button btnSaveYes = view.findViewById(R.id.buttonSaveYes);
+
+        Button btnSaveYes = view.findViewById(R.id.buttonSaveYes_new);
         btnSaveYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,45 +136,34 @@ public class DialogSaveTempFragment extends DialogFragment {
                     nameFile = nameFile + "_" + P.setDateString();
                     Log.d(TAG, "SaverFragment date.isChecked() Имя файла = " + nameFile);
                 }
-
-                //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileId = TabFile.getIdFromFileName(database, nameFile);
-                Log.d(TAG, "nameFile = " +nameFile + "  fileId = " +fileId);
-
                 //если имя - пустая строка
-                if (nameFile.trim().isEmpty()){
+                if (nameFile.trim().isEmpty()) {
                     Snackbar.make(view, "Введите непустое имя раскладки", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     Log.d(TAG, "Введите непустое имя раскладки ");
-
-                    //если такое имя уже есть в базе
-                }else if (fileId != -1) {
-                    Snackbar.make(view, "Такое имя уже существует. Введите другое имя.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    Log.d(TAG, "Такое имя уже существует. Введите другое имя. fileId = " +fileId);
-
-                    //если имя не повторяется, оно не пустое то
                 }else {
-                    Log.d(TAG, "Такое имя отсутствует fileId = " + fileId);
+                    //если новое имя совпадает со старым, перезаписываем старый файл с новым именем
+                    //если имена не совпадают, делаем копию с новым именем
+                   saveViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
 
-                    //Вызываем метод интерфейса, передаем  имя файла в SingleFragmentActivity
-                    mSaverFragmentListener.onFileNameTransmit(finishFileName,nameFile);
-
+                   //переходим в темполидер
+                    NavController controller = Navigation.findNavController(getParentFragment().getView());
+                    Bundle bundle = new Bundle();
+                    bundle.putString(P.NAME_OF_FILE,nameFile);
+                    controller.navigate(R.id.action_dialogSaveTempFragment_to_nav_tempoleader, bundle);
                     //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                    takeOnAndOffSoftInput();
-                    //getActivity().finish(); //закрывает и диалог и активность
+                   // takeOnAndOffSoftInput();
                     getDialog().dismiss();  //закрывает только диалог
                 }
             }
         });
 
-        Button btnSaveNo = view.findViewById(R.id.buttonSaveNo);
+        Button btnSaveNo = view.findViewById(R.id.buttonSaveNo_new);
         btnSaveNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //принудительно прячем  клавиатуру - повторный вызов ее покажет
-                takeOnAndOffSoftInput();
-                //getActivity().finish(); //закрывает и диалог и активность
+                //takeOnAndOffSoftInput();
                 getDialog().dismiss();  //закрывает только диалог
             }
         });
@@ -181,10 +176,17 @@ public class DialogSaveTempFragment extends DialogFragment {
         return dialog;
     }
 
-    //принудительно вызываем клавиатуру - повторный вызов ее скроет
-    private void takeOnAndOffSoftInput(){
-        InputMethodManager imm = (InputMethodManager) requireActivity().
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//    //принудительно вызываем клавиатуру - повторный вызов ее скроет
+//    private void takeOnAndOffSoftInput(){
+//        InputMethodManager imm = (InputMethodManager) requireActivity().
+//                getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "DialogSaveTempFragment: onDestroy  ");
     }
 }

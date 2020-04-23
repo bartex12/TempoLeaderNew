@@ -59,17 +59,23 @@ public class DialogChangeFileName extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, " **** DialogChangeFileName onCreateView");
-//        Dialog dialog =  getDialog();
-//        dialog.setTitle("Изменить имя файла" );
+
           view = inflater.inflate(R.layout.fragment_dialog_chahge_name, null);
 
 //        database = new TempDBHelper(container.getContext()).getWritableDatabase();
 //        Log.d(TAG, " **** DialogChangeFileName database = " + database);
 
-        //dialog.set.setIcon(R.drawable.ic_wrap_text_black_24dp);
+
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
 
     @NotNull
     @Override
@@ -85,7 +91,7 @@ public class DialogChangeFileName extends DialogFragment {
 //        // takeOnAndOffSoftInput();
 
         final AlertDialog.Builder changeDialog = new AlertDialog.Builder(context);
-        //LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
         //final View view = inflater.inflate(R.layout.fragment_dialog_chahge_name, null);
         changeDialog.setView(view);
         changeDialog.setTitle("Изменить имя");

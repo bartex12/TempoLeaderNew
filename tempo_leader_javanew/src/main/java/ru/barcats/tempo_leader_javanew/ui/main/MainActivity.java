@@ -34,12 +34,14 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
 
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements TempoleaderFragment.OnTransmitListener{
+public class MainActivity extends AppCompatActivity
+        implements TempoleaderFragment.OnTransmitListener, EditorFragment.SaverFragmentListener {
 
     public static final String TAG ="33333";
     private boolean doubleBackToExitPressedOnce;
@@ -50,11 +52,18 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
     private Toolbar toolbar;
     private  BottomNavigationView bottomNavigation;
     private String data;
+    private long fileIdCopy;
 
     @Override
     public void onTransmit(String data) {
         this.data = data;
         Log.d(TAG, "//**// MainActivity onTransmit data = " + data );
+    }
+
+    @Override
+    public void onFileCopyTransmit(long fileIdCopy) {
+        this.fileIdCopy = fileIdCopy;
+        Log.d(TAG, "//**// MainActivity onFileCopyTransmit fileIdCopy = " + fileIdCopy );
     }
 
     @Override
@@ -171,6 +180,10 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
+
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
                 break;
             case R.id.nav_help:
                 menu.findItem(R.id.nav_set).setVisible(true);
@@ -178,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
+
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
                 break;
             case R.id.nav_tempoleader:
                 menu.findItem(R.id.nav_help).setVisible(true);
@@ -186,17 +203,24 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
                 menu.findItem(R.id.nav_editor).setVisible(true);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
 
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
+
                 break;
             case R.id.nav_rascladki:
             case R.id.nav_new_exercise:
             case R.id.nav_home:
-            case R.id.nav_editor:
             case R.id.nav_grafic:
                 menu.findItem(R.id.nav_help).setVisible(true);
                 menu.findItem(R.id.nav_set).setVisible(true);
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
+
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
                 break;
             case R.id.nav_secundomer:
                 menu.findItem(R.id.nav_help).setVisible(true);
@@ -204,6 +228,20 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(true);
+
+
+                break;
+
+            case R.id.nav_editor:
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
+
+                menu.findItem(R.id.menu_item_new_frag).setVisible(true);
+                menu.findItem(R.id.change_temp_up_down).setVisible(true);
+                menu.findItem(R.id.save_data_in_file).setVisible(true);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);
@@ -221,10 +259,17 @@ public class MainActivity extends AppCompatActivity implements TempoleaderFragme
             bundle.putString(P.NAME_OF_FILE, data);
             navController.navigate(R.id.nav_editor, bundle);
             Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
-        }else {
-            return NavigationUI.onNavDestinationSelected(item, navController)
-                    || super.onOptionsItemSelected(item);
-        }
+        }else if (item.getItemId() == R.id.save_data_in_file) {
+            Bundle bundle = new Bundle();
+            bundle.putString(P.NAME_OF_FILE, data);
+            bundle.putLong(P.FINISH_FILE_ID, fileIdCopy);
+            navController.navigate(R.id.action_nav_editor_to_dialogSaveTempFragment, bundle);
+            Log.d(TAG, "//****// MainActivity onOptionsItemSelected fileIdCopy = " + fileIdCopy );
+        } else {
+                return NavigationUI.onNavDestinationSelected(item, navController)
+                        || super.onOptionsItemSelected(item);
+            }
+
         return super.onOptionsItemSelected(item);
     }
 

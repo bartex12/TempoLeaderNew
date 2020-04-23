@@ -79,6 +79,7 @@ public class TabFile {
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(COLUMN_FILE_NAME, nameFile);
         database.update(TABLE_NAME, updatedValues,_ID + "=" + fileId, null);
+        Log.d(TAG, "updateFileName currentID = " + fileId +" nameFile = "+ nameFile );
     }
 
     //получаем ID по имени
