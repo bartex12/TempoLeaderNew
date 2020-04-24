@@ -161,6 +161,7 @@ public class EditorFragment extends Fragment {
                     @Override
                     public void onChanged(ArrayList<DataSet> dataSets) {
                         updateAdapter(dataSets);
+                        setMarker();
                         Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
                     }
                 });
@@ -216,18 +217,15 @@ public class EditorFragment extends Fragment {
         changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //отменяем внесённые изменения
                 editorViewModel.revertEdit(fileName, fileIdCopy);
                 //копия файла была использована, поэтому для дальнейшего редактирования
                 //создаём ещё одну копию файла -  и получаем его id
                 fileIdCopy =  editorViewModel.getCopyFile(fileName);
-
-                //updateAdapter();
+                setMarker();
                 calculateAndShowTotalValues();
                 //changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = false;
-                //invalidateOptionsMenu();
 
                 //делаем индикатор невидимым
                 deltaValue.setVisibility(View.INVISIBLE);
@@ -249,16 +247,13 @@ public class EditorFragment extends Fragment {
         mCheckBoxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //загружаем данные
+                editorViewModel.loadDataSet(fileName);
 
-                editorViewModel.loadDataSet(fileName)
-                        .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
-                            @Override
-                            public void onChanged(ArrayList<DataSet> dataSets) {
-                                updateAdapter(dataSets);
-                            }
-                        });
-
+                setMarker();
+                adapter.notifyDataSetChanged();
                 calculateAndShowTotalValues();
+
 
                 //установка в нужную позицию списка
                 //changeTemp_listView.setSelectionFromTop(pos, offset);
@@ -272,24 +267,28 @@ public class EditorFragment extends Fragment {
         });
     }
 
+    private void setMarker() {
+        if (mCheckBoxAll.isChecked()) {
+            adapter.setItem(adapter.getItemCount());
+        }else {
+            adapter.setItem(0);
+        }
+    }
+
 
     private void changeTempPlus5() {
         changeTemp_buttonPlus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //пересчитываем раскладку на +1 процентов времени или +1 раз
                 editorViewModel.minus5Action(fileName, 1.05f, 5,
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.05f, 5);
-
-                //updateAdapter();
+                setMarker();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
-                // invalidateOptionsMenu();
-
             }
         });
     }
@@ -304,13 +303,10 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.01f, 1);
-
-                //updateAdapter();
+                setMarker();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
-                // invalidateOptionsMenu();
-
             }
         });
     }
@@ -325,13 +321,10 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                getDeltaValue(0.99f, -1);
-
-                //updateAdapter();
+                setMarker();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
-                // invalidateOptionsMenu();
-
             }
         });
     }
@@ -340,18 +333,15 @@ public class EditorFragment extends Fragment {
         changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //пересчитываем раскладку на -5 процентов времени или -5 раз
                 editorViewModel.minus5Action(fileName, 0.95f, -5,
                         redactTime, mCheckBoxAll.isChecked(),positionOfList);
 
                getDeltaValue(0.95f, -5);
-
-                //updateAdapter();
+                setMarker();
                 calculateAndShowTotalValues();
                // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
-               // invalidateOptionsMenu();
             }
         });
     }
