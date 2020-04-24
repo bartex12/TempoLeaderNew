@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave;
+package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.dialogsave;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
