@@ -90,6 +90,27 @@ public class EditorStorageImpl implements EditorStorage {
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    @Override
+    public DataSet getDataSetNew(String fileName) {
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, fileName);
+        int fragmentCount = TabSet.getSetFragmentsCount(database, fileId);
+        DataSet dataSet = new DataSet();
+        dataSet.setNumberOfFrag(fragmentCount + 1);
+        dataSet.setReps(1);
+        dataSet.setTimeOfRep(1.0f);
+        return dataSet;
+    }
+
+    @Override
+    public ArrayList<DataSet> addSet(DataSet dataSet, String finishFileName) {
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, finishFileName);
+       // Добавляем фрагмент подхода
+        TabSet.addSet(database, dataSet, fileId);
+        return TabSet.getAllSetFragments(database, fileId);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {

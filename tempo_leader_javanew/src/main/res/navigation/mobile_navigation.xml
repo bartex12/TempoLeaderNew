@@ -119,6 +119,9 @@
         <action
             android:id="@+id/action_nav_editor_to_dialogChangeTemp"
             app:destination="@id/dialogChangeTemp" />
+        <action
+            android:id="@+id/action_nav_editor_to_newSetDialog"
+            app:destination="@id/newSetDialog" />
     </fragment>
 
     <dialog
@@ -135,5 +138,10 @@
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTempFragment"
         android:label="fragment_dialog_chahge_temp"
         tools:layout="@layout/fragment_dialog_chahge_temp" />
+    <dialog
+        android:id="@+id/newSetDialog"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.NewSetDialog"
+        android:label="fragment_dialog_new_set"
+        tools:layout="@layout/fragment_dialog_new_set" />
 
 </navigation>

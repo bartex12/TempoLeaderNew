@@ -52,4 +52,12 @@ public class EditorViewModel extends AndroidViewModel {
         data.setValue(storageEditor.changeTemp(finishFileName, valueDelta, up));
     }
 
+    public DataSet getDataSetNew(String fileName){
+        return storageEditor.getDataSetNew(fileName);
+    }
+
+    public void   addSet(DataSet dataSet,String finishFileName){
+        data.setValue(storageEditor.addSet(dataSet, finishFileName));
+    }
+
 }

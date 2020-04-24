@@ -267,7 +267,10 @@ public class MainActivity extends AppCompatActivity
             navController.navigate(R.id.action_nav_editor_to_dialogChangeTemp, bundle);
             break;
         case R.id.menu_item_new_frag:
-
+            bundle = new Bundle();
+            bundle.putString(P.NAME_OF_FILE, data);
+            bundle.putInt(P.FROM_ACTIVITY, P.TO_ADD_FRAG); // добавить фрагмент подхода
+            navController.navigate(R.id.action_nav_editor_to_newSetDialog, bundle);
             break;
             default:
                 return NavigationUI.onNavDestinationSelected(item, navController)

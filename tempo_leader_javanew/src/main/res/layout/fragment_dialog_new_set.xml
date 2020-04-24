@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView_newset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/fr_n"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/mark_item_newset"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:ems="10"
+            android:enabled="false"
+            android:gravity="start|center_vertical"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="@string/_0"
+            android:textColor="#0512c5"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/time_sec"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/time_item_newset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:enabled="true"
+            android:focusable="true"
+            android:selectAllOnFocus="true"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:text="@string/timeValue_item1"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/count_reps"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/reps_item_newset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:enabled="true"
+            android:focusable="true"
+            android:selectAllOnFocus="true"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="@string/repsValue_item1"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonCancel_newset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:textSize="16sp"
+            android:text="@string/cancel_" />
+
+
+        <Button
+            android:id="@+id/buttonOk_newset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="2"
+            android:background="@android:color/transparent"
+            android:textSize="16sp"
+            android:text="@string/priniat" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -137,7 +137,7 @@ public class P {
     public final static int HELP_ALL = 9;
 
     public final static int DETAIL_CHANGE_REQUEST_KODE = 10;
-    public final static int DETAIL_CHANGE_TEMP_REQUEST_CODE = 20;
+    public final static int DETAIL_CHANGE_TEMP = 20;
     public final static int TEMP_REQUEST_CODE = 30;
 
     public static final int DELETE_ACTION_SEC = 1;

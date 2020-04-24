@@ -31,18 +31,14 @@ public class DetailActivity extends AppCompatActivity {
 
 
     private static final String TAG = "33333";
-    public static final String INTENT_SET_UUID = "DetailActivity.intent_set_uuid";
-    public static final String POSITION = "positionDetailActivity";
-    static final String DETAIL_REQUEST = "DetailActivity.change_request";
-    static final String DETAIL_DATA_SET = "DetailActivity.DATA_SET";
 
-    Bundle extras;
-    DataSet mDataSet;
-    TempDBHelper mDBHelper = new TempDBHelper(this);
-    int fragmentCount;  //количество фрагментов подхода
-    int fragmentNumber;  //номер фрагмента для Вставить до/после
-    long fileId; //id файла, в который добавляем новый фрагмент подхода
-    String finishFileName; //имя файла для обратной отправки
+
+    private  Bundle extras;
+    private  DataSet mDataSet;
+    private int fragmentCount;  //количество фрагментов подхода
+    private int fragmentNumber;  //номер фрагмента для Вставить до/после
+    private long fileId; //id файла, в который добавляем новый фрагмент подхода
+    private String finishFileName; //имя файла для обратной отправки
     private SQLiteDatabase database;
 
     //редактируемая запись появляется в списке, только если нажата кнопка Принять

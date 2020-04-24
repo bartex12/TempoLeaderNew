@@ -180,5 +180,10 @@
     <string name="valueInProc">Величина в процентах</string>
     <string name="tempUp">Повысить темп</string>
     <string name="tempDown">Снизить темп</string>
+    <string name="fr_n">Фрагмент №</string>
+    <string name="time_sec">Время , с</string>
+    <string name="count_reps">Количество , раз</string>
+    <string name="cancel_">Отмена</string>
+    <string name="priniat">Принять</string>
 
 </resources>

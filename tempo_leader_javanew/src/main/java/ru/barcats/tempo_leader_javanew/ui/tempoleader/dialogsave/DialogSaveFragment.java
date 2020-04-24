@@ -57,8 +57,9 @@ public class DialogSaveFragment extends DialogFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "DialogSaveTempFragment: onDestroy  ");
         database.close();
     }
 
@@ -86,6 +87,7 @@ public class DialogSaveFragment extends DialogFragment {
         AlertDialog.Builder bilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.save_data_in_file_new, null);
+
         final EditText name = view.findViewById(R.id.editTextNameOfFile_new);
         name.setText(finishFileName);
         name.requestFocus();
@@ -176,9 +178,5 @@ public class DialogSaveFragment extends DialogFragment {
 //    }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "DialogSaveTempFragment: onDestroy  ");
-    }
+
 }

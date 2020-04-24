@@ -15,10 +15,12 @@ import ru.barcats.tempo_leader_javanew.R;
 
 public class SecundomerFragment extends Fragment {
 
+    SecundomerViewModel secundomerViewModel;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        SecundomerViewModel secundomerViewModel =
+        secundomerViewModel =
                 new ViewModelProvider(requireActivity()).get(SecundomerViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_secundomer, container, false);

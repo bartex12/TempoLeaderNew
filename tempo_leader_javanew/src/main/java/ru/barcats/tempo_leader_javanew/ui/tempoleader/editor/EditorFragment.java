@@ -142,7 +142,7 @@ public class EditorFragment extends Fragment {
         //разрешить только портретную ориентацию экрана
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        getPrefSettings();  //получаем значения точности и звека из настроек
+        getPrefSettings();  //получаем значения точности и звука из настроек
         initViews(view);  //находим вьюхи
 
         setChackBoxListener();

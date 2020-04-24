@@ -204,118 +204,17 @@ public class EditorActivity extends AppCompatActivity implements
          //создаём и записываем в базу копию файла на случай отмены изменений
         fileIdCopy = TabSet.createFileCopy(database, finishFileName, fileId, endName);
 
-        deltaValue = (TextView)findViewById(R.id.deltaValue);
-        deltaValue.setVisibility(View.INVISIBLE);
-        //deltaValue.setText("-00%");
-        //deltaValue.setBackground(R.drawable.ramka);
+        initViews();
 
-        mRadioButtonTime = (RadioButton) findViewById(R.id.radioButtonTime);
-        mRadioButtonCount = (RadioButton) findViewById(R.id.radioButtonCount);
-        mRadioGroupTimeCount = (RadioGroup) findViewById(R.id.radioGroupTimeCount);
         setChangeTempButtons();
-
-        mCheckBoxAll = (CheckBox) findViewById(R.id.checkBox);
-        mCheckBoxAll.setChecked(true);
-
         setChackBoxListener();
 
-        changeTemp_listView = (ListView)findViewById(R.id.changeTemp_listView);
-        //накладываем жёлтый задний фон строки списка
-        // на градиентный фон макета разметки  самОй строки list_item_set_textview
-        changeTemp_listView.setBackgroundColor(Color.YELLOW);
-        //разрешаем выбор в списке (по умолчанию - NONE , тип - в макете)
-        changeTemp_listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        //слушатель нажатий
-        changeTemp_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //выделенная строка
-                positionOfList = i;
-                Log.d(TAG, "ChangeTempActivity i = " + i);
-
-                //выделяем строку и удерживаем её позицию в списке
-                pos = changeTemp_listView.getFirstVisiblePosition();
-                View v = changeTemp_listView.getChildAt(0);
-                if (v != null) {
-                    offset = v.getTop() - changeTemp_listView.getPaddingTop();
-                }
-
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-
-                //делаем индикатор невидимым
-                deltaValue.setVisibility(View.INVISIBLE);
-                //обнуляем показатели разности значений
-                time = 0f;
-                count = 0;
-            }
-        });
-
-        changeTemp_textViewName =(TextView)findViewById(R.id.changeTemp_textViewName);
-        changeTemp_textViewName.setText(finishFileName);
-
-        timeTotal = (TextView)findViewById(R.id.timeTotal);
-        repsTotal = (TextView)findViewById(R.id.repsTotal);
-
-        changeTemp_buttonMinus5 = (Button) findViewById(R.id.changeTemp_buttonMinus5);
+        setListViewListener();
 
         setButtonMinus5Listener();
-
-        changeTemp_buttonMinus1 = (Button) findViewById(R.id.changeTemp_buttonMinus1);
-
         setButtonMinus1Listener();
-
-        changeReps_imageButtonRevert = (ImageButton) findViewById(R.id.changeTemp_imageButtonRevert);
-        changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "========ChangeTempActivity changeReps_imageButtonRevert=======");
-
-                Log.d(TAG, " ДО ChangeTempActivity fileId = " + fileId +
-                        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
-
-                //удаляем изменённый файл
-                mDBHelper.deleteFileAndSets(fileId);
-                //теперь первоначальный файл содержится в копии
-                fileId = fileIdCopy;
-                //изменяем имя у копии файла на первоначальное имя
-                TabFile.updateFileName(database, finishFileName,fileIdCopy);
-
-               // Log.d(TAG, " ПОСЛЕ ИЗМ В КОПИИ ChangeTempActivity fileId = " + fileId +
-                //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
-                // снова создаём и записываем в базу копию файла на случай отмены изменений
-                fileIdCopy = TabSet.createFileCopy(database, finishFileName, fileId, endName);
-
-               // Log.d(TAG, " ПОСЛЕ СОЗД НОВОЙ КОПИИ ChangeTempActivity fileId = " + fileId +
-                //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
-
-                updateAdapter();
-                calculateAndShowTotalValues();
-                changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = false;
-                invalidateOptionsMenu();
-
-                //делаем индикатор невидимым
-                deltaValue.setVisibility(View.INVISIBLE);
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    deltaValue.setText("0%");
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
-                //обнуляем показатели разности значений
-                time = 0f;
-                count = 0;
-            }
-        });
-
-        changeTemp_buttonPlus1 = (Button) findViewById(R.id.changeTemp_buttonPlus1);
-
+        revertChange();
         setButtonPlus1Listener();
-
-        changeTemp_buttonPlus5 = (Button) findViewById(R.id.changeTemp_buttonPlus5);
-
         setButtonPlus5Listener();
 
         //Выставляем надписи на кнопках перед началом редактирования
@@ -331,7 +230,6 @@ public class EditorActivity extends AppCompatActivity implements
             changeTemp_buttonPlus5.setText("+5");
         }
     }
-
     //******************** end onCreate  **********************
 
     @Override
@@ -384,6 +282,114 @@ public class EditorActivity extends AppCompatActivity implements
         mDBHelper.deleteFileAndSets(fileIdCopy);
         database.close();
     }
+
+    private void setListViewListener() {
+        //слушатель нажатий
+        changeTemp_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //выделенная строка
+                positionOfList = i;
+                Log.d(TAG, "ChangeTempActivity i = " + i);
+
+                //выделяем строку и удерживаем её позицию в списке
+                pos = changeTemp_listView.getFirstVisiblePosition();
+                View v = changeTemp_listView.getChildAt(0);
+                if (v != null) {
+                    offset = v.getTop() - changeTemp_listView.getPaddingTop();
+                }
+
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+
+                //делаем индикатор невидимым
+                deltaValue.setVisibility(View.INVISIBLE);
+                //обнуляем показатели разности значений
+                time = 0f;
+                count = 0;
+            }
+        });
+    }
+
+    private void initViews() {
+        deltaValue = (TextView)findViewById(R.id.deltaValue);
+        deltaValue.setVisibility(View.INVISIBLE);
+
+        mRadioButtonTime = (RadioButton) findViewById(R.id.radioButtonTime);
+        mRadioButtonCount = (RadioButton) findViewById(R.id.radioButtonCount);
+        mRadioGroupTimeCount = (RadioGroup) findViewById(R.id.radioGroupTimeCount);
+
+
+        mCheckBoxAll = (CheckBox) findViewById(R.id.checkBox);
+        mCheckBoxAll.setChecked(true);
+
+        changeTemp_listView = (ListView)findViewById(R.id.changeTemp_listView);
+        //накладываем жёлтый задний фон строки списка
+        // на градиентный фон макета разметки  самОй строки list_item_set_textview
+        changeTemp_listView.setBackgroundColor(Color.YELLOW);
+        //разрешаем выбор в списке (по умолчанию - NONE , тип - в макете)
+        changeTemp_listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        changeTemp_textViewName =(TextView)findViewById(R.id.changeTemp_textViewName);
+        changeTemp_textViewName.setText(finishFileName);
+
+        timeTotal = (TextView)findViewById(R.id.timeTotal);
+        repsTotal = (TextView)findViewById(R.id.repsTotal);
+
+        changeTemp_buttonMinus5 = (Button) findViewById(R.id.changeTemp_buttonMinus5);
+        changeTemp_buttonMinus1 = (Button) findViewById(R.id.changeTemp_buttonMinus1);
+        changeReps_imageButtonRevert = (ImageButton) findViewById(R.id.changeTemp_imageButtonRevert);
+        changeTemp_buttonPlus1 = (Button) findViewById(R.id.changeTemp_buttonPlus1);
+        changeTemp_buttonPlus5 = (Button) findViewById(R.id.changeTemp_buttonPlus5);
+    }
+
+    private void revertChange() {
+        changeReps_imageButtonRevert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "========ChangeTempActivity changeReps_imageButtonRevert=======");
+
+                Log.d(TAG, " ДО ChangeTempActivity fileId = " + fileId +
+                        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
+
+                //удаляем изменённый файл
+                mDBHelper.deleteFileAndSets(fileId);
+                //теперь первоначальный файл содержится в копии
+                fileId = fileIdCopy;
+                //изменяем имя у копии файла на первоначальное имя
+                TabFile.updateFileName(database, finishFileName,fileIdCopy);
+
+               // Log.d(TAG, " ПОСЛЕ ИЗМ В КОПИИ ChangeTempActivity fileId = " + fileId +
+                //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
+                // снова создаём и записываем в базу копию файла на случай отмены изменений
+                fileIdCopy = TabSet.createFileCopy(database, finishFileName, fileId, endName);
+
+               // Log.d(TAG, " ПОСЛЕ СОЗД НОВОЙ КОПИИ ChangeTempActivity fileId = " + fileId +
+                //        "  fileIdCopy = " + fileIdCopy +"  finishFileName = " + finishFileName);
+
+                updateAdapter();
+                calculateAndShowTotalValues();
+                changeTemp_listView.setSelectionFromTop(pos, offset);
+                saveVision = false;
+                invalidateOptionsMenu();
+
+                //делаем индикатор невидимым
+                deltaValue.setVisibility(View.INVISIBLE);
+                if (redactTime){
+                    deltaValue.setVisibility(View.VISIBLE);
+                    deltaValue.setText("0%");
+                }else {
+                    deltaValue.setVisibility(View.INVISIBLE);
+                }
+                //обнуляем показатели разности значений
+                time = 0f;
+                count = 0;
+            }
+        });
+    }
+
+
 
     private void setButtonMinus5Listener() {
         changeTemp_buttonMinus5.setOnClickListener(new View.OnClickListener() {
