@@ -111,6 +111,24 @@ public class EditorStorageImpl implements EditorStorage {
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    @Override
+    public float getSumOfTimes(String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        return  TabSet.getSumOfTimeSet(database, fileId);
+    }
+
+    @Override
+    public int getSumOfReps(String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        return  TabSet.getSumOfRepsSet(database, fileId);
+    }
+
+    @Override
+    public int getFragmentsCount(String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        return  TabSet.getSetFragmentsCount(database, fileId);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {

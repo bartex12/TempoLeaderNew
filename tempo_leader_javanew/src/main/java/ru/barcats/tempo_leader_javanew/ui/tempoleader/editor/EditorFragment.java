@@ -438,15 +438,14 @@ public class EditorFragment extends Fragment {
 
     private void calculateAndShowTotalValues(){
         //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
+        mTimeOfSet =editorViewModel.getSumOfTimes(fileName);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
-        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
+        mTotalReps = editorViewModel.getSumOfReps(fileName);
         Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps);
 
         //покажем общее время подхода и общее число повторений в подходе
-
         timeTotal.setText(showTotalTime(mTimeOfSet, TempoleaderFragment.mKvant));
         repsTotal.setText(String.format(Locale.getDefault(), "Количество  %d", mTotalReps));
     }

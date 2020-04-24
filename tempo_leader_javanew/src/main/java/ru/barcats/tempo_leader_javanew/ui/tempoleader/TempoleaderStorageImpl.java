@@ -27,4 +27,22 @@ public class TempoleaderStorageImpl implements TempoleaderStorage {
         final ArrayList<DataSet> arr = TabSet.getAllSetFragments(database, fileId);
         return arr;
     }
+
+    @Override
+    public float getSumOfTimes(String finishFileName) {
+       long fileId = TabFile.getIdFromFileName(database, finishFileName);
+       return  TabSet.getSumOfTimeSet(database, fileId);
+    }
+
+    @Override
+    public int getSumOfReps(String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        return  TabSet.getSumOfRepsSet(database, fileId);
+    }
+
+    @Override
+    public int getFragmentsCount(String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        return  TabSet.getSetFragmentsCount(database, fileId);
+    }
 }

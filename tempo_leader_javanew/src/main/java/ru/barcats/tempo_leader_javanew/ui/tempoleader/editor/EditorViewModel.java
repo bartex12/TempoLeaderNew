@@ -56,8 +56,20 @@ public class EditorViewModel extends AndroidViewModel {
         return storageEditor.getDataSetNew(fileName);
     }
 
-    public void   addSet(DataSet dataSet,String finishFileName){
+    public void  addSet(DataSet dataSet,String finishFileName){
         data.setValue(storageEditor.addSet(dataSet, finishFileName));
+    }
+
+    public float getSumOfTimes(String finishFileName){
+        return storageEditor.getSumOfTimes(finishFileName);
+    }
+
+    public int getSumOfReps(String finishFileName){
+        return storageEditor.getSumOfReps(finishFileName);
+    }
+
+    public int getFragmentsCount(String finishFileName){
+        return storageEditor.getFragmentsCount(finishFileName);
     }
 
 }

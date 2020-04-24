@@ -22,4 +22,8 @@ public interface EditorStorage {
     DataSet getDataSetNew(String fileName);
 
     ArrayList<DataSet> addSet(DataSet dataSet, String finishFileName);
+
+    float getSumOfTimes(String finishFileName);
+    int getSumOfReps(String finishFileName);
+    int getFragmentsCount(String finishFileName);
 }

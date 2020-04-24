@@ -230,19 +230,21 @@ public class TempoleaderFragment extends Fragment {
 
         //получаем id  файла с раскладкой по его имени finishFileName из интента
         fileId = TabFile.getIdFromFileName(database, finishFileName);
-
         Log.d(TAG, "fileId  = " + fileId);
         //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
         //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
-        mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
+       // mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
+        mTotalCountFragment =dataSetViewModel.getFragmentsCount(finishFileName);
 
-        //посчитаем общее врямя выполнения подхода в секундах
-        mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
+                //посчитаем общее врямя выполнения подхода в секундах
+        mTimeOfSet =  dataSetViewModel.getSumOfTimes(finishFileName);
+                    //mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
-        mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
-        Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps + " fileId = " + fileId);
+        mTotalReps =  dataSetViewModel.getSumOfReps(finishFileName);
+                // mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
+        Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps);
 
         //покажем общее время подхода и общее число повторений в подходе
         showTotalValues(mTimeOfSet,mTotalReps, mKvant);
