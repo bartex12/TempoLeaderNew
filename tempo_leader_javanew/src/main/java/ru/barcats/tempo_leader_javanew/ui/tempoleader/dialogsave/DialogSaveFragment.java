@@ -29,7 +29,7 @@ import ru.barcats.tempo_leader_javanew.model.P;
 /**
  * Created by Андрей on 06.05.2018.
  */
-public class DialogSaveTempFragment extends DialogFragment {
+public class DialogSaveFragment extends DialogFragment {
 
     private static String TAG = "33333";
     private String finishFileName; //имя файла, передаваемое в аргументах фрагмента
@@ -39,12 +39,12 @@ public class DialogSaveTempFragment extends DialogFragment {
     private SaveViewModel saveViewModel;
     private long fileIdCopy;
 
-    public DialogSaveTempFragment(){}
+    public DialogSaveFragment(){}
 
-    public static DialogSaveTempFragment newInstance(String nameOfFile){
+    public static DialogSaveFragment newInstance(String nameOfFile){
         Bundle args = new Bundle();
         args.putString(P.ARG_NAME_OF_FILE,nameOfFile);
-        DialogSaveTempFragment fragment = new DialogSaveTempFragment();
+        DialogSaveFragment fragment = new DialogSaveFragment();
         fragment.setArguments(args);
         return fragment;
     }

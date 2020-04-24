@@ -6,15 +6,14 @@ import android.util.Log;
 
 import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.SaveAsStorage;
 
-public class SaveAsStorageImpl implements SaveAsStorage {
+public class SaveStorageImpl implements SaveStorage {
 
     private static final String TAG = "33333";
     private SQLiteDatabase database;
     private TempDBHelper tempDBHelper;
 
-    public SaveAsStorageImpl(Application application) {
+    public SaveStorageImpl(Application application) {
         tempDBHelper = new TempDBHelper(application);
         database = tempDBHelper.getWritableDatabase();
     }

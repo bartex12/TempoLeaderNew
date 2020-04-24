@@ -116,6 +116,7 @@ public class P {
     public static final String ARG_NUMBER_ITEM_TEMP = "ru.bartex.p010_train.NumberItemTemp";
     public static final String ARG_NUMBER_ITEM_LIKE = "ru.bartex.p010_train.NumberItemLike";
     public static final String ARG_DELAY = "ru.bartex.p010_train.delay";
+    public static final String ARG_VALUE_CHANGE_TEMP = "ru.bartex.p010_train.value";
 
     public static final String INTENT_TO_DETILE_FILE_ID = "ru.bartex.p010_train.IntentToDetileFileId";
     public static final String INTENT_TO_CHANGE_TEMP_FILE_ID = "ru.bartex.p010_train.IntentToChangeTempFileId";

@@ -16,13 +16,13 @@ public class TempoleaderViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<DataSet>>  data = new MutableLiveData<>();
     private TempoleaderStorage tempoleaderStorage;
     private MutableLiveData<Float> delay;
-    private DelayStorage delayStorage;
+   // private DelayStorage delayStorage;
 
 
     public TempoleaderViewModel(@NonNull Application application) {
         super(application);
         tempoleaderStorage = new TempoleaderStorageImpl(application);
-        delayStorage = new DelayStorageImpl(application);
+        //delayStorage = new DelayStorageImpl(application);
     }
 
     public LiveData<ArrayList<DataSet>> loadDataSet(String fileName) {
@@ -35,11 +35,11 @@ public class TempoleaderViewModel extends AndroidViewModel {
         return data;
     }
 
-    public LiveData<Float> getDelay(float delayNumber) {
-        if (delay == null) {
-            delay = new MutableLiveData<>();
-        }
-            delay.setValue(delayStorage.getDelay(delayNumber));
-            return delay;
-        }
+//    public LiveData<Float> getDelay(float delayNumber) {
+//        if (delay == null) {
+//            delay = new MutableLiveData<>();
+//        }
+//            delay.setValue(delayStorage.getDelay(delayNumber));
+//            return delay;
+//        }
     }

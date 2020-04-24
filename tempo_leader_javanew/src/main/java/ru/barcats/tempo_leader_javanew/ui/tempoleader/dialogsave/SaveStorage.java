@@ -1,6 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave;
 
-public interface SaveAsStorage {
+public interface SaveStorage {
     long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy);
 
 }

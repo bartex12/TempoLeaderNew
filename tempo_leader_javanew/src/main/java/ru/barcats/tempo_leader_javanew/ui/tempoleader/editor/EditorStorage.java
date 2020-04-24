@@ -15,5 +15,5 @@ public interface EditorStorage {
 
     void clearCopyFile(long fileIdCopy, String fileName);
 
-
+    ArrayList<DataSet> changeTemp(String finishFileName, int valueDelta, boolean up);
 }

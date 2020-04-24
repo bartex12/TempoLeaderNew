@@ -65,18 +65,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="ru.barcats.tempo_leader_javanew.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="ru.barcats.tempo_leader_javanew.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
-
-    <fragment
         android:id="@+id/nav_set"
         android:name="ru.barcats.tempo_leader_javanew.ui.settings.PrefFragment"
         android:label="@string/Settings" />
@@ -99,7 +87,7 @@
     </fragment>
     <dialog
         android:id="@+id/nav_set_delay"
-        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogSetDelay"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSetDelayFragment"
         android:label="set_delay"
         tools:layout="@layout/set_delay" >
         <action
@@ -128,26 +116,24 @@
         <action
             android:id="@+id/action_nav_editor_to_dialogSaveTempFragment"
             app:destination="@id/dialogSaveTempFragment" />
+        <action
+            android:id="@+id/action_nav_editor_to_dialogChangeTemp"
+            app:destination="@id/dialogChangeTemp" />
     </fragment>
 
-    <fragment
-        android:id="@+id/abstrTabFragment"
-        android:name="ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment"
-        android:label="fragment_dialog_chahge_name"
-        tools:layout="@layout/fragment_dialog_chahge_name" />
-    <dialog
-        android:id="@+id/dialogChangeFileName"
-        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogChangeFileName"
-        android:label="fragment_dialog_chahge_name"
-        tools:layout="@layout/fragment_dialog_chahge_name" />
     <dialog
         android:id="@+id/dialogSaveTempFragment"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.DialogSaveTempFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.DialogSaveFragment"
         android:label="save_data_in_file_new"
         tools:layout="@layout/save_data_in_file_new" >
         <action
             android:id="@+id/action_dialogSaveTempFragment_to_nav_tempoleader"
             app:destination="@id/nav_tempoleader" />
     </dialog>
+    <dialog
+        android:id="@+id/dialogChangeTemp"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTempFragment"
+        android:label="fragment_dialog_chahge_temp"
+        tools:layout="@layout/fragment_dialog_chahge_temp" />
 
 </navigation>

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
         implements TempoleaderFragment.OnTransmitListener, EditorFragment.SaverFragmentListener {
 
     public static final String TAG ="33333";
+    public static final int  VALUE = 10;  //  величина изменения темпа по умолчанию
     private boolean doubleBackToExitPressedOnce;
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
@@ -244,24 +245,34 @@ public class MainActivity extends AppCompatActivity
     //А КАК БЫТЬ С ДАННЫМИ?
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.nav_editor){
-            Bundle bundle = new Bundle();
+        Bundle bundle = null;
+    switch (item.getItemId()){
+        case R.id.nav_editor:
+            bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
             navController.navigate(R.id.nav_editor, bundle);
             Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
-        }else if (item.getItemId() == R.id.save_data_in_file) {
-            Bundle bundle = new Bundle();
+            break;
+        case R.id.save_data_in_file:
+            bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
             bundle.putLong(P.FINISH_FILE_ID, fileIdCopy);
             navController.navigate(R.id.action_nav_editor_to_dialogSaveTempFragment, bundle);
             Log.d(TAG, "//****// MainActivity onOptionsItemSelected fileIdCopy = " + fileIdCopy );
-        } else {
+            break;
+        case R.id.change_temp_up_down:
+            bundle = new Bundle();
+            bundle.putInt(P.ARG_VALUE_CHANGE_TEMP, VALUE);
+            bundle.putString(P.NAME_OF_FILE, data);
+            navController.navigate(R.id.action_nav_editor_to_dialogChangeTemp, bundle);
+            break;
+        case R.id.menu_item_new_frag:
+
+            break;
+            default:
                 return NavigationUI.onNavDestinationSelected(item, navController)
                         || super.onOptionsItemSelected(item);
-            }
-
-        return super.onOptionsItemSelected(item);
     }
-
+    return super.onOptionsItemSelected(item);
+    }
 }

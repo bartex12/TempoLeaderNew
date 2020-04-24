@@ -177,5 +177,8 @@
     <string name="_1proc">-1%</string>
     <string name="_1proc_plus">+1%</string>
     <string name="_5proc_plus">+5%</string>
+    <string name="valueInProc">Величина в процентах</string>
+    <string name="tempUp">Повысить темп</string>
+    <string name="tempDown">Снизить темп</string>
 
 </resources>

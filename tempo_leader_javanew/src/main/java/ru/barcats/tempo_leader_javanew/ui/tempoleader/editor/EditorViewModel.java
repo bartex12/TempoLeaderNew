@@ -48,4 +48,8 @@ public class EditorViewModel extends AndroidViewModel {
         storageEditor.clearCopyFile(fileIdCopy,fileName);
     }
 
+    public void changeTemp(String finishFileName, int valueDelta, boolean up){
+        data.setValue(storageEditor.changeTemp(finishFileName, valueDelta, up));
+    }
+
 }

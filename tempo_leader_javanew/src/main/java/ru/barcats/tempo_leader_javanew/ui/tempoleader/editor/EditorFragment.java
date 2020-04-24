@@ -219,7 +219,8 @@ public class EditorFragment extends Fragment {
 
                 //отменяем внесённые изменения
                 editorViewModel.revertEdit(fileName, fileIdCopy);
-                //создаём ещё одну копию файла - для дальнейшего редактирования и получаем его id
+                //копия файла была использована, поэтому для дальнейшего редактирования
+                //создаём ещё одну копию файла -  и получаем его id
                 fileIdCopy =  editorViewModel.getCopyFile(fileName);
 
                 //updateAdapter();

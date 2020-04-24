@@ -67,6 +67,29 @@ public class EditorStorageImpl implements EditorStorage {
         }
     }
 
+    @Override
+    public ArrayList<DataSet> changeTemp(String finishFileName, int valueDelta, boolean up) {
+        //id файла
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        //количество фрагментов подхода
+        int countOfSet =TabSet.getSetFragmentsCount( database,fileId);
+
+        //если повысить темп up = true
+        float ff = (up) ? (1 - ((float)valueDelta/100)) : (1 + ((float)valueDelta/100));
+        Log.d(TAG, "EditorStorageImpl changeTempUpDown ff = " + ff);
+
+        //обновляем фрагменты по очереди
+        for (int i = 0; i<countOfSet; i++ ){
+            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
+            dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
+            TabSet.updateSetFragment(database, dataSet);
+            Log.d(TAG, "EditorStorageImpl changeTempUpDown dataSet Time = " +
+                    dataSet.getTimeOfRep());
+        }
+
+        return TabSet.getAllSetFragments(database, fileId);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {

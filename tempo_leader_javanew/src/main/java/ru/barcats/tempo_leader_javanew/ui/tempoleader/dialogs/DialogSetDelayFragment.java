@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.dialogs;
+package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -23,15 +23,15 @@ import ru.barcats.tempo_leader_javanew.model.P;
 /**
  * Created by Андрей on 27.05.2018.
  */
-public class DialogSetDelay extends DialogFragment {
+public class DialogSetDelayFragment extends DialogFragment {
 
     private static final String TAG = "33333";
     private EditText editTextDelay;
 
-    public static DialogSetDelay newInstance(String delay){
+    public static DialogSetDelayFragment newInstance(String delay){
         Bundle args = new Bundle();
         args.putString(P.ARG_DELAY, delay);
-        DialogSetDelay fragment = new DialogSetDelay();
+        DialogSetDelayFragment fragment = new DialogSetDelayFragment();
         fragment.setArguments(args);
         return fragment;
     }

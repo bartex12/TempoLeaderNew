@@ -8,16 +8,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.SaveAsStorage;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.SaveAsStorageImpl;
 
 public class SaveViewModel extends AndroidViewModel {
     MutableLiveData<ArrayList<DataSet>> data = new    MutableLiveData<ArrayList<DataSet>>();
-    SaveAsStorage storage;
+    SaveStorage storage;
 
     public SaveViewModel(@NonNull Application application) {
         super(application);
-        storage = new SaveAsStorageImpl(application);
+        storage = new SaveStorageImpl(application);
     }
 
   public long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy){
