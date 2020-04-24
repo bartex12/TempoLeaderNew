@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
                             Log.d(TAG, "HomeFragment onChanged dataHomes = " +
                                     dataHomes.get(i).getHead());
                         }
-                        showMainList(dataHomes);
+                        updateAdapter(dataHomes);
                     }
                 });
 
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void showMainList(ArrayList<DataHome> dataHomes) {
+    private void updateAdapter(ArrayList<DataHome> dataHomes) {
         //используем встроенный LinearLayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //передаём список в адаптер

@@ -113,7 +113,6 @@ public class NewSetDialog extends DialogFragment {
                 //прячем экранную клавиатуру
                 takeOffSoftInput();
                 getDialog().dismiss();  //закрывает только диалог
-
             }
         });
     }
@@ -128,15 +127,6 @@ public class NewSetDialog extends DialogFragment {
     }
 
     private void initViews(View view) {
-
-        mButtonCancel = view.findViewById(R.id.buttonCancel_newset);
-
-        mButtonOk = view.findViewById(R.id.buttonOk_newset);
-        //доступность кнопки Ok в момент появления экрана редактирования (если изменить - доступна)
-        if ((Float.parseFloat( mTimeOfRepFrag.getText().toString())==0) &&
-                ((Integer.parseInt( mRepsFrag.getText().toString())==0))){
-            mButtonOk.setEnabled(false);
-        }
 
         mTimeOfRepFrag = view.findViewById(R.id.time_item_newset);
         if(from == P.TO_ADD_FRAG) {
@@ -153,6 +143,15 @@ public class NewSetDialog extends DialogFragment {
         if(from == P.TO_ADD_FRAG){
             mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
         }
+
+        mButtonOk = view.findViewById(R.id.buttonOk_newset);
+        //доступность кнопки Ok в момент появления экрана редактирования (если изменить - доступна)
+        if ((Float.parseFloat( mTimeOfRepFrag.getText().toString())==0) &&
+                ((Integer.parseInt( mRepsFrag.getText().toString())==0))){
+            mButtonOk.setEnabled(false);
+        }
+
+        mButtonCancel = view.findViewById(R.id.buttonCancel_newset);
     }
 
     private void setRepsButtonlListener() {

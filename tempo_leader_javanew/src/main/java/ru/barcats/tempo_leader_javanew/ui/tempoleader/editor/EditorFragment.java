@@ -33,7 +33,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
@@ -123,6 +122,12 @@ public class EditorFragment extends Fragment {
             //грузим последний файл темполидера  или автосохранение секундомера
             fileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
         }
+
+        //для фрагментов требуется так разрешить появление  меню
+         setHasOptionsMenu(true);
+        //но лучше так - меню же в Main
+        //вызываем onPrepareOptionsMenu в Main для показа меню в тулбаре
+        //requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -161,7 +166,7 @@ public class EditorFragment extends Fragment {
                     @Override
                     public void onChanged(ArrayList<DataSet> dataSets) {
                         updateAdapter(dataSets);
-                        setMarker();
+                        setMarkerColor(); //цвет маркера от состояния чекбокса
                         Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
                     }
                 });
@@ -222,7 +227,7 @@ public class EditorFragment extends Fragment {
                 //копия файла была использована, поэтому для дальнейшего редактирования
                 //создаём ещё одну копию файла -  и получаем его id
                 fileIdCopy =  editorViewModel.getCopyFile(fileName);
-                setMarker();
+                setMarkerColor();
                 calculateAndShowTotalValues();
                 //changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = false;
@@ -250,7 +255,7 @@ public class EditorFragment extends Fragment {
                 //загружаем данные
                 editorViewModel.loadDataSet(fileName);
 
-                setMarker();
+                setMarkerColor();
                 adapter.notifyDataSetChanged();
                 calculateAndShowTotalValues();
 
@@ -267,7 +272,7 @@ public class EditorFragment extends Fragment {
         });
     }
 
-    private void setMarker() {
+    private void setMarkerColor() {
         if (mCheckBoxAll.isChecked()) {
             adapter.setItem(adapter.getItemCount());
         }else {
@@ -285,7 +290,7 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.05f, 5);
-                setMarker();
+                setMarkerColor();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
@@ -303,7 +308,7 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.01f, 1);
-                setMarker();
+                setMarkerColor();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
@@ -321,7 +326,7 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(), positionOfList);
 
                getDeltaValue(0.99f, -1);
-                setMarker();
+                setMarkerColor();
                 calculateAndShowTotalValues();
                 // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
@@ -338,7 +343,7 @@ public class EditorFragment extends Fragment {
                         redactTime, mCheckBoxAll.isChecked(),positionOfList);
 
                getDeltaValue(0.95f, -5);
-                setMarker();
+                setMarkerColor();
                 calculateAndShowTotalValues();
                // changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = true;
@@ -444,7 +449,25 @@ public class EditorFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
+        //получаем слушатель щелчков на элементах списка
+        RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
+                getOnSetListClickListener();
+        //устанавливаем слушатель в адаптер
+        adapter.setOnSetListClickListener(listListener);
         recyclerView.setAdapter(adapter);
+    }
+
+    //метод для получения слушателя щелчков на элементах списка
+    private RecyclerViewTempoleaderAdapter.OnSetListClickListener getOnSetListClickListener() {
+        return new RecyclerViewTempoleaderAdapter.OnSetListClickListener() {
+            @Override
+            public void onSetListClick(int position) {
+                adapter.setPosItem(position);
+                adapter.notifyDataSetChanged();
+                //TODO
+                Log.d(TAG,"/+++/ TempoleaderFragment Adapter position = " + position);
+            }
+        };
     }
 
     private void getPrefSettings() {

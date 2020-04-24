@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,10 +24,16 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     private OnSetListClickListener onSetListClickListener;
     private int accurancy; //точность отсечек - количество знаков после запятой
     private int item = 0;
+    private int posItem = -1;
     private boolean isEnd = false;
 
     public void setEnd(boolean end) {
+        //
         isEnd = end;
+    }
+
+    public void setPosItem(int posItem) {
+        this.posItem = posItem;
     }
 
     public void setItem(int item) {
@@ -72,22 +79,29 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
             if (position < item){
                 holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+            }else if (posItem == position){
+                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+            }else {
+                holder.mark_item_set_textview
+                        .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             }
 
-//        holder.card_mainmenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onMainListClickListener.onMainListClick(position);
-//            }
-//        });
+        holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSetListClickListener.onSetListClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
+        //
         return listOfSet.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout all_item_set_textview ;
         TextView time_item_set_textview;
         TextView reps_item_set_textview;
         TextView mark_item_set_textview;
@@ -95,6 +109,7 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
 
         public ViewHolder(View itemView) {
             super(itemView);
+            all_item_set_textview =  itemView.findViewById(R.id.all_item_set_textview);
             time_item_set_textview = itemView.findViewById(R.id.time_item_set_textview);
             reps_item_set_textview = itemView.findViewById(R.id.reps_item_set_textview);
             mark_item_set_textview = itemView.findViewById(R.id.mark_item_set_textview);

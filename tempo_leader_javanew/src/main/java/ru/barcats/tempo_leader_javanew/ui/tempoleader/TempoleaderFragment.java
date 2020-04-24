@@ -161,8 +161,13 @@ public class TempoleaderFragment extends Fragment {
         Log.d(TAG, " @@@TempoleaderFragment fromActivity =  " +
                 fromActivity +" mNameOfFile = " + finishFileName + " timeOfDelay = " + timeOfDelay);
 
-        //для фрагментов требуется так разрешить появление  меню
+        //НЕ стирать = без этой строки меню тулбара пропадант, хотя оно и не во фрагменте а в Main
+        //для фрагментов требуется так разрешить появление  меню - иначе оно появляется
+        //только после захода в три точки на тулбаре
         setHasOptionsMenu(true);
+        //но можно так
+        //вызываем onPrepareOptionsMenu в Main для показа меню в тулбаре
+        //requireActivity().invalidateOptionsMenu();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -381,18 +386,6 @@ public class TempoleaderFragment extends Fragment {
                 //запускаем TimerTask на выполнение с периодом mKvant
                 mTimer.scheduleAtFixedRate(mTimerTask, mKvant,mKvant);
 
-//                //*********************
-//                //запрашиваем задержку у delayViewModel
-//                delayViewModel.getDelay(countMillisDelay).observe(getViewLifecycleOwner(),
-//                        new Observer<Float>() {
-//                            @Override
-//                            public void onChanged(Float delay) {
-//                                countMillisDelay = delay;
-//                                Log.d(TAG, "delayViewModel countMillisDelay = " + delay);
-//                            }
-//                        });
-//                //*****************************
-
                 //выставляем доступность кнопок
                 buttonsEnable (false,true,false);
                 Log.d(TAG, "countMilliSecond = " + countMilliSecond +"  countReps = " + countReps);
@@ -407,7 +400,7 @@ public class TempoleaderFragment extends Fragment {
 
                 //TODO если будет меню тулбара
                 //вызываем onPrepareOptionsMenu чтобы скрыть элементы тулбара пока старт
-                requireActivity().invalidateOptionsMenu();
+                //requireActivity().invalidateOptionsMenu();
 
             }
         });
