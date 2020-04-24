@@ -60,6 +60,7 @@ public class EditorStorageImpl implements EditorStorage {
     @Override
     public void clearCopyFile(long fileIdCopy, String fileName) {
         String s = TabFile.getFileNameFromTabFile(database, fileIdCopy);
+        Log.d(TAG,"EditorStorageImpl clearCopyFile имя файла =" + s);
         if (!s.equals(fileName)){
             //удаляем копию файла
             tempDBHelper.deleteFileAndSets(database, fileIdCopy);

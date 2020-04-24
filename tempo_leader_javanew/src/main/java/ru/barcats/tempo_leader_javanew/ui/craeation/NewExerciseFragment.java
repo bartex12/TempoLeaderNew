@@ -131,7 +131,7 @@ public class NewExerciseFragment extends Fragment {
                     //создаём экземпляр класса DataFile в конструкторе
                     DataFile file = new DataFile(fileNameStr,
                             dateFormat, timeFormat, null,
-                            null, P.TYPE_LIKE, delayInt);
+                            null, P.TYPE_TEMPOLEADER, delayInt);
                     //добавляем запись в таблицу TabFile, используя данные DataFile и получаем id записи
                     long file1_id = TabFile.addFile(database, file);
                     Log.d(TAG, "Добавили   fileNameStr = " + fileNameStr + " file1_id = " + file1_id);

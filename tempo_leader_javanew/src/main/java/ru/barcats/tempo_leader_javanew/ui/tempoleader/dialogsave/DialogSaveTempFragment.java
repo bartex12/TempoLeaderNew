@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.dialogs;
+package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -16,22 +15,15 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
-import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
 
 /**

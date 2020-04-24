@@ -142,7 +142,7 @@
         tools:layout="@layout/fragment_dialog_chahge_name" />
     <dialog
         android:id="@+id/dialogSaveTempFragment"
-        android:name="ru.barcats.tempo_leader_javanew.ui.dialogs.DialogSaveTempFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogsave.DialogSaveTempFragment"
         android:label="save_data_in_file_new"
         tools:layout="@layout/save_data_in_file_new" >
         <action

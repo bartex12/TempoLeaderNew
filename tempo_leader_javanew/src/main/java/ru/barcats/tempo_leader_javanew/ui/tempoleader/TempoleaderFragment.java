@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +38,7 @@ import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewTempoleaderAdapter;
 
 
 import static android.content.Context.MODE_PRIVATE;
