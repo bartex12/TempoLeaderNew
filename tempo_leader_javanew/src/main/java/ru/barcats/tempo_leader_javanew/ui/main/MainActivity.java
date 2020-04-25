@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     private  BottomNavigationView bottomNavigation;
     private String data;
     private long fileIdCopy;
+    boolean isChangeTemp;
+    boolean isSaveVisible;
 
     @Override
     public void onTransmit(String data) {
@@ -62,8 +64,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFileCopyTransmit(long fileIdCopy) {
+    public void onFileCopyTransmit(long fileIdCopy, boolean isChangeTemp, boolean isSaveVisible) {
         this.fileIdCopy = fileIdCopy;
+        this.isChangeTemp = isChangeTemp;
+        this.isSaveVisible = isSaveVisible;
         Log.d(TAG, "//**// MainActivity onFileCopyTransmit fileIdCopy = " + fileIdCopy );
     }
 
@@ -233,10 +237,16 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
                 menu.findItem(R.id.menu_item_new_frag).setVisible(true);
-
-                menu.findItem(R.id.change_temp_up_down).setVisible(true);
-
-                menu.findItem(R.id.save_data_in_file).setVisible(true);
+                if (isChangeTemp){
+                    menu.findItem(R.id.change_temp_up_down).setVisible(true);
+                }else {
+                    menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                }
+                if (isSaveVisible){
+                    menu.findItem(R.id.save_data_in_file).setVisible(true);
+                }else {
+                    menu.findItem(R.id.save_data_in_file).setVisible(false);
+                }
                 break;
         }
         return super.onPrepareOptionsMenu(menu);

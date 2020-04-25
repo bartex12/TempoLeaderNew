@@ -33,7 +33,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
@@ -83,7 +82,7 @@ public class EditorFragment extends Fragment {
     private SaverFragmentListener mSaverFragmentListener;
 
     private boolean sound = true; // включение / выключение звука
-    private boolean saveVision = false; //показывать иконку Сохранить true - да false - нет
+    private boolean isSaveVisible = false; //показывать иконку Сохранить true - да false - нет
     private boolean isEditTime = true; //радиокнопка редактировать время нажата?
     private boolean isCheckedAll =  false;
 
@@ -94,7 +93,7 @@ public class EditorFragment extends Fragment {
 
     //интерфейс для передачи в Main fileIdCopy для работы из меню тулбара
     public interface SaverFragmentListener{
-        void onFileCopyTransmit(long fileIdCopy);
+        void onFileCopyTransmit(long fileIdCopy, boolean isChangeTemp, boolean saveVision);
     }
 
     @Override
@@ -186,9 +185,10 @@ public class EditorFragment extends Fragment {
                 });
         //создаём копию файла и получаем его id
         fileIdCopy =  editorViewModel.getCopyFile(fileName);
+        boolean isChangeTemp = mCheckBoxAll.isChecked()&&isEditTime;
         //передаём в MainAct id копии файла
-        mSaverFragmentListener.onFileCopyTransmit(fileIdCopy);
-        requireActivity().invalidateOptionsMenu();
+        mSaverFragmentListener.onFileCopyTransmit(fileIdCopy, isChangeTemp, isSaveVisible);
+        //requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -239,9 +239,9 @@ public class EditorFragment extends Fragment {
                 //копия файла была использована, поэтому для дальнейшего редактирования
                 //создаём ещё одну копию файла -  и получаем его id
                 fileIdCopy =  editorViewModel.getCopyFile(fileName);
+                isSaveVisible = false; // до строки setMarkerColor();
                 setMarkerColor();
                 calculateAndShowTotalValues();
-                saveVision = false;
                 //делаем индикатор невидимым
                 deltaValue.setVisibility(View.INVISIBLE);
                 //обнуляем показатели разности значений
@@ -279,7 +279,12 @@ public class EditorFragment extends Fragment {
             adapter.setPosItem(positionOfList);
             recyclerView.scrollToPosition(positionOfList);
         }
+        boolean isChangeTemp = mCheckBoxAll.isChecked()&&isEditTime;
         adapter.notifyDataSetChanged();
+        //передаём в MainAct id копии файла
+        mSaverFragmentListener.onFileCopyTransmit(fileIdCopy, isChangeTemp, isSaveVisible);
+        requireActivity().invalidateOptionsMenu();
+
     }
 
     private void changeTempPlus5() {
@@ -289,12 +294,11 @@ public class EditorFragment extends Fragment {
                 //пересчитываем раскладку на +1 процентов времени или +1 раз
                 editorViewModel.edidAction(fileName, 1.05f, 5,
                         isEditTime, mCheckBoxAll.isChecked(), positionOfList);
-
                 getDeltaValue(1.05f, 5);
+                isSaveVisible = true; // до строки setMarkerColor();
                 setMarkerColor();
                 calculateAndShowTotalValues();
-                // changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
+
             }
         });
     }
@@ -309,10 +313,9 @@ public class EditorFragment extends Fragment {
                         isEditTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.01f, 1);
+                isSaveVisible = true; // до строки setMarkerColor();
                 setMarkerColor();
                 calculateAndShowTotalValues();
-                // changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
             }
         });
     }
@@ -325,12 +328,10 @@ public class EditorFragment extends Fragment {
                 //пересчитываем раскладку на -5 процентов времени или -5 раз
                 editorViewModel.edidAction(fileName, 0.99f, -1,
                         isEditTime, mCheckBoxAll.isChecked(), positionOfList);
-
                getDeltaValue(0.99f, -1);
+                isSaveVisible = true; // до строки setMarkerColor();
                 setMarkerColor();
                 calculateAndShowTotalValues();
-                // changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
             }
         });
     }
@@ -344,10 +345,9 @@ public class EditorFragment extends Fragment {
                         isEditTime, mCheckBoxAll.isChecked(),positionOfList);
 
                getDeltaValue(0.95f, -5);
+                isSaveVisible = true; // до строки setMarkerColor();
                 setMarkerColor();
                 calculateAndShowTotalValues();
-               // changeTemp_listView.setSelectionFromTop(pos, offset);
-                saveVision = true;
             }
         });
     }

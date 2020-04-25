@@ -137,11 +137,7 @@
         android:id="@+id/dialogChangeTemp"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTempFragment"
         android:label="fragment_dialog_chahge_temp"
-        tools:layout="@layout/fragment_dialog_chahge_temp" >
-        <action
-            android:id="@+id/action_dialogChangeTemp_to_nav_editor"
-            app:destination="@id/nav_editor" />
-    </dialog>
+        tools:layout="@layout/fragment_dialog_chahge_temp" />
     <dialog
         android:id="@+id/newSetDialog"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.NewSetDialog"
