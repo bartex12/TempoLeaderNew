@@ -30,8 +30,8 @@ public class EditorViewModel extends AndroidViewModel {
         data.setValue(storageEditor.getDataSet(fileName));
     }
 
-    public void minus5Action(String fileName, float deltaTime, int countReps , boolean redactTime,
-                             boolean isChecked, int position){
+    public void edidAction(String fileName, float deltaTime, int countReps , boolean redactTime,
+                           boolean isChecked, int position){
         data.setValue(storageEditor.minus5Action(fileName,deltaTime, countReps,
                             redactTime, isChecked, position));
     }

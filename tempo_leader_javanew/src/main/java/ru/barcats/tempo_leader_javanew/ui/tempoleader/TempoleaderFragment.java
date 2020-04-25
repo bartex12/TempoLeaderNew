@@ -95,7 +95,6 @@ public class TempoleaderFragment extends Fragment {
     private boolean end = false; //признак окончания подхода
     private static boolean start = false;//признак нажатия на старт: public static для доступа из фрагмента
 
-    private int mCountFragmentLast = 0;
     //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
     //444 -DetailActivity  555 - NewExerciseActivity
     private int fromActivity;

@@ -233,7 +233,9 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
                 menu.findItem(R.id.menu_item_new_frag).setVisible(true);
+
                 menu.findItem(R.id.change_temp_up_down).setVisible(true);
+
                 menu.findItem(R.id.save_data_in_file).setVisible(true);
                 break;
         }
@@ -264,6 +266,7 @@ public class MainActivity extends AppCompatActivity
             bundle = new Bundle();
             bundle.putInt(P.ARG_VALUE_CHANGE_TEMP, VALUE);
             bundle.putString(P.NAME_OF_FILE, data);
+           // bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_CHANGE_TEMP); // изменить темп
             navController.navigate(R.id.action_nav_editor_to_dialogChangeTemp, bundle);
             break;
         case R.id.menu_item_new_frag:

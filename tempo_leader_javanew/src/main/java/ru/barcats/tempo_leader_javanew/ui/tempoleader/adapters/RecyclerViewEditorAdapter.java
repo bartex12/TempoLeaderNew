@@ -24,28 +24,29 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     private Context context;
     private OnSetListClickListener onSetListClickListener;
     private int accurancy; //точность отсечек - количество знаков после запятой
-    private int item = 0;
     private int posItem = -1;
-    private boolean isEnd = false;
+    private boolean isForAll;
+    private boolean isEditTime;
 
-    public void setEnd(boolean end) {
-        //
-        isEnd = end;
+    public void setEditTime(boolean isEditTime) {
+        this.isEditTime = isEditTime;
+        Log.d(TAG, " +++ RecyclerViewEditorAdapter isEditTime = " + isEditTime);
+    }
+
+    public void setForAll(boolean isForAll) {
+        this.isForAll = isForAll;
+        Log.d(TAG, " +++ RecyclerViewEditorAdapter isForAll = " + isForAll);
     }
 
     public void setPosItem(int posItem) {
         this.posItem = posItem;
-    }
-
-    public void setItem(int item) {
-        this.item = item;
-        Log.d(TAG, " +++ RecyclerViewTempoleaderAdapter item = " + item);
+        Log.d(TAG, " +++ RecyclerViewEditorAdapter posItem = " + posItem);
     }
 
     public RecyclerViewEditorAdapter(ArrayList<DataSet> listOfSet, int accurancy){
         this.listOfSet =listOfSet;
         this.accurancy = accurancy;
-        Log.d(TAG, "RecyclerViewTempoleaderAdapter listOfSet.size() = "
+        Log.d(TAG, "RecyclerViewEditorAdapter listOfSet.size() = "
                 + listOfSet.size()+ " accurancy = " + accurancy);
     }
 
@@ -78,15 +79,45 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
                 String.valueOf(listOfSet.get(position).getReps()));
         holder.mark_item_set_textview.setText(
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
-            if (position < item){
-                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
-            }else if (posItem == position){
-                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+
+        if (isForAll){
+            if (isEditTime){
+                holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
+                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
             }else {
-                holder.mark_item_set_textview
-                        .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+                holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
+                holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        .getColor(android.R.color.transparent));
+            }
+        }else {
+            if (isEditTime){
+                if (posItem == position){
+                    holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
+                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                            .getColor(android.R.color.transparent));
+                }else {
+                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                                    .getColor(android.R.color.transparent));
+                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                            .getColor(android.R.color.transparent));
+                }
+            }else {
+                if (posItem == position){
+                    holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
+                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                            .getColor(android.R.color.transparent));
+                }else {
+                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                                    .getColor(android.R.color.transparent));
+                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                            .getColor(android.R.color.transparent));
+                }
             }
 
+        }
+
+        //передаём позицию списка при щелчке на строке списка
         holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

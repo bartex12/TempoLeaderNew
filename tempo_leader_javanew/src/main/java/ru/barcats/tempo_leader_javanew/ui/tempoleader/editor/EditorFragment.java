@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
+import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
@@ -48,52 +49,50 @@ public class EditorFragment extends Fragment {
 
     private static final String TAG = "33333";
 
-    private  TextView changeTemp_textViewName;
-
+    private TextView changeTemp_textViewName;
     private TextView timeTotal;
     private TextView repsTotal;
     private TextView deltaValue;
 
-    private  Button changeTemp_buttonMinus5;
+    private Button changeTemp_buttonMinus5;
     private Button changeTemp_buttonMinus1;
     private ImageButton changeReps_imageButtonRevert;
-    private  Button changeTemp_buttonPlus1;
+    private Button changeTemp_buttonPlus1;
     private Button changeTemp_buttonPlus5;
 
     private CheckBox mCheckBoxAll;
     private RadioGroup mRadioGroupTimeCount;
     private RadioButton mRadioButtonTime;
     private RadioButton mRadioButtonCount;
-    private boolean redactTime = true;
 
     private float mTimeOfSet = 0;   //общее время выполнения подхода в секундах
+    private float time = 0f; //размер изменений времени
+
     private int mTotalReps = 0;  //общее количество повторений в подходе
-
-    private  int positionOfList = 0;
-    private int pos;
-    private int offset = 0;
-
-    float time = 0f; //размер изменений времени
+    private int positionOfList = 0;  //позиция списка фрагментов подхода
     private int count = 0; //размер изменений количества
-    private int countOfSet ;//количество фрагментов подхода
-    private long fileId;
-
+    private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
 
     private EditorViewModel editorViewModel;
-    //private SQLiteDatabase database;
     private RecyclerView recyclerView;
     private RecyclerViewEditorAdapter adapter;
-    private String fileName;
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
-    private boolean sound = true; // включение / выключение звука
-    private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
+
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
-    private SQLiteDatabase database;
-    //показывать иконку Сохранить true - да false - нет
-    private boolean saveVision = false;
-    private long fileIdCopy;
+    private SQLiteDatabase database; //база данных
     private SaverFragmentListener mSaverFragmentListener;
 
+    private boolean sound = true; // включение / выключение звука
+    private boolean saveVision = false; //показывать иконку Сохранить true - да false - нет
+    private boolean isEditTime = true; //радиокнопка редактировать время нажата?
+    private boolean isCheckedAll =  false;
+
+    private long fileIdCopy;  // id  копии файла
+
+    private String fileName;  //имя файла
+
+
+    //интерфейс для передачи в Main fileIdCopy для работы из меню тулбара
     public interface SaverFragmentListener{
         void onFileCopyTransmit(long fileIdCopy);
     }
@@ -116,13 +115,28 @@ public class EditorFragment extends Fragment {
         if (getArguments() != null) {
             fileName = getArguments().getString(P.NAME_OF_FILE, P.FILENAME_OTSECHKI_SEC);
             Log.d(TAG, "/+++/ EditorFragment onCreate fileName = " + fileName);
+
+//            if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
+//                //считываем значение FROM_ACTIVITY из интента
+//                //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
+//                //444 -DetailActivity  555 - NewExerciseActivity 777 - DialogSetDelay
+//                //888  - DialogChangeTempFragment
+//               int fromActivity = getArguments().getInt(P.FROM_ACTIVITY,111);
+//                //если  от DialogChangeTempFragment, то   isEditTime и
+//                if (fromActivity == P.DIALOG_CHANGE_TEMP){
+////                    isEditTime = true;
+////                    isCheckedAll = true;
+////                    setMarkerColor(); //цвет маркера от состояния чекбокса
+////                    Log.d(TAG, "/+++/ EditorFragment onCreate mCheckBoxAll = " +
+////                            mCheckBoxAll.isChecked());
+//                }
+//            }
         }else {
             //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
             shp = getActivity().getPreferences(MODE_PRIVATE);
             //грузим последний файл темполидера  или автосохранение секундомера
             fileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
         }
-
         //для фрагментов требуется так разрешить появление  меню
          setHasOptionsMenu(true);
         //но лучше так - меню же в Main
@@ -150,9 +164,9 @@ public class EditorFragment extends Fragment {
         getPrefSettings();  //получаем значения точности и звука из настроек
         initViews(view);  //находим вьюхи
 
-        setChackBoxListener();
+        setChackBoxListener(); //изменение чекбокса
+        setRadioButtonListener();  // надписи на кнопкажх в зависимости от радиокнопки
 
-        setChangeTempButtons();  // надписи на кнопкажх в зависимости от радиокнопки
         changeTempMinus5(); //нажатие кнопки -5
         changeTempMinus1(); //нажатие кнопки -1
         changeTempPlus1(); //нажатие кнопки +1
@@ -174,6 +188,7 @@ public class EditorFragment extends Fragment {
         fileIdCopy =  editorViewModel.getCopyFile(fileName);
         //передаём в MainAct id копии файла
         mSaverFragmentListener.onFileCopyTransmit(fileIdCopy);
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -189,9 +204,6 @@ public class EditorFragment extends Fragment {
 
         //выводим список, суммарные время и количество, устанавливаем выделение цветом
         calculateAndShowTotalValues();
-
-        //установка в нужную позицию списка
-        //changeTemp_listView.setSelection(positionOfList);
 
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
@@ -229,17 +241,9 @@ public class EditorFragment extends Fragment {
                 fileIdCopy =  editorViewModel.getCopyFile(fileName);
                 setMarkerColor();
                 calculateAndShowTotalValues();
-                //changeTemp_listView.setSelectionFromTop(pos, offset);
                 saveVision = false;
-
                 //делаем индикатор невидимым
                 deltaValue.setVisibility(View.INVISIBLE);
-                if (redactTime){
-                    deltaValue.setVisibility(View.VISIBLE);
-                    deltaValue.setText("0%");
-                }else {
-                    deltaValue.setVisibility(View.INVISIBLE);
-                }
                 //обнуляем показатели разности значений
                 time = 0f;
                 count = 0;
@@ -254,15 +258,8 @@ public class EditorFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //загружаем данные
                 editorViewModel.loadDataSet(fileName);
-
                 setMarkerColor();
-                adapter.notifyDataSetChanged();
                 calculateAndShowTotalValues();
-
-
-                //установка в нужную позицию списка
-                //changeTemp_listView.setSelectionFromTop(pos, offset);
-
                 //делаем индикатор невидимым
                 deltaValue.setVisibility(View.INVISIBLE);
                 //обнуляем показатели разности значений
@@ -274,20 +271,24 @@ public class EditorFragment extends Fragment {
 
     private void setMarkerColor() {
         if (mCheckBoxAll.isChecked()) {
-            adapter.setItem(adapter.getItemCount());
+            adapter.setForAll(true);
+            adapter.setEditTime(isEditTime);
         }else {
-            adapter.setItem(0);
+            adapter.setForAll(false);
+            adapter.setEditTime(isEditTime);
+            adapter.setPosItem(positionOfList);
+            recyclerView.scrollToPosition(positionOfList);
         }
+        adapter.notifyDataSetChanged();
     }
-
 
     private void changeTempPlus5() {
         changeTemp_buttonPlus5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //пересчитываем раскладку на +1 процентов времени или +1 раз
-                editorViewModel.minus5Action(fileName, 1.05f, 5,
-                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+                editorViewModel.edidAction(fileName, 1.05f, 5,
+                        isEditTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.05f, 5);
                 setMarkerColor();
@@ -304,8 +305,8 @@ public class EditorFragment extends Fragment {
             public void onClick(View view) {
 
                 //пересчитываем раскладку на +1 процентов времени или +1 раз
-                editorViewModel.minus5Action(fileName, 1.01f, 1,
-                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+                editorViewModel.edidAction(fileName, 1.01f, 1,
+                        isEditTime, mCheckBoxAll.isChecked(), positionOfList);
 
                 getDeltaValue(1.01f, 1);
                 setMarkerColor();
@@ -322,8 +323,8 @@ public class EditorFragment extends Fragment {
             public void onClick(View view) {
 
                 //пересчитываем раскладку на -5 процентов времени или -5 раз
-                editorViewModel.minus5Action(fileName, 0.99f, -1,
-                        redactTime, mCheckBoxAll.isChecked(), positionOfList);
+                editorViewModel.edidAction(fileName, 0.99f, -1,
+                        isEditTime, mCheckBoxAll.isChecked(), positionOfList);
 
                getDeltaValue(0.99f, -1);
                 setMarkerColor();
@@ -339,8 +340,8 @@ public class EditorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //пересчитываем раскладку на -5 процентов времени или -5 раз
-                editorViewModel.minus5Action(fileName, 0.95f, -5,
-                        redactTime, mCheckBoxAll.isChecked(),positionOfList);
+                editorViewModel.edidAction(fileName, 0.95f, -5,
+                        isEditTime, mCheckBoxAll.isChecked(),positionOfList);
 
                getDeltaValue(0.95f, -5);
                 setMarkerColor();
@@ -353,7 +354,7 @@ public class EditorFragment extends Fragment {
 
     private void getDeltaValue(float deltaTime, int countReps) {
         String s;
-        if (redactTime) {
+        if (isEditTime) {
             time += (deltaTime - 1f) * 100;
             s = String.format(Locale.getDefault(), "%+3.0f", time);
             deltaValue.setVisibility(View.VISIBLE);
@@ -366,13 +367,13 @@ public class EditorFragment extends Fragment {
         }
     }
 
-    private void setChangeTempButtons() {
+    private void setRadioButtonListener() {
         mRadioGroupTimeCount.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.radioButtonTime:
-                        redactTime = true;
+                        isEditTime = true;
                         deltaValue.setVisibility(View.VISIBLE);
                         changeTemp_buttonMinus5.setText("-5%");
                         changeTemp_buttonMinus1.setText("-1%");
@@ -380,7 +381,7 @@ public class EditorFragment extends Fragment {
                         changeTemp_buttonPlus5.setText("+5%");
                         break;
                     case R.id.radioButtonCount:
-                        redactTime = false;
+                        isEditTime = false;
                         deltaValue.setVisibility(View.INVISIBLE);
                         changeTemp_buttonMinus5.setText("-5");
                         changeTemp_buttonMinus1.setText("-1");
@@ -388,6 +389,9 @@ public class EditorFragment extends Fragment {
                         changeTemp_buttonPlus5.setText("+5");
                         break;
                 }
+//                adapter.setEditTime(isEditTime);
+//                adapter.notifyDataSetChanged();
+                setMarkerColor();
             }
         });
     }
@@ -418,7 +422,7 @@ public class EditorFragment extends Fragment {
         changeTemp_buttonPlus5 = view.findViewById(R.id.changeTemp_buttonPlus5);
 
         //Выставляем надписи на кнопках перед началом редактирования
-        if(redactTime){
+        if(isEditTime){
             changeTemp_buttonMinus5.setText("-5%");
             changeTemp_buttonMinus1.setText("-1%");
             changeTemp_buttonPlus1.setText("+1%");

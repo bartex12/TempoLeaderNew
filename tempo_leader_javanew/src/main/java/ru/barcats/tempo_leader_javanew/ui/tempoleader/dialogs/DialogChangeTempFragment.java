@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
@@ -49,27 +51,15 @@ public class DialogChangeTempFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ChangeTempViewModel: onCreate  ");
+        Log.d(TAG, "DialogChangeTempFragment: onCreate  ");
         if ((getArguments()) != null){
             //имя файла из аргументов
             finishFileName = getArguments().getString(P.NAME_OF_FILE);
-//            fileIdCopy = getArguments().getLong(P.FINISH_FILE_ID);
-
-//            changeTempViewModel = new ViewModelProvider(
-//                    requireActivity()).get(ChangeTempViewModel.class);
             editorViewModel = new ViewModelProvider(
                     requireActivity()).get(EditorViewModel.class);
         }
 
     }
-
-//    public static DialogChangeTemp newInstance(int value){
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_VALUE, value);
-//        DialogChangeTemp fragment = new DialogChangeTemp();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -115,9 +105,15 @@ public class DialogChangeTempFragment extends DialogFragment {
                 //контроллер возврат в редактор, ещё и копия файла не будет удаляться
                 editorViewModel.changeTemp(finishFileName,
                         Integer.parseInt(valueChangTemp.getText().toString()), up);
-
                 //принудительно прячем  клавиатуру - повторный вызов ее покажет
                 takeOnAndOffSoftInput();
+//                Bundle bundle = new Bundle();
+//                bundle.putInt(P.ARG_VALUE_CHANGE_TEMP, 10);
+//                bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_CHANGE_TEMP); // изменить темп
+//               // bundle.putString(P.NAME_OF_FILE, finishFileName);
+//                NavController navController = Navigation
+//                        .findNavController(getParentFragment().getView());
+//                navController.navigate(R.id.action_dialogChangeTemp_to_nav_editor, bundle);
             }
         });
 

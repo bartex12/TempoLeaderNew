@@ -30,6 +30,7 @@ public class P {
     //NewExerciseActivity = 555
     //пришёл от DialogSetDelay
     public static final int DIALOG_DELAY = 777;
+    public static final int DIALOG_CHANGE_TEMP = 888;
 
     // идёт к расчёту количества прожитых дней
     public final static int TO_SEC = 1111;
