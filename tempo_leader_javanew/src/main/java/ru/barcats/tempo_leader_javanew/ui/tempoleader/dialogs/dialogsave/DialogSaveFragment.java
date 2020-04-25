@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
 
 /**
@@ -36,17 +37,11 @@ public class DialogSaveFragment extends DialogFragment {
 
     private  TempDBHelper mTempDBHelper;
     private SQLiteDatabase database;
-    private SaveViewModel saveViewModel;
+    private EditorViewModel editorViewModel;
     private long fileIdCopy;
 
-    public DialogSaveFragment(){}
-
-    public static DialogSaveFragment newInstance(String nameOfFile){
-        Bundle args = new Bundle();
-        args.putString(P.ARG_NAME_OF_FILE,nameOfFile);
-        DialogSaveFragment fragment = new DialogSaveFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public DialogSaveFragment(){
+        //
     }
 
     @Override
@@ -72,15 +67,14 @@ public class DialogSaveFragment extends DialogFragment {
             //имя файла из аргументов
             finishFileName = getArguments().getString(P.NAME_OF_FILE);
             fileIdCopy = getArguments().getLong(P.FINISH_FILE_ID);
-
-            saveViewModel = new ViewModelProvider(requireActivity()).get(SaveViewModel.class);
+            editorViewModel = new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
 
         }else finishFileName = "";
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        Log.d(TAG, "DialogSaveTempFragment: onCreateDialog  ");
         //принудительно вызываем клавиатуру - повторный вызов ее скроет
        // takeOnAndOffSoftInput();
 
@@ -97,7 +91,6 @@ public class DialogSaveFragment extends DialogFragment {
         bilder.setIcon(R.drawable.ic_save_black_24dp);
 
         final CheckBox date = view.findViewById(R.id.checkBoxDate_new);
-
 
         date.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             String dayTimeFile = "";
@@ -119,7 +112,6 @@ public class DialogSaveFragment extends DialogFragment {
             }
         });
 
-
         Button btnSaveYes = view.findViewById(R.id.buttonSaveYes_new);
         btnSaveYes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +130,13 @@ public class DialogSaveFragment extends DialogFragment {
                 }else {
                     //если новое имя совпадает со старым, перезаписываем старый файл с новым именем
                     //если имена не совпадают, делаем копию с новым именем
-                   saveViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
-
-                   //переходим в темполидер
-                    NavController controller = Navigation.findNavController(getParentFragment().getView());
-                    Bundle bundle = new Bundle();
-                    bundle.putString(P.NAME_OF_FILE,nameFile);
-                    controller.navigate(R.id.action_dialogSaveTempFragment_to_nav_tempoleader, bundle);
-                    //принудительно прячем  клавиатуру - повторный вызов ее покажет
+                   long fileIdNew =  editorViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
+                   String fileNameNew = editorViewModel.loadFileName(fileIdNew);
+                   Bundle bundle = new Bundle();
+                   bundle.putString(P.NAME_OF_FILE, fileNameNew);
+                   NavController navController = Navigation.findNavController(getParentFragment().getView());
+                   navController.navigate(R.id.action_dialogSaveTempFragment_to_nav_editor, bundle);
+                   //принудительно прячем  клавиатуру - повторный вызов ее покажет
                    // takeOnAndOffSoftInput();
                     getDialog().dismiss();  //закрывает только диалог
                 }

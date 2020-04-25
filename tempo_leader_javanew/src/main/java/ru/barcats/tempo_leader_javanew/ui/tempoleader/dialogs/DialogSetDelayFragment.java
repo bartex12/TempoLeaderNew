@@ -28,14 +28,6 @@ public class DialogSetDelayFragment extends DialogFragment {
     private static final String TAG = "33333";
     private EditText editTextDelay;
 
-    public static DialogSetDelayFragment newInstance(String delay){
-        Bundle args = new Bundle();
-        args.putString(P.ARG_DELAY, delay);
-        DialogSetDelayFragment fragment = new DialogSetDelayFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

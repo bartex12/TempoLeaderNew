@@ -130,8 +130,9 @@
         android:label="save_data_in_file_new"
         tools:layout="@layout/save_data_in_file_new" >
         <action
-            android:id="@+id/action_dialogSaveTempFragment_to_nav_tempoleader"
-            app:destination="@id/nav_tempoleader" />
+            android:id="@+id/action_dialogSaveTempFragment_to_nav_editor"
+            app:destination="@id/nav_editor"
+            app:launchSingleTop="true" />
     </dialog>
     <dialog
         android:id="@+id/dialogChangeTemp"

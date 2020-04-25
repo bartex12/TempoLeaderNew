@@ -129,6 +129,34 @@ public class EditorStorageImpl implements EditorStorage {
         return  TabSet.getSetFragmentsCount(database, fileId);
     }
 
+    @Override
+    public long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy) {
+        if (oldFileName.equals(newFileName)){
+            //получаем id старого файла с новыми данными
+            long fileId = TabFile.getIdFromFileName(database, oldFileName);
+            Log.d(TAG, " SaveAsStorageImpl oldFileName.equals ");
+            // возвращаем данные для обновления адаптера
+            return fileId;
+        }else {
+            Log.d(TAG, " SaveAsStorageImpl oldFileName.NOT equals ");
+            //получаем id старого файла с новыми данными
+            long fileId = TabFile.getIdFromFileName(database, oldFileName);
+            Log.d(TAG, "SaverFragment fileId = " + fileId + " oldFileName" + oldFileName);
+            //меняем имя старого файла с новыми данными на новое имя
+            TabFile.updateFileName(database, newFileName, fileId);
+            //меняем имя копии на имя старого файла
+            TabFile.updateFileName(database, oldFileName, fileOldIdCopy);
+           // возвращаем данные для обновления адаптера
+            return  fileId;
+        }
+    }
+
+    //получение имени файла по его id
+    @Override
+    public String loadFileName(long fileIdNew) {
+        return TabFile.getFileNameFromTabFile(database, fileIdNew);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {

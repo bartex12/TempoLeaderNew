@@ -13,8 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.Nullable;

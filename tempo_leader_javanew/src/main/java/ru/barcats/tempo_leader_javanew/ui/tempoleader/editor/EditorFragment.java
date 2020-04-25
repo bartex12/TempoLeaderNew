@@ -38,6 +38,7 @@ import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.adapters.RecyclerViewEditorAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.dialogsave.DialogSaveFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -100,7 +101,7 @@ public class EditorFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
          mSaverFragmentListener = (SaverFragmentListener)context;
-        Log.d(TAG, "DialogSaveTempFragment: onAttach   mSaverFragmentListener = " +
+        Log.d(TAG, "/+++/ -=-=-=-=-EditorFragment: onAttach   mSaverFragmentListener = " +
                 mSaverFragmentListener);
     }
 
@@ -113,7 +114,7 @@ public class EditorFragment extends Fragment {
 
         if (getArguments() != null) {
             fileName = getArguments().getString(P.NAME_OF_FILE, P.FILENAME_OTSECHKI_SEC);
-            Log.d(TAG, "/+++/ EditorFragment onCreate fileName = " + fileName);
+            Log.d(TAG, "/+++/ -=-=-=-=-EditorFragment onCreate fileName = " + fileName);
 
 //            if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
 //                //считываем значение FROM_ACTIVITY из интента
@@ -143,16 +144,14 @@ public class EditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "/+++/  EditorFragment onCreateView" );
-        View view = inflater.inflate(R.layout.fragment_editor, container, false);
-        recyclerView = view.findViewById(R.id.recycler_editor);
-        return view;
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment onCreateView" );
+        return inflater.inflate(R.layout.fragment_editor, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "/+++/  EditorFragment onViewCreated" );
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment onViewCreated" );
 
         //разрешить только портретную ориентацию экрана
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -180,6 +179,16 @@ public class EditorFragment extends Fragment {
                         Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
                     }
                 });
+
+//        editorViewModel.getFileName().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                fileName = s;
+//                changeTemp_textViewName.setText(s);
+//                Log.d(TAG, " /+++/  getFileName =  " + s);
+//            }
+//        });
+
         //создаём копию файла и получаем его id
         fileIdCopy =  editorViewModel.getCopyFile(fileName);
         boolean isChangeTemp = mCheckBoxAll.isChecked()&&isEditTime;
@@ -191,7 +200,7 @@ public class EditorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "EditorFragment  onResume ");
+        Log.d(TAG, "/+++/ -=-=-=-=-EditorFragment  onResume ");
 
         //получаем настройки из активности настроек
         prefSetting = PreferenceManager.getDefaultSharedPreferences(requireActivity());
@@ -204,6 +213,12 @@ public class EditorFragment extends Fragment {
 
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "/+++/  -=-=-=-=-EditorFragment - onPause");
     }
 
     @Override
@@ -394,6 +409,9 @@ public class EditorFragment extends Fragment {
     }
 
     private void initViews(@NonNull View view) {
+
+        recyclerView = view.findViewById(R.id.recycler_editor);
+
         deltaValue = view.findViewById(R.id.deltaValue);
         deltaValue.setVisibility(View.INVISIBLE);
         //deltaValue.setText("-00%");

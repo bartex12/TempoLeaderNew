@@ -13,6 +13,7 @@ import ru.barcats.tempo_leader_javanew.model.DataSet;
 public class EditorViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<DataSet>> data = new MutableLiveData<>();;
+    private MutableLiveData<String> dataFile = new MutableLiveData<>();;
     private EditorStorage storageEditor;
 
     public EditorViewModel(@NonNull Application application) {
@@ -20,14 +21,26 @@ public class EditorViewModel extends AndroidViewModel {
         storageEditor = new EditorStorageImpl(application);
     }
 
+    //получение раскладки - публичный метод
     public LiveData<ArrayList<DataSet>> loadDataSet(String fileName) {
         loadData(fileName);
         return data;
     }
 
+    //получение раскладки - приватный метод
     private void loadData(String fileName){
-        //
+        //загрузка данных
         data.setValue(storageEditor.getDataSet(fileName));
+    }
+
+    //получение имени файла из LiveData
+    public LiveData<String> getFileName(){
+        return dataFile;
+    }
+
+    //получение и запись в LiveData  имени файла
+    public String loadFileName(long fileIdNew){
+        return storageEditor.loadFileName(fileIdNew);
     }
 
     public void edidAction(String fileName, float deltaTime, int countReps , boolean redactTime,
@@ -71,5 +84,10 @@ public class EditorViewModel extends AndroidViewModel {
     public int getFragmentsCount(String finishFileName){
         return storageEditor.getFragmentsCount(finishFileName);
     }
+
+    public long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy){
+        return  storageEditor.saveAsFile(oldFileName, newFileName, fileOldIdCopy);
+    }
+
 
 }
