@@ -138,9 +138,6 @@ public class EditorFragment extends Fragment {
         }
         //для фрагментов требуется так разрешить появление  меню
          setHasOptionsMenu(true);
-        //но лучше так - меню же в Main
-        //вызываем onPrepareOptionsMenu в Main для показа меню в тулбаре
-        //requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -188,7 +185,7 @@ public class EditorFragment extends Fragment {
         boolean isChangeTemp = mCheckBoxAll.isChecked()&&isEditTime;
         //передаём в MainAct id копии файла
         mSaverFragmentListener.onFileCopyTransmit(fileIdCopy, isChangeTemp, isSaveVisible);
-        //requireActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override

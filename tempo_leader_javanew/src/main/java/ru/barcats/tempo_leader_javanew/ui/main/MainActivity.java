@@ -231,12 +231,6 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_editor:
-                menu.findItem(R.id.nav_help).setVisible(true);
-                menu.findItem(R.id.nav_set).setVisible(true);
-                menu.findItem(R.id.nav_rascladki).setVisible(false);
-                menu.findItem(R.id.nav_editor).setVisible(false);
-                menu.findItem(R.id.nav_grafic).setVisible(false);
-                menu.findItem(R.id.menu_item_new_frag).setVisible(true);
                 if (isChangeTemp){
                     menu.findItem(R.id.change_temp_up_down).setVisible(true);
                 }else {
@@ -247,6 +241,12 @@ public class MainActivity extends AppCompatActivity
                 }else {
                     menu.findItem(R.id.save_data_in_file).setVisible(false);
                 }
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.menu_item_new_frag).setVisible(true);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);
