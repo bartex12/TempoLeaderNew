@@ -201,6 +201,10 @@ public class TempoleaderFragment extends Fragment {
         dataSetViewModel =
                new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
 
+        //если файл с таким именем был удалён, то грузим автосохранение секундомера
+        if (dataSetViewModel.getFragmentsCount(finishFileName)<=0){
+            finishFileName = P.FILENAME_OTSECHKI_SEC;
+        }
         dataSetViewModel.loadDataSet(finishFileName)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
@@ -208,7 +212,6 @@ public class TempoleaderFragment extends Fragment {
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 updateAdapter(view, dataSets);
-                Log.d(TAG, " /*/ dataSets getReps =  " + dataSets.get(0).getReps());
                 //передаём в MainActivity? чтобы засунуть в Bundle
                 onTransmitListener.onTransmit(finishFileName);
             }
