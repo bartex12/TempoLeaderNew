@@ -36,8 +36,7 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewEditorAdapter;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewTempoleaderAdapter;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.adapters.RecyclerViewEditorAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 
 import static android.content.Context.MODE_PRIVATE;

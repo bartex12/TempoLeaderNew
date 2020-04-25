@@ -38,7 +38,7 @@ import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewTempoleaderAdapter;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.adapters.RecyclerViewTempoleaderAdapter;
 
 
 import static android.content.Context.MODE_PRIVATE;
@@ -678,7 +678,6 @@ public class TempoleaderFragment extends Fragment {
                         mTextViewRest.setText(""); //До старта, сек
                         mtextViewCountDown.setTextColor(Color.RED);
                         mtextViewCountDown.setText(getResources().getString(R.string.workOn));
-
                     }
                     //если отдых
                     if (restOn) {
