@@ -110,6 +110,7 @@ public class TempoleaderFragment extends Fragment {
     //id файла, загруженного в темполидер
     private long fileId;
     private OnTransmitListener onTransmitListener;
+    private RecyclerView recyclerView;
 
     public interface OnTransmitListener{
         void onTransmit(String data);
@@ -288,6 +289,7 @@ public class TempoleaderFragment extends Fragment {
     }
 
     private void initViews(@NonNull View view) {
+        recyclerView =  view.findViewById(R.id.recycler_tempoleader);
         //текстовая метка  для названия файла
         mNameOfFile = view.findViewById(R.id.textViewName);
         //текстовая метка Задержка, сек
@@ -482,10 +484,9 @@ public class TempoleaderFragment extends Fragment {
                 mtextViewCountDown.setTextColor(Color.RED);
                 mtextViewCountDown.setText(String.valueOf(timeOfDelay));// величина задержки из поля timeOfDelay
 
-                //TODO через адаптер
                 //устанавливаем цвет маркера фрагмента подхода в исходный цвет, обновляя адаптер
-                adapter.setEnd(end);
                 adapter.setItem(mCountFragment);
+                recyclerView.scrollToPosition(mCountFragment);
                 adapter.notifyDataSetChanged();
                 // changeMarkColor(R.id.fragment_container, mCountFragment, end);
                 if (mTimer!=null)mTimer.cancel();
@@ -502,10 +503,26 @@ public class TempoleaderFragment extends Fragment {
            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
            recyclerView.setLayoutManager(manager);
             adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
+        //получаем слушатель щелчков на элементах списка
+        RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
+                getOnSetListClickListener();
+        //устанавливаем слушатель в адаптер
+        adapter.setOnSetListClickListener(listListener);
            recyclerView.setAdapter(adapter);
        }
 
-
+    //метод для получения слушателя щелчков на элементах списка
+    private RecyclerViewTempoleaderAdapter.OnSetListClickListener getOnSetListClickListener() {
+        return new RecyclerViewTempoleaderAdapter.OnSetListClickListener() {
+            @Override
+            public void onSetListClick(int position) {
+                //adapter.setPosItem(position);
+               // adapter.notifyDataSetChanged();
+                //TODO
+                Log.d(TAG,"/+++/ TempoleaderFragment Adapter position = " + position);
+            }
+        };
+    }
 
     //покажем общее время подхода и общее число повторений в подходе
     private void showTotalValues(float timeOfSet,int totalReps, long kvant){
@@ -601,7 +618,7 @@ public class TempoleaderFragment extends Fragment {
                     mCurrentRep = 0;
                     mTotalKvant = 0;
                     mTotalReps = 0;
-                    mCountFragment = 0;
+                    mCountFragment ++; // чтобы в одаптере маркер фрагментов подхода правильно показывал
                     end = true;
                     start = false; //это для разблокировки кнопки BACK
                     workOn = false;  //признак начала работы
@@ -611,15 +628,14 @@ public class TempoleaderFragment extends Fragment {
 
                     //изменяем свойство кнопок и сбрасываем цвет, восстанавливаем меню
                     // в пользовательском потоке
-                    getActivity().runOnUiThread(new Runnable() {
+                    requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             //чтобы не оставался последний фрагмент подхода со старым цветом
-                            //TODO сделать через адаптер
-                            adapter.setEnd(end);
-                            adapter.setItem(mCountFragment);
+                            adapter.setItem(mCountFragment); // для маркера фрагментов подхода
+                            recyclerView.scrollToPosition(mCountFragment);
                             adapter.notifyDataSetChanged();
-                            //changeMarkColor(R.id.fragment_container, mCountFragment, end);
+
                             buttonsEnable(true, false, true);
                             mDelayButton.setEnabled(true);
                         }
@@ -633,7 +649,7 @@ public class TempoleaderFragment extends Fragment {
     private void doChangeOnViThread(){
 
     try{
-        getActivity().runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String time = showFormatString(mTotalTime, mKvant);
@@ -674,9 +690,9 @@ public class TempoleaderFragment extends Fragment {
                 }
 
                 //при переходе к следующему фрагменту подхода меняем цвет маркера, для чего
-                //передаём в адаптер end и mCountFragment и обновляем адаптер
-                adapter.setEnd(end);
+                //передаём в адаптер  mCountFragment и обновляем адаптер
                 adapter.setItem(mCountFragment);
+                recyclerView.scrollToPosition(mCountFragment);
                 adapter.notifyDataSetChanged();
 
                //Показываем прогресс текущего времени фрагмента подхода

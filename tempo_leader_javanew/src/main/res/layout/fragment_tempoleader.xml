@@ -199,17 +199,6 @@
             android:layout_marginBottom="15dp">
         </androidx.recyclerview.widget.RecyclerView>
 
-<!--        <FrameLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:id="@+id/fragment_container"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:layout_above="@+id/linearLayout_button"-->
-<!--            android:layout_alignParentStart="true"-->
-<!--            android:layout_marginBottom="15dp">-->
-
-<!--        </FrameLayout>-->
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

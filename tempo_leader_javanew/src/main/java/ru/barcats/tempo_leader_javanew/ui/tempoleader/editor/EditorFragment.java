@@ -36,6 +36,7 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewEditorAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.adaptertempoleader.RecyclerViewTempoleaderAdapter;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 
@@ -82,7 +83,7 @@ public class EditorFragment extends Fragment {
     private EditorViewModel editorViewModel;
     //private SQLiteDatabase database;
     private RecyclerView recyclerView;
-    private RecyclerViewTempoleaderAdapter adapter;
+    private RecyclerViewEditorAdapter adapter;
     private String fileName;
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private boolean sound = true; // включение / выключение звука
@@ -448,9 +449,9 @@ public class EditorFragment extends Fragment {
     private  void updateAdapter(ArrayList<DataSet> dataSets){
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
-        adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
+        adapter = new RecyclerViewEditorAdapter(dataSets, accurancy);
         //получаем слушатель щелчков на элементах списка
-        RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
+        RecyclerViewEditorAdapter.OnSetListClickListener listListener =
                 getOnSetListClickListener();
         //устанавливаем слушатель в адаптер
         adapter.setOnSetListClickListener(listListener);
@@ -458,14 +459,15 @@ public class EditorFragment extends Fragment {
     }
 
     //метод для получения слушателя щелчков на элементах списка
-    private RecyclerViewTempoleaderAdapter.OnSetListClickListener getOnSetListClickListener() {
-        return new RecyclerViewTempoleaderAdapter.OnSetListClickListener() {
+    private RecyclerViewEditorAdapter.OnSetListClickListener getOnSetListClickListener() {
+        return new RecyclerViewEditorAdapter.OnSetListClickListener() {
             @Override
             public void onSetListClick(int position) {
+                positionOfList = position;
                 adapter.setPosItem(position);
                 adapter.notifyDataSetChanged();
                 //TODO
-                Log.d(TAG,"/+++/ TempoleaderFragment Adapter position = " + position);
+                Log.d(TAG,"/+++/ EditorFragment Adapter position = " + position);
             }
         };
     }
@@ -475,10 +477,10 @@ public class EditorFragment extends Fragment {
         prefSetting = PreferenceManager.getDefaultSharedPreferences(getActivity());
         //получаем из файла настроек количество знаков после запятой
         accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
-        Log.d(TAG,"/+++/ TempoleaderFragment getPrefSettings accurancy = " + accurancy);
+        Log.d(TAG,"/+++/EditorFragment getPrefSettings accurancy = " + accurancy);
         //получаем из файла настроек наличие звука
         sound = prefSetting.getBoolean("cbSound",true);
-        Log.d(TAG,"/+++/ TempoleaderFragment getPrefSettings sound = " + sound);
+        Log.d(TAG,"/+++/ EditorFragment getPrefSettings sound = " + sound);
     }
 
     //покажем общее время подхода

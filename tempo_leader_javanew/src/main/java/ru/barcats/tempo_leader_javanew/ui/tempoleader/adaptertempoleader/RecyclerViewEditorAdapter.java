@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -16,7 +17,7 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 
-public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<RecyclerViewTempoleaderAdapter.ViewHolder> {
+public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerViewEditorAdapter.ViewHolder> {
 
     private static final String TAG = "33333";
     private ArrayList<DataSet> listOfSet;
@@ -24,13 +25,24 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     private OnSetListClickListener onSetListClickListener;
     private int accurancy; //точность отсечек - количество знаков после запятой
     private int item = 0;
+    private int posItem = -1;
+    private boolean isEnd = false;
+
+    public void setEnd(boolean end) {
+        //
+        isEnd = end;
+    }
+
+    public void setPosItem(int posItem) {
+        this.posItem = posItem;
+    }
 
     public void setItem(int item) {
         this.item = item;
         Log.d(TAG, " +++ RecyclerViewTempoleaderAdapter item = " + item);
     }
 
-    public RecyclerViewTempoleaderAdapter(ArrayList<DataSet> listOfSet,  int accurancy){
+    public RecyclerViewEditorAdapter(ArrayList<DataSet> listOfSet, int accurancy){
         this.listOfSet =listOfSet;
         this.accurancy = accurancy;
         Log.d(TAG, "RecyclerViewTempoleaderAdapter listOfSet.size() = "
@@ -43,12 +55,12 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     }
     //метод установки слушателя щелчков на списке
     public void setOnSetListClickListener(
-            RecyclerViewTempoleaderAdapter.OnSetListClickListener onSetListClickListener) {
+            RecyclerViewEditorAdapter.OnSetListClickListener onSetListClickListener) {
         this.onSetListClickListener = onSetListClickListener;
     }
 
     @Override
-    public RecyclerViewTempoleaderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerViewEditorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
 
         View view = LayoutInflater.from(context).inflate(
@@ -68,18 +80,19 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
             if (position < item){
                 holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+            }else if (posItem == position){
+                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
             }else {
                 holder.mark_item_set_textview
                         .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             }
-        onSetListClickListener.onSetListClick(position);
 
-//        holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onSetListClickListener.onSetListClick(position);
-//            }
-//        });
+        holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSetListClickListener.onSetListClick(position);
+            }
+        });
     }
 
     @Override
