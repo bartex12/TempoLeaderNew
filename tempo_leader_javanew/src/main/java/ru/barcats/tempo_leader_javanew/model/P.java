@@ -41,11 +41,13 @@ public class P {
     //плюсик в тулбаре темполидера
     public final static int TO_ADD_SET = 4444;
     //плюсик в тулбаре редактора
-    public final static int TO_ADD_FRAG = 5555;
+    public final static int TO_ADD_LAST_SET = 5555;
     //контекстное меню в редакторе -вставить после
     public final static int TO_INSERT_AFTER_FRAG = 7777;
     //контекстное меню в редакторе -вставить до
     public final static int TO_INSERT_BEFORE_FRAG = 8888;
+    //контекстное меню в редакторе - изменить сет
+    public final static int TO_CHANGE_SET = 9999;
 
     //идентификатор интента : пришёл от Main
     public final static String FROM_MAIN = "ru.bartex.p010_train.FROM_MAIN";
@@ -88,8 +90,8 @@ public class P {
     public static final String NAME_OF_FILE = "ru.bartex.p010_train.name_of_file";
     public static final String FINISH_FILE_NAME = "Раскладка без имени";
     public static final String FINISH_FILE_ID = "ru.bartex.p010_train_date_fileId";
-    //имя файла для имени последнего сохранённого файла
-    public static final String NAME_OF_LAST_FILE = "ru.bartex.p010_train.name_of_last_file";
+    //позиция в списке редактора
+    public static final String POSITION_OF_LIST = "ru.bartex.p010_train.name_position_of_list";
     // ключ для имени последнего сохранённого файла
     public static final String LAST_FILE = "ru.bartex.p010_train.last_file";
     //имя в строке имени, если нет сохранённых файлов

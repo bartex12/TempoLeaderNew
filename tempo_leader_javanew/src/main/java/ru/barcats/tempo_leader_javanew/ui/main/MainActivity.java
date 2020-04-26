@@ -31,13 +31,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
 
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "//**// MainActivity onCreate");
 
         // Вызов этого метода при выполнении onCreate() гарантирует, что  приложение
         // правильно инициализируется и получит настройки по умолчанию
@@ -130,11 +129,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "//**// MainActivity onResume");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "//**// MainActivity onStop");
         //включаем звук
         AudioManager audioManager =(AudioManager)getSystemService(Context.AUDIO_SERVICE);
         audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "//**// MainActivity onDestroy");
     }
 
     @Override
@@ -282,7 +294,7 @@ public class MainActivity extends AppCompatActivity
         case R.id.menu_item_new_frag:
             bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
-            bundle.putInt(P.FROM_ACTIVITY, P.TO_ADD_FRAG); // добавить фрагмент подхода
+            bundle.putInt(P.FROM_ACTIVITY, P.TO_ADD_LAST_SET); // добавить фрагмент подхода
             navController.navigate(R.id.action_nav_editor_to_newSetDialog, bundle);
             break;
             default:

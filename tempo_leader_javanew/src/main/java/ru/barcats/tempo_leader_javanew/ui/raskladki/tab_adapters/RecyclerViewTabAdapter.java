@@ -1,6 +1,5 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.adapters;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.LikeViewModel;
-import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.like_frag.TabBarLikeFragment;
 
 public class RecyclerViewTabAdapter extends
         RecyclerView.Adapter<RecyclerViewTabAdapter.ViewHolder> {
@@ -64,7 +60,6 @@ public class RecyclerViewTabAdapter extends
         holder.name_of_rasckadka.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                posItem = position;
                 fileName = data.get(position);
                 onLineListener.onClickOnLineListener(fileName);
             }
@@ -74,7 +69,6 @@ public class RecyclerViewTabAdapter extends
         holder.name_of_rasckadka.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                posItem = position;
                 fileName = data.get(position);
                 onLongClickLikeListener.onLongClickLike(fileName);
                 return false;

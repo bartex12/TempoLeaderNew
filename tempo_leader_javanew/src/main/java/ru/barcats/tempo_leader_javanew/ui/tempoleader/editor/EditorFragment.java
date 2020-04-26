@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +32,8 @@ import java.util.Locale;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
@@ -90,6 +94,8 @@ public class EditorFragment extends Fragment {
 
     private String fileName;  //имя файла
 
+    private View view;
+
 
     //интерфейс для передачи в Main fileIdCopy для работы из меню тулбара
     public interface SaverFragmentListener{
@@ -107,32 +113,15 @@ public class EditorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //получаем базу данных
         database = new TempDBHelper(getActivity()).getWritableDatabase();
 
         if (getArguments() != null) {
             fileName = getArguments().getString(P.NAME_OF_FILE, P.FILENAME_OTSECHKI_SEC);
             Log.d(TAG, "/+++/ EditorFragment onCreate fileName = " + fileName);
-
-//            if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
-//                //считываем значение FROM_ACTIVITY из интента
-//                //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
-//                //444 -DetailActivity  555 - NewExerciseActivity 777 - DialogSetDelay
-//                //888  - DialogChangeTempFragment
-//               int fromActivity = getArguments().getInt(P.FROM_ACTIVITY,111);
-//                //если  от DialogChangeTempFragment, то   isEditTime и
-//                if (fromActivity == P.DIALOG_CHANGE_TEMP){
-////                    isEditTime = true;
-////                    isCheckedAll = true;
-////                    setMarkerColor(); //цвет маркера от состояния чекбокса
-////                    Log.d(TAG, "/+++/ EditorFragment onCreate mCheckBoxAll = " +
-////                            mCheckBoxAll.isChecked());
-//                }
-//            }
         }else {
             //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
-            shp = getActivity().getPreferences(MODE_PRIVATE);
+            shp = requireActivity().getPreferences(MODE_PRIVATE);
             //грузим последний файл темполидера  или автосохранение секундомера
             fileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
         }
@@ -144,8 +133,10 @@ public class EditorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "/+++/  EditorFragment onCreateView" );
-        View view = inflater.inflate(R.layout.fragment_editor, container, false);
+        view = inflater.inflate(R.layout.fragment_editor, container, false);
         recyclerView = view.findViewById(R.id.recycler_editor);
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
         return view;
     }
 
@@ -225,6 +216,160 @@ public class EditorFragment extends Fragment {
         //удаляем копию файла, созданную при редактировании
         editorViewModel.clearCopyFile(fileIdCopy,fileName);
         database.close();
+    }
+
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.DELETE_CHANGETEMP, 0, "Удалить строку");
+        menu.add(0, P.CHANGE_CHANGETEMP, 0, "Изменить строку");
+        menu.add(0, P.INSERT_BEFORE_CHANGETEMP, 0, "Вставить строку до");
+        menu.add(0, P.INSERT_AFTER_CHANGETEMP, 0, "Вставить строку после");
+        menu.add(0, P.CANCEL_CHANGETEMP, 0, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+//        final AdapterView.AdapterContextMenuInfo acmi =
+//                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+//
+//        //если удалить из контекстного меню
+//        if (item.getItemId() == P.DELETE_CHANGETEMP){
+//            Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle(R.string.DeleteYesNo);
+//            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                }
+//            });
+//            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    TabSet.deleteSet(database, fileId, (acmi.position+1));
+//                    Log.d(TAG,"ChangeTempActivity P.DELETE_CHANGETEMP  имя =" + finishFileName +
+//                            "  Id = " + fileId +
+//                            "  acmi.position+1 = " + (acmi.position+1) +
+//                            "  acmi.id = " + acmi.id);
+//
+//                    //пересчитываем номера фрагментов подхода
+//                    TabSet.rerangeSetFragments(database, fileId);
+//
+//                    //обновляем данные списка фрагмента активности
+//                    updateAdapter();
+//
+//                    //вычисляем и показываем общее время выполнения подхода и количество повторов в подходе
+//                    calculateAndShowTotalValues();
+//
+//                    saveVision = true;
+//
+//                    invalidateOptionsMenu();
+//                }
+//            });
+//            builder.show();
+//            //return true;
+//
+//            //если изменить из контекстного меню
+//        }else  if(item.getItemId() == P.CHANGE_CHANGETEMP) {
+//            Log.d(TAG, "ChangeTempActivity P.CHANGE_CHANGETEMP");
+//            Log.d(TAG, "ChangeTempActivity P.CHANGE_CHANGETEMP acmi.position = " +
+//                    acmi.position + "  acmi.id = " + acmi.id);
+//            //объект фрагмент данных с fileId на позиции acmi.position
+//            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, acmi.position);
+//
+//            Intent intent = new Intent(this, DetailActivity.class);
+//            intent.putExtra(P.DETAIL_DATA_SET, dataSet);
+//            intent.putExtra(P.FINISH_FILE_NAME, finishFileName);
+//            intent.putExtra(P.DETAIL_CHANGE_REQUEST, P.DETAIL_CHANGE_TEMP_REQUEST_CODE);
+//            startActivityForResult(intent, P.TEMP_REQUEST_CODE);
+//            //finish();
+//            //return true;
+//
+//            //если вставить до из контекстного меню
+//        }else if(item.getItemId() == P.INSERT_BEFORE_CHANGETEMP){
+//            Log.d(TAG, "ChangeTempActivity P.INSERT_BEFORE_CHANGETEMP");
+//            Log.d(TAG, "ChangeTempActivity P.INSERT_BEFORE_CHANGETEMP acmi.position = " +
+//                    acmi.position + "  acmi.id = " + acmi.id);
+//            //вызываем DetailActivity и передаём туда fileId
+//            Intent isertAfterFrag = new Intent(this, DetailActivity.class);
+//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_ID, fileId);
+//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_POSITION, (acmi.position+1));
+//            isertAfterFrag.putExtra(P.FROM_ACTIVITY,P.TO_INSERT_BEFORE_FRAG);
+//            startActivityForResult(isertAfterFrag, P.INSERT_BEFORE_CHANGETEMP_REQUEST);
+//            //return true;
+//
+//            //если вставить после из контекстного меню
+//        }else if(item.getItemId() == P.INSERT_AFTER_CHANGETEMP){
+//            Log.d(TAG, "ChangeTempActivity P.INSERT_AFTER_CHANGETEMP");
+//            Log.d(TAG, "ChangeTempActivity P.INSERT_AFTER_CHANGETEMP acmi.position = " +
+//                    acmi.position + "  acmi.id = " + acmi.id);
+//            //вызываем DetailActivity и передаём туда fileId
+//            Intent isertAfterFrag = new Intent(this, DetailActivity.class);
+//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_ID, fileId);
+//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_POSITION, (acmi.position+1));
+//            isertAfterFrag.putExtra(P.FROM_ACTIVITY,P.TO_INSERT_AFTER_FRAG);
+//            startActivityForResult(isertAfterFrag, P.INSERT_AFTER_CHANGETEMP_REQUEST);
+//           // return true;
+//
+//            //если отменить
+//        }else if(item.getItemId() == P.CANCEL_CHANGETEMP){
+//
+//            //return true;
+//        }
+//
+//        //return super.onContextItemSelected(item);
+//
+//            //return super.onContextItemSelected(item);
+//        //}
+
+        handleMenuItemClick(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case P.DELETE_CHANGETEMP: {
+//                showDeleteDialog();
+//                getAdapter().notifyDataSetChanged();
+                break;
+            }
+            case P.CHANGE_CHANGETEMP: {
+                Bundle bundle = new Bundle();
+                bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
+                bundle.putInt(P.POSITION_OF_LIST, positionOfList);  //позиция в списке
+                bundle.putInt(P.FROM_ACTIVITY, P.TO_CHANGE_SET); // ихменить фрагмент подхода
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_nav_editor_to_editOneSetDialog, bundle);
+//                showChangeDialog();
+//                getAdapter().notifyDataSetChanged();
+                break;
+            }
+            case P.INSERT_BEFORE_CHANGETEMP: {
+//                //поручаем перемещение файла ViewModel
+//                tempViewModel.moveItemInSec(getFileName());
+//                //обновляем список вкладки после перемещения файла
+//                getAdapter().notifyDataSetChanged();
+//                // обновляем вкладки после перемещения файла
+//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+                break;
+            }
+            case P.INSERT_AFTER_CHANGETEMP: {
+//                //поручаем перемещение файла ViewModel
+//                tempViewModel.moveItemInLike(getFileName());
+//                //обновляем список вкладки после перемещения файла
+//                getAdapter().notifyDataSetChanged();
+//                // обновляем вкладки после перемещения файла
+//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+            }
+            case P.CANCEL_CHANGETEMP: {
+                break;
+            }
+        }
     }
 
     private void revertTemp() {
@@ -453,9 +598,22 @@ public class EditorFragment extends Fragment {
         //получаем слушатель щелчков на элементах списка
         RecyclerViewEditorAdapter.OnSetListClickListener listListener =
                 getOnSetListClickListener();
+        RecyclerViewEditorAdapter.OnLongClickLikeListener longListener =
+                getOnLongClickLikeListener();
         //устанавливаем слушатель в адаптер
         adapter.setOnSetListClickListener(listListener);
+        adapter.setOnLongClickLikeListenerr(longListener);
         recyclerView.setAdapter(adapter);
+    }
+
+    private RecyclerViewEditorAdapter.OnLongClickLikeListener getOnLongClickLikeListener(){
+        return new RecyclerViewEditorAdapter.OnLongClickLikeListener() {
+            @Override
+            public void onLongClickLike(int position) {
+                positionOfList = position;
+                Log.d(TAG,"/+++/ EditorFragment OnLongClickLikeListener position = " + position);
+            }
+        };
     }
 
     //метод для получения слушателя щелчков на элементах списка
@@ -467,7 +625,7 @@ public class EditorFragment extends Fragment {
                 adapter.setPosItem(position);
                 adapter.notifyDataSetChanged();
                 //TODO
-                Log.d(TAG,"/+++/ EditorFragment Adapter position = " + position);
+                Log.d(TAG,"/+++/ EditorFragment OnSetListClickListener position = " + position);
             }
         };
     }

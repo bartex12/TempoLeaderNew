@@ -23,10 +23,10 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
-public class NewSetDialog extends DialogFragment {
+public class EditOneSetDialog extends DialogFragment {
+
     private static final String TAG = "33333";
     private EditText mTimeOfRepFrag;  //поле для времени между повторами
     private EditText mRepsFrag;  // поле для количества повторениийдля фрагмента подхода
@@ -34,7 +34,7 @@ public class NewSetDialog extends DialogFragment {
     private Button mButtonOk;
     private Button mButtonCancel;
     private String finishFileName; //имя файла, передаваемое в аргументах фрагмента
-    private  TempDBHelper mTempDBHelper;
+    private TempDBHelper mTempDBHelper;
     private SQLiteDatabase database;
     private EditorViewModel editorViewModel;
     private DataSet mDataSet;
@@ -51,24 +51,35 @@ public class NewSetDialog extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "NewSetDialog: onDestroy  ");
+        Log.d(TAG, "EditOneSetDialog: onDestroy  ");
         database.close();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "NewSetDialog: onCreate  ");
+        Log.d(TAG, "EditOneSetDialog: onCreate  ");
+//        bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
+//        bundle.putInt(P.POSITION_OF_LIST, positionOfList);  //позиция в списке
+//        bundle.putInt(P.FROM_ACTIVITY, P.TO_CHANGE_SET); // ихменить фрагмент подхода
 
         if ((getArguments()) != null){
             //имя файла из аргументов
             finishFileName = getArguments().getString(P.NAME_OF_FILE);
             from = getArguments().getInt(P.FROM_ACTIVITY);
+            int  positionOfList = getArguments().getInt(P.POSITION_OF_LIST);
 
             editorViewModel = new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
-            mDataSet = editorViewModel.getDataSetNew(finishFileName);
 
-            Log.d(TAG, "NewSetDialog: onCreate  numberFrag = " + mDataSet.getNumberOfFrag());
+            if (from == P.TO_CHANGE_SET){
+                mDataSet = editorViewModel.getOneSetData(finishFileName, positionOfList);
+            }else if (from == P.TO_ADD_LAST_SET){
+                mDataSet = editorViewModel.getDataSetNew(finishFileName);
+            }
+
+
+
+            Log.d(TAG, "EditOneSetDialog: onCreate  numberFrag = " + mDataSet.getNumberOfFrag());
         }else finishFileName = "";
     }
 
@@ -80,8 +91,13 @@ public class NewSetDialog extends DialogFragment {
         rootView = inflater.inflate(R.layout.fragment_dialog_new_set, null);
 
         builder.setView(rootView);
-        builder.setTitle("Создать");
-        builder.setIcon(R.drawable.ic_fiber_new_black_24dp);
+        if (from == P.TO_CHANGE_SET) {
+            builder.setTitle("Изменить");
+            builder.setIcon(R.drawable.ic_refresh_black_24dp);
+        }else if (from == P.TO_ADD_LAST_SET){
+            builder.setTitle("Создать");
+            builder.setIcon(R.drawable.ic_fiber_new_black_24dp);
+        }
 
         initViews(rootView);
 
@@ -103,9 +119,12 @@ public class NewSetDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 //если Добавить с тулбара редактора  +
-                if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET) {
+                if (from == P.TO_CHANGE_SET) {
+                    editorViewModel.updateSetFragment(mDataSet, finishFileName);
+                    Log.d(TAG, "EditOneSetDialog mButtonOk  TO_CHANGE_SET ");
+                }else if (from == P.TO_ADD_LAST_SET){
                     editorViewModel.addSet(mDataSet, finishFileName);
-                    Log.d(TAG, "NewSetDialog mButtonOk (P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET ");
+                    Log.d(TAG, "EditOneSetDialog mButtonOk TO_ADD_LAST_SET ");
                 }
                 //прячем экранную клавиатуру
                 takeOffSoftInput();
@@ -126,18 +145,24 @@ public class NewSetDialog extends DialogFragment {
     private void initViews(View view) {
 
         mTimeOfRepFrag = view.findViewById(R.id.time_item_newset);
-        if(from == P.TO_ADD_LAST_SET) {
+        if(from == P.TO_CHANGE_SET) {
+            mTimeOfRepFrag.setText(String.valueOf(mDataSet.getTimeOfRep()));
+        }else if(from == P.TO_ADD_LAST_SET) {
             mTimeOfRepFrag.setText(String.valueOf(mDataSet.getTimeOfRep()));
         }
 
         mRepsFrag = view.findViewById(R.id.reps_item_newset);
         //если Добавить с тулбара редактора  +
-        if(from == P.TO_ADD_LAST_SET){
+        if(from == P.TO_CHANGE_SET){
+            mRepsFrag.setText(String.valueOf(mDataSet.getReps()));
+        }else  if(from == P.TO_ADD_LAST_SET){
             mRepsFrag.setText(String.valueOf(mDataSet.getReps()));
         }
 
         mNumberOfFrag = view.findViewById(R.id.mark_item_newset);
-        if(from == P.TO_ADD_LAST_SET){
+        if(from == P.TO_CHANGE_SET){
+            mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
+        }else if(from == P.TO_ADD_LAST_SET){
             mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
         }
 
@@ -160,7 +185,15 @@ public class NewSetDialog extends DialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //если Изменить из контекстного меню редактора
-                if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET) {
+                if (from == P.TO_CHANGE_SET) {
+                    //получаем int количество повторений для фрагмента из строчки mRepsFrag
+                    int ir = getCountReps(mRepsFrag);
+                    //и присваиваем его переменной mReps класса Set
+                    mDataSet.setReps(ir);
+                    //доступность кнопки Ok, если оба значения ненулевые
+                    mButtonOk.setEnabled(((mDataSet.getTimeOfRep() != 0)) && ((mDataSet.getReps() != 0)));
+                    Log.d(TAG, " TO_CHANGE_SET countReps = " + mDataSet.getReps());
+                }else if (from == P.TO_ADD_LAST_SET) {
                     //получаем int количество повторений для фрагмента из строчки mRepsFrag
                     int ir = getCountReps(mRepsFrag);
                     //и присваиваем его переменной mReps класса Set
@@ -184,7 +217,16 @@ public class NewSetDialog extends DialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //если Добавить с тулбара редактора  +
-                if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
+                if (from == P.TO_CHANGE_SET){
+                    //получаем float секунд для времени между повторами из строчки mTimeOfRepFrag
+                    float ft = getCountSecond(mTimeOfRepFrag);
+                    //и присваиваем его переменной mTimeOfRep класса Set
+                    mDataSet.setTimeOfRep(ft);
+                    //доступность кнопки Ok, если оба значения ненулевые
+                    mButtonOk.setEnabled(((mDataSet.getTimeOfRep()!=0))&&((mDataSet.getReps()!=0)));
+                    Log.d(TAG, " TO_CHANGE_SET countSecond = " + mDataSet.getTimeOfRep() +
+                            " countReps = " + mDataSet.getReps());
+                }else  if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
                     //получаем float секунд для времени между повторами из строчки mTimeOfRepFrag
                     float ft = getCountSecond(mTimeOfRepFrag);
                     //и присваиваем его переменной mTimeOfRep класса Set
@@ -230,6 +272,4 @@ public class NewSetDialog extends DialogFragment {
                 InputMethodManager.HIDE_NOT_ALWAYS);
 
     }
-
-
 }

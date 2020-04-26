@@ -23,6 +23,7 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<DataSet> listOfSet;
     private Context context;
     private OnSetListClickListener onSetListClickListener;
+    private OnLongClickLikeListener onLongClickLikeListener;
     private int accurancy; //точность отсечек - количество знаков после запятой
     private int posItem = -1;
     private boolean isForAll;
@@ -58,6 +59,13 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     public void setOnSetListClickListener(
             RecyclerViewEditorAdapter.OnSetListClickListener onSetListClickListener) {
         this.onSetListClickListener = onSetListClickListener;
+    }
+
+    public interface OnLongClickLikeListener{
+        void onLongClickLike(int position);
+    }
+    public void setOnLongClickLikeListenerr(OnLongClickLikeListener onLongClickLikeListener){
+        this.onLongClickLikeListener = onLongClickLikeListener;
     }
 
     @Override
@@ -114,14 +122,23 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
                             .getColor(android.R.color.transparent));
                 }
             }
-
         }
 
         //передаём позицию списка при щелчке на строке списка
         holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSetListClickListener.onSetListClick(position);
+                posItem = position;
+                //onSetListClickListener.onSetListClick(position);
+            }
+        });
+
+        // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
+        holder.all_item_set_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onLongClickLikeListener.onLongClickLike(position);
+                return false;
             }
         });
     }

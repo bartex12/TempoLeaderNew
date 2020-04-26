@@ -104,6 +104,7 @@
             android:id="@+id/action_nav_grafic_to_nav_tempoleader"
             app:destination="@id/nav_tempoleader" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_editor"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment"
@@ -122,6 +123,9 @@
         <action
             android:id="@+id/action_nav_editor_to_newSetDialog"
             app:destination="@id/newSetDialog" />
+        <action
+            android:id="@+id/action_nav_editor_to_editOneSetDialog"
+            app:destination="@id/editOneSetDialog" />
     </fragment>
 
     <dialog
@@ -135,15 +139,23 @@
             app:popUpTo="@+id/nav_tempoleader"
             app:popUpToInclusive="true" />
     </dialog>
+
     <dialog
         android:id="@+id/dialogChangeTemp"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTempFragment"
         android:label="fragment_dialog_chahge_temp"
         tools:layout="@layout/fragment_dialog_chahge_temp" />
+
     <dialog
         android:id="@+id/newSetDialog"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.NewSetDialog"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.EditOneSetDialog"
         android:label="fragment_dialog_new_set"
+        tools:layout="@layout/fragment_dialog_new_set" />
+
+    <dialog
+        android:id="@+id/editOneSetDialog"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.EditOneSetDialog"
+        android:label="fragment_dialog_change_set"
         tools:layout="@layout/fragment_dialog_new_set" />
 
 </navigation>

@@ -28,4 +28,9 @@ public interface EditorStorage {
     int getFragmentsCount(String finishFileName);
 
     long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy);
+
+    DataSet getOneSetData(String finishFileName, int positionOfList);
+
+    ArrayList<DataSet> updateSetFragment(DataSet dataSet, String finishFileName);
+
 }

@@ -1,7 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader.details;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,13 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
 import ru.barcats.tempo_leader_javanew.database.TabSet;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class DetailFragment extends Fragment {
 
@@ -62,12 +58,12 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
           int from =  getArguments().getInt(P.FROM_ACTIVITY);
           switch (from){
-              case P.TO_ADD_FRAG:
+              case P.TO_ADD_LAST_SET:
                   finishFileName = getArguments().getString(P.NAME_OF_FILE);
 //                  fragmentCount = TabSet.getSetFragmentsCount(database, fileId);
 //                  mDataSet = new DataSet();
 //                  mDataSet.setNumberOfFrag(fragmentCount + 1);
-                  Log.d(TAG, "DetailFragment TO_ADD_FRAG " +
+                  Log.d(TAG, "DetailFragment TO_ADD_LAST_SET " +
                           "onCreate Добавить с тулбара редактора  fileId= " +fileId);
                   break;
               case P.TO_INSERT_AFTER_FRAG:
@@ -120,9 +116,9 @@ public class DetailFragment extends Fragment {
     private void setNumberOfFrag() {
         //записываем в поле mNumberOfFrag порядковый номер фрагмента подхода +1 (на экране - с 1)
         //если Добавить с тулбара редактора +
-        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG){
+        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
             mNumberOfFrag.setText(String.valueOf(fragmentCount + 1));
-            Log.d(TAG, " TO_ADD_FRAG mNumberOfFrag = " + (fragmentCount + 1));
+            Log.d(TAG, " TO_ADD_LAST_SET mNumberOfFrag = " + (fragmentCount + 1));
 
             //если вставить после  из контекстного меню редактора
         }else if (getArguments().getInt(P.FROM_ACTIVITY) ==P.TO_INSERT_AFTER_FRAG){
@@ -143,7 +139,7 @@ public class DetailFragment extends Fragment {
 
     private void setRepsButtonlListener() {
         //если Добавить с тулбара редактора  +
-        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG){
+        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
             mRepsFrag.setText("0");
             //если вставить после  из контекстного меню редактора
         }else if (getArguments().getInt(P.FROM_ACTIVITY) ==P.TO_INSERT_AFTER_FRAG){
@@ -173,7 +169,7 @@ public class DetailFragment extends Fragment {
                     Log.d(TAG, "DETAIL_CHANGE_TEMP_REQUEST_CODE countReps = " + mDataSet.getReps());
 
                     //если Добавить с тулбара редактора +
-                }else if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG) {
+                }else if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET) {
                     //получаем int количество повторений для фрагмента из строчки mRepsFrag
                     int ir = getCountReps(mRepsFrag);
                     //и присваиваем его переменной mReps класса Set
@@ -210,7 +206,7 @@ public class DetailFragment extends Fragment {
 
     private void setTimeButtonlListener() {
         //если Добавить с тулбара редактора  +
-        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG) {
+        if(getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET) {
             mTimeOfRepFrag.setText("0");
             //если вставить после  из контекстного меню редактора
         }else if (getArguments().getInt(P.FROM_ACTIVITY) ==P.TO_INSERT_AFTER_FRAG){
@@ -241,14 +237,14 @@ public class DetailFragment extends Fragment {
                             "countReps = " + mDataSet.getReps());
 
                     //если Добавить с тулбара редактора  +
-                }else if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG){
+                }else if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
                     //получаем float секунд для времени между повторами из строчки mTimeOfRepFrag
                     float ft = getCountSecond(mTimeOfRepFrag);
                     //и присваиваем его переменной mTimeOfRep класса Set
                     mDataSet.setTimeOfRep(ft);
                     //доступность кнопки Ok, если оба значения ненулевые
                     mButtonOk.setEnabled(((mDataSet.getTimeOfRep()!=0))&&((mDataSet.getReps()!=0)));
-                    Log.d(TAG, " TO_ADD_FRAG countSecond = " + mDataSet.getTimeOfRep() +
+                    Log.d(TAG, " TO_ADD_LAST_SET countSecond = " + mDataSet.getTimeOfRep() +
                             "countReps = " + mDataSet.getReps());
 
                     //если вставить после  из контекстного меню редактора
@@ -304,10 +300,10 @@ public class DetailFragment extends Fragment {
             public void onClick(View view) {
 
                 //если Добавить с тулбара редактора  +
-                if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_FRAG) {
+                if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET) {
                     //Добавляем фрагмент подхода
                     TabSet.addSet(database, mDataSet, fileId);
-                    Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_ADD_FRAG ");
+                    Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET ");
 
 
                     //если вставить после  из контекстного меню редактора

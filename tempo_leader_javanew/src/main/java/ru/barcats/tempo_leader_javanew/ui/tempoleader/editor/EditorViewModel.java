@@ -75,4 +75,13 @@ public class EditorViewModel extends AndroidViewModel {
     public long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy){
         return storageEditor.saveAsFile(oldFileName, newFileName, fileOldIdCopy);
     }
+
+    public DataSet  getOneSetData(String finishFileName, int positionOfList){
+        return storageEditor.getOneSetData(finishFileName, positionOfList);
+    }
+
+    //обновляем фрагмент подхода и меняем данные в LiveData
+    public void updateSetFragment(DataSet dataSet,String finishFileName){
+        data.setValue(storageEditor.updateSetFragment(dataSet, finishFileName));
+    }
 }

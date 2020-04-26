@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.raskladki.adapters;
+package ru.barcats.tempo_leader_javanew.ui.raskladki.tab_adapters;
 
 import java.util.ArrayList;
 
