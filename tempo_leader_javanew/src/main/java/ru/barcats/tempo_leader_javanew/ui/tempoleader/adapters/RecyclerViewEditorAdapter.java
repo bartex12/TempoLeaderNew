@@ -129,7 +129,7 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
             @Override
             public void onClick(View v) {
                 posItem = position;
-                //onSetListClickListener.onSetListClick(position);
+                onSetListClickListener.onSetListClick(position);
             }
         });
 

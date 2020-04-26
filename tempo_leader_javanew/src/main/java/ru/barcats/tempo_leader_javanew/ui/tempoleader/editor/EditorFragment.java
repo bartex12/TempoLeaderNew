@@ -231,100 +231,6 @@ public class EditorFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-
-//        final AdapterView.AdapterContextMenuInfo acmi =
-//                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-//
-//        //если удалить из контекстного меню
-//        if (item.getItemId() == P.DELETE_CHANGETEMP){
-//            Log.d(TAG, "ChangeTempActivity P.DELETE_CHANGETEMP");
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle(R.string.DeleteYesNo);
-//            builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            });
-//            builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    TabSet.deleteSet(database, fileId, (acmi.position+1));
-//                    Log.d(TAG,"ChangeTempActivity P.DELETE_CHANGETEMP  имя =" + finishFileName +
-//                            "  Id = " + fileId +
-//                            "  acmi.position+1 = " + (acmi.position+1) +
-//                            "  acmi.id = " + acmi.id);
-//
-//                    //пересчитываем номера фрагментов подхода
-//                    TabSet.rerangeSetFragments(database, fileId);
-//
-//                    //обновляем данные списка фрагмента активности
-//                    updateAdapter();
-//
-//                    //вычисляем и показываем общее время выполнения подхода и количество повторов в подходе
-//                    calculateAndShowTotalValues();
-//
-//                    saveVision = true;
-//
-//                    invalidateOptionsMenu();
-//                }
-//            });
-//            builder.show();
-//            //return true;
-//
-//            //если изменить из контекстного меню
-//        }else  if(item.getItemId() == P.CHANGE_CHANGETEMP) {
-//            Log.d(TAG, "ChangeTempActivity P.CHANGE_CHANGETEMP");
-//            Log.d(TAG, "ChangeTempActivity P.CHANGE_CHANGETEMP acmi.position = " +
-//                    acmi.position + "  acmi.id = " + acmi.id);
-//            //объект фрагмент данных с fileId на позиции acmi.position
-//            DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, acmi.position);
-//
-//            Intent intent = new Intent(this, DetailActivity.class);
-//            intent.putExtra(P.DETAIL_DATA_SET, dataSet);
-//            intent.putExtra(P.FINISH_FILE_NAME, finishFileName);
-//            intent.putExtra(P.DETAIL_CHANGE_REQUEST, P.DETAIL_CHANGE_TEMP_REQUEST_CODE);
-//            startActivityForResult(intent, P.TEMP_REQUEST_CODE);
-//            //finish();
-//            //return true;
-//
-//            //если вставить до из контекстного меню
-//        }else if(item.getItemId() == P.INSERT_BEFORE_CHANGETEMP){
-//            Log.d(TAG, "ChangeTempActivity P.INSERT_BEFORE_CHANGETEMP");
-//            Log.d(TAG, "ChangeTempActivity P.INSERT_BEFORE_CHANGETEMP acmi.position = " +
-//                    acmi.position + "  acmi.id = " + acmi.id);
-//            //вызываем DetailActivity и передаём туда fileId
-//            Intent isertAfterFrag = new Intent(this, DetailActivity.class);
-//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_ID, fileId);
-//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_POSITION, (acmi.position+1));
-//            isertAfterFrag.putExtra(P.FROM_ACTIVITY,P.TO_INSERT_BEFORE_FRAG);
-//            startActivityForResult(isertAfterFrag, P.INSERT_BEFORE_CHANGETEMP_REQUEST);
-//            //return true;
-//
-//            //если вставить после из контекстного меню
-//        }else if(item.getItemId() == P.INSERT_AFTER_CHANGETEMP){
-//            Log.d(TAG, "ChangeTempActivity P.INSERT_AFTER_CHANGETEMP");
-//            Log.d(TAG, "ChangeTempActivity P.INSERT_AFTER_CHANGETEMP acmi.position = " +
-//                    acmi.position + "  acmi.id = " + acmi.id);
-//            //вызываем DetailActivity и передаём туда fileId
-//            Intent isertAfterFrag = new Intent(this, DetailActivity.class);
-//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_ID, fileId);
-//            isertAfterFrag.putExtra(P.INTENT_TO_DETILE_FILE_POSITION, (acmi.position+1));
-//            isertAfterFrag.putExtra(P.FROM_ACTIVITY,P.TO_INSERT_AFTER_FRAG);
-//            startActivityForResult(isertAfterFrag, P.INSERT_AFTER_CHANGETEMP_REQUEST);
-//           // return true;
-//
-//            //если отменить
-//        }else if(item.getItemId() == P.CANCEL_CHANGETEMP){
-//
-//            //return true;
-//        }
-//
-//        //return super.onContextItemSelected(item);
-//
-//            //return super.onContextItemSelected(item);
-//        //}
-
         handleMenuItemClick(item);
         return super.onContextItemSelected(item);
     }
@@ -599,6 +505,7 @@ public class EditorFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    //слушатель щелчков редактора
     private RecyclerViewEditorAdapter.OnLongClickLikeListener getOnLongClickLikeListener(){
         return new RecyclerViewEditorAdapter.OnLongClickLikeListener() {
             @Override

@@ -102,14 +102,14 @@ public class EditOneSetDialog extends DialogFragment {
             //если Добавить с тулбара редактора  +
         }else if (from == P.TO_ADD_LAST_SET){
             builder.setTitle("Создать");
-            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+            builder.setIcon(R.drawable.ic_add_black_24dp);
         }else if (from == P.TO_INSERT_AFTER_FRAG){
             builder.setTitle("Вставить после");
-            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+            builder.setIcon(R.drawable.ic_add_black_24dp);
             mDataSet.setNumberOfFrag(positionOfList + 1);
         }else if (from == P.TO_INSERT_BEFORE_FRAG){
             builder.setTitle("Вставить до");
-            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+            builder.setIcon(R.drawable.ic_add_black_24dp);
             mDataSet.setNumberOfFrag(positionOfList);
         }
 
