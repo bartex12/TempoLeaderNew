@@ -72,4 +72,7 @@ public class EditorViewModel extends AndroidViewModel {
         return storageEditor.getFragmentsCount(finishFileName);
     }
 
+    public long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy){
+        return storageEditor.saveAsFile(oldFileName, newFileName, fileOldIdCopy);
+    }
 }

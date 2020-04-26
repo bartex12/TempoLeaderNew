@@ -26,4 +26,6 @@ public interface EditorStorage {
     float getSumOfTimes(String finishFileName);
     int getSumOfReps(String finishFileName);
     int getFragmentsCount(String finishFileName);
+
+    long saveAsFile(String oldFileName, String newFileName, long fileOldIdCopy);
 }

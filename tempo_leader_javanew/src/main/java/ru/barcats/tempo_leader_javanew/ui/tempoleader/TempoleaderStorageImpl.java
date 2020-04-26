@@ -45,4 +45,9 @@ public class TempoleaderStorageImpl implements TempoleaderStorage {
         long fileId = TabFile.getIdFromFileName(database, finishFileName);
         return  TabSet.getSetFragmentsCount(database, fileId);
     }
+
+    @Override
+    public int getDelay(String finishFileName) {
+        return  TabFile.getFileDelayFromTabFile(database,finishFileName);
+    }
 }

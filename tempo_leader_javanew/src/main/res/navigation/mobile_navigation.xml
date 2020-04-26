@@ -126,13 +126,14 @@
 
     <dialog
         android:id="@+id/dialogSaveTempFragment"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.dialogsave.DialogSaveFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSaveFragment"
         android:label="save_data_in_file_new"
         tools:layout="@layout/save_data_in_file_new" >
         <action
             android:id="@+id/action_dialogSaveTempFragment_to_nav_tempoleader"
             app:destination="@id/nav_tempoleader"
-            app:launchSingleTop="true" />
+            app:popUpTo="@+id/nav_tempoleader"
+            app:popUpToInclusive="true" />
     </dialog>
     <dialog
         android:id="@+id/dialogChangeTemp"

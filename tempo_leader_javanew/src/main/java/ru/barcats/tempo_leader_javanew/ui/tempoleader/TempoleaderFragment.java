@@ -144,7 +144,7 @@ public class TempoleaderFragment extends Fragment {
                 fromActivity =getArguments().getInt(P.FROM_ACTIVITY,111);
 
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку
-                if (fromActivity == 777){
+                if (fromActivity == P.DIALOG_DELAY){
                     timeOfDelay = getArguments().getInt(P.ARG_DELAY,6);
                     long fileId = TabFile.getIdFromFileName(database, finishFileName);
                     //записываем задержку в базу
@@ -301,7 +301,7 @@ public class TempoleaderFragment extends Fragment {
         mTextViewRest.setText(R.string.textViewTimeRemain);
 
         mDelayButton = view.findViewById(R.id.buttonDelay);
-        mDelayButton.setText(String.valueOf(timeOfDelay));
+        mDelayButton.setText(String.valueOf(timeOfDelay)); //через viewModel никак -ещё null
 
         mProgressBarTime = view.findViewById(R.id.progressBarTime);
         //mProgressBarTime.setBackgroundColor();
@@ -319,7 +319,7 @@ public class TempoleaderFragment extends Fragment {
         mStartButton = view.findViewById(R.id.start_button);
         mStopButton = view.findViewById(R.id.stop_button);
         mResetButton = view.findViewById(R.id.reset_button);
-        mDelayButton.setText(String.valueOf(timeOfDelay));
+
     }
 
     private void pressDelayButton(View view) {

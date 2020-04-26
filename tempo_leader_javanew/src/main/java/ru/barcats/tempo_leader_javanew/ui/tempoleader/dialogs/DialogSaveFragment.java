@@ -1,4 +1,4 @@
-package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.dialogsave;
+package ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
 
 /**
@@ -36,7 +37,8 @@ public class DialogSaveFragment extends DialogFragment {
 
     private  TempDBHelper mTempDBHelper;
     private SQLiteDatabase database;
-    private SaveViewModel saveViewModel;
+    //private SaveViewModel saveViewModel;
+    private EditorViewModel editorViewModel;
     private long fileIdCopy;
 
     public DialogSaveFragment(){}
@@ -73,7 +75,8 @@ public class DialogSaveFragment extends DialogFragment {
             finishFileName = getArguments().getString(P.NAME_OF_FILE);
             fileIdCopy = getArguments().getLong(P.FINISH_FILE_ID);
 
-            saveViewModel = new ViewModelProvider(requireActivity()).get(SaveViewModel.class);
+            //saveViewModel = new ViewModelProvider(requireActivity()).get(SaveViewModel.class);
+            editorViewModel = new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
 
         }else finishFileName = "";
     }
@@ -138,7 +141,8 @@ public class DialogSaveFragment extends DialogFragment {
                 }else {
                     //если новое имя совпадает со старым, перезаписываем старый файл с новым именем
                     //если имена не совпадают, делаем копию с новым именем
-                   saveViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
+                   //saveViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
+                    editorViewModel.saveAsFile(finishFileName, nameFile, fileIdCopy);
 
                    //переходим в темполидер
                     NavController controller = Navigation.findNavController(getParentFragment().getView());

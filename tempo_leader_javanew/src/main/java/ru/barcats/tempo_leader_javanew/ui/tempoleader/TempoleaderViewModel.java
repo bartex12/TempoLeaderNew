@@ -43,4 +43,8 @@ public class TempoleaderViewModel extends AndroidViewModel {
         return tempoleaderStorage.getFragmentsCount(finishFileName);
     }
 
+    public int getDelay(String finishFileName){
+        return tempoleaderStorage.getDelay(finishFileName);
+    }
+
     }

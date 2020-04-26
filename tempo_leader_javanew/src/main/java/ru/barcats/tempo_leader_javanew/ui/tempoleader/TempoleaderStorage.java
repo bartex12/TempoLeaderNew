@@ -9,4 +9,5 @@ public interface TempoleaderStorage {
     float getSumOfTimes(String finishFileName);
     int getSumOfReps(String finishFileName);
     int getFragmentsCount(String finishFileName);
+    int getDelay(String finishFileName);
 }
