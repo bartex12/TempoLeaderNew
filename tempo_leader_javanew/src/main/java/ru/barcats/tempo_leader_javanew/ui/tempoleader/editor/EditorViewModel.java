@@ -84,4 +84,13 @@ public class EditorViewModel extends AndroidViewModel {
     public void updateSetFragment(DataSet dataSet,String finishFileName){
         data.setValue(storageEditor.updateSetFragment(dataSet, finishFileName));
     }
+
+    public void insertSetAfter(DataSet dataSet, String finishFileName, int  position){
+        data.setValue(storageEditor.insertSetAfter(dataSet, finishFileName, position));
+    }
+
+    public void insertSetBefore(DataSet dataSet, String finishFileName, int  position){
+        data.setValue(storageEditor.insertSetBefore(dataSet, finishFileName, position));
+    }
+
 }

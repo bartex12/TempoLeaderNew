@@ -66,6 +66,7 @@ public class TabSet {
         // вставляем строку
         database.insert(TABLE_NAME, null, cv);
     }
+
     //Метод для вставки нового фрагмента подхода в список ПОСЛЕ выделенного фрагмента
     public static void addSetAfter(SQLiteDatabase database, DataSet set, long file_id, int numberOfString) {
         Log.d(TAG, "MyDatabaseHelper.addSetAfter ... " + set.getNumberOfFrag());

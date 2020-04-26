@@ -40,6 +40,7 @@ public class EditOneSetDialog extends DialogFragment {
     private DataSet mDataSet;
     private int from;
     private View rootView;
+    int  positionOfList;
 
     @Override
     public void onAttach(Context context) {
@@ -59,28 +60,30 @@ public class EditOneSetDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "EditOneSetDialog: onCreate  ");
-//        bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
-//        bundle.putInt(P.POSITION_OF_LIST, positionOfList);  //позиция в списке
-//        bundle.putInt(P.FROM_ACTIVITY, P.TO_CHANGE_SET); // ихменить фрагмент подхода
+
 
         if ((getArguments()) != null){
             //имя файла из аргументов
             finishFileName = getArguments().getString(P.NAME_OF_FILE);
             from = getArguments().getInt(P.FROM_ACTIVITY);
-            int  positionOfList = getArguments().getInt(P.POSITION_OF_LIST);
+            positionOfList = getArguments().getInt(P.POSITION_OF_LIST);
+
+            Log.d(TAG, "EditOneSetDialog onCreate finishFileName = " + finishFileName +
+                    " from = "+ from +" positionOfList = " +positionOfList);
 
             editorViewModel = new ViewModelProvider(requireActivity()).get(EditorViewModel.class);
-
+                //если Изменить из контекстного меню редактора
             if (from == P.TO_CHANGE_SET){
                 mDataSet = editorViewModel.getOneSetData(finishFileName, positionOfList);
+                //если Добавить с тулбара редактора +
             }else if (from == P.TO_ADD_LAST_SET){
                 mDataSet = editorViewModel.getDataSetNew(finishFileName);
+            }else if (from == P.TO_INSERT_AFTER_FRAG){
+                mDataSet = new DataSet(1.0f, 1, (positionOfList+1));
+            }else if (from == P.TO_INSERT_BEFORE_FRAG){
+                mDataSet = new DataSet(1.0f, 1,positionOfList);
             }
-
-
-
-            Log.d(TAG, "EditOneSetDialog: onCreate  numberFrag = " + mDataSet.getNumberOfFrag());
-        }else finishFileName = "";
+        }
     }
 
     @NotNull
@@ -91,12 +94,23 @@ public class EditOneSetDialog extends DialogFragment {
         rootView = inflater.inflate(R.layout.fragment_dialog_new_set, null);
 
         builder.setView(rootView);
+
+            //если Изменить из контекстного меню редактора
         if (from == P.TO_CHANGE_SET) {
             builder.setTitle("Изменить");
             builder.setIcon(R.drawable.ic_refresh_black_24dp);
+            //если Добавить с тулбара редактора  +
         }else if (from == P.TO_ADD_LAST_SET){
             builder.setTitle("Создать");
-            builder.setIcon(R.drawable.ic_fiber_new_black_24dp);
+            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+        }else if (from == P.TO_INSERT_AFTER_FRAG){
+            builder.setTitle("Вставить после");
+            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+            mDataSet.setNumberOfFrag(positionOfList + 1);
+        }else if (from == P.TO_INSERT_BEFORE_FRAG){
+            builder.setTitle("Вставить до");
+            builder.setIcon(R.drawable.ic_control_point_black_24dp);
+            mDataSet.setNumberOfFrag(positionOfList);
         }
 
         initViews(rootView);
@@ -118,13 +132,18 @@ public class EditOneSetDialog extends DialogFragment {
         mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //если Добавить с тулбара редактора  +
+                    //если Изменить из контекстного меню редактора
                 if (from == P.TO_CHANGE_SET) {
                     editorViewModel.updateSetFragment(mDataSet, finishFileName);
                     Log.d(TAG, "EditOneSetDialog mButtonOk  TO_CHANGE_SET ");
+                    //если Добавить с тулбара редактора  +
                 }else if (from == P.TO_ADD_LAST_SET){
                     editorViewModel.addSet(mDataSet, finishFileName);
                     Log.d(TAG, "EditOneSetDialog mButtonOk TO_ADD_LAST_SET ");
+                }else if (from == P.TO_INSERT_AFTER_FRAG){
+                    editorViewModel.insertSetAfter(mDataSet, finishFileName, (positionOfList));
+                }else if (from == P.TO_INSERT_BEFORE_FRAG){
+                    editorViewModel.insertSetBefore(mDataSet, finishFileName, positionOfList);
                 }
                 //прячем экранную клавиатуру
                 takeOffSoftInput();
@@ -145,26 +164,12 @@ public class EditOneSetDialog extends DialogFragment {
     private void initViews(View view) {
 
         mTimeOfRepFrag = view.findViewById(R.id.time_item_newset);
-        if(from == P.TO_CHANGE_SET) {
-            mTimeOfRepFrag.setText(String.valueOf(mDataSet.getTimeOfRep()));
-        }else if(from == P.TO_ADD_LAST_SET) {
-            mTimeOfRepFrag.setText(String.valueOf(mDataSet.getTimeOfRep()));
-        }
 
         mRepsFrag = view.findViewById(R.id.reps_item_newset);
-        //если Добавить с тулбара редактора  +
-        if(from == P.TO_CHANGE_SET){
-            mRepsFrag.setText(String.valueOf(mDataSet.getReps()));
-        }else  if(from == P.TO_ADD_LAST_SET){
-            mRepsFrag.setText(String.valueOf(mDataSet.getReps()));
-        }
+        mRepsFrag.setText(String.valueOf(mDataSet.getReps()));
 
         mNumberOfFrag = view.findViewById(R.id.mark_item_newset);
-        if(from == P.TO_CHANGE_SET){
-            mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
-        }else if(from == P.TO_ADD_LAST_SET){
-            mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
-        }
+        mNumberOfFrag.setText(String.valueOf(mDataSet.getNumberOfFrag()));
 
         mButtonOk = view.findViewById(R.id.buttonOk_newset);
         //доступность кнопки Ok в момент появления экрана редактирования (если изменить - доступна)
@@ -177,31 +182,18 @@ public class EditOneSetDialog extends DialogFragment {
     }
 
     private void setRepsButtonlListener() {
-
         mRepsFrag.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //если Изменить из контекстного меню редактора
-                if (from == P.TO_CHANGE_SET) {
-                    //получаем int количество повторений для фрагмента из строчки mRepsFrag
-                    int ir = getCountReps(mRepsFrag);
-                    //и присваиваем его переменной mReps класса Set
-                    mDataSet.setReps(ir);
-                    //доступность кнопки Ok, если оба значения ненулевые
-                    mButtonOk.setEnabled(((mDataSet.getTimeOfRep() != 0)) && ((mDataSet.getReps() != 0)));
-                    Log.d(TAG, " TO_CHANGE_SET countReps = " + mDataSet.getReps());
-                }else if (from == P.TO_ADD_LAST_SET) {
-                    //получаем int количество повторений для фрагмента из строчки mRepsFrag
-                    int ir = getCountReps(mRepsFrag);
-                    //и присваиваем его переменной mReps класса Set
-                    mDataSet.setReps(ir);
-                    //доступность кнопки Ok, если оба значения ненулевые
-                    mButtonOk.setEnabled(((mDataSet.getTimeOfRep() != 0)) && ((mDataSet.getReps() != 0)));
-                    Log.d(TAG, " TO_ADD_SET countReps = " + mDataSet.getReps());
-                }
+                //получаем int количество повторений для фрагмента из строчки mRepsFrag
+                int ir = getCountReps(mRepsFrag);
+                //и присваиваем его переменной mReps класса Set
+                mDataSet.setReps(ir);
+                //доступность кнопки Ok, если оба значения ненулевые
+                mButtonOk.setEnabled(((mDataSet.getTimeOfRep() != 0)) && ((mDataSet.getReps() != 0)));
+                Log.d(TAG, " countReps = " + mDataSet.getReps());
             }
             @Override
             public void afterTextChanged(Editable s) {}
@@ -209,33 +201,18 @@ public class EditOneSetDialog extends DialogFragment {
     }
 
     private void setTimeButtonlListener() {
-
         mTimeOfRepFrag.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //если Добавить с тулбара редактора  +
-                if (from == P.TO_CHANGE_SET){
                     //получаем float секунд для времени между повторами из строчки mTimeOfRepFrag
                     float ft = getCountSecond(mTimeOfRepFrag);
                     //и присваиваем его переменной mTimeOfRep класса Set
                     mDataSet.setTimeOfRep(ft);
                     //доступность кнопки Ok, если оба значения ненулевые
                     mButtonOk.setEnabled(((mDataSet.getTimeOfRep()!=0))&&((mDataSet.getReps()!=0)));
-                    Log.d(TAG, " TO_CHANGE_SET countSecond = " + mDataSet.getTimeOfRep() +
-                            " countReps = " + mDataSet.getReps());
-                }else  if (getArguments().getInt(P.FROM_ACTIVITY) == P.TO_ADD_LAST_SET){
-                    //получаем float секунд для времени между повторами из строчки mTimeOfRepFrag
-                    float ft = getCountSecond(mTimeOfRepFrag);
-                    //и присваиваем его переменной mTimeOfRep класса Set
-                    mDataSet.setTimeOfRep(ft);
-                    //доступность кнопки Ok, если оба значения ненулевые
-                    mButtonOk.setEnabled(((mDataSet.getTimeOfRep()!=0))&&((mDataSet.getReps()!=0)));
-                    Log.d(TAG, " TO_ADD_LAST_SET countSecond = " + mDataSet.getTimeOfRep() +
-                            " countReps = " + mDataSet.getReps());
-                }
+                    Log.d(TAG, " countSecond = " + mDataSet.getTimeOfRep());
             }
             @Override
             public void afterTextChanged(Editable s) {}

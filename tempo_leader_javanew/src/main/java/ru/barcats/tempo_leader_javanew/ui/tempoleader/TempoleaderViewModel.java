@@ -47,4 +47,5 @@ public class TempoleaderViewModel extends AndroidViewModel {
         return tempoleaderStorage.getDelay(finishFileName);
     }
 
-    }
+
+}

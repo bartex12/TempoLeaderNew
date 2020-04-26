@@ -33,4 +33,7 @@ public interface EditorStorage {
 
     ArrayList<DataSet> updateSetFragment(DataSet dataSet, String finishFileName);
 
+    ArrayList<DataSet>insertSetAfter(DataSet dataSet, String finishFileName, int position);
+
+    ArrayList<DataSet>insertSetBefore(DataSet dataSet, String finishFileName, int position);
 }

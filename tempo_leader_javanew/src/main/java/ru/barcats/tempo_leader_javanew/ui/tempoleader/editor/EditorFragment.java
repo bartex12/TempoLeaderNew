@@ -331,7 +331,8 @@ public class EditorFragment extends Fragment {
 
     private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
-
+        Bundle bundle = new Bundle();
+        NavController navController = Navigation.findNavController(view);
         switch (id) {
             case P.DELETE_CHANGETEMP: {
 //                showDeleteDialog();
@@ -339,32 +340,24 @@ public class EditorFragment extends Fragment {
                 break;
             }
             case P.CHANGE_CHANGETEMP: {
-                Bundle bundle = new Bundle();
                 bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
                 bundle.putInt(P.POSITION_OF_LIST, positionOfList);  //позиция в списке
                 bundle.putInt(P.FROM_ACTIVITY, P.TO_CHANGE_SET); // ихменить фрагмент подхода
-                NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.action_nav_editor_to_editOneSetDialog, bundle);
-//                showChangeDialog();
-//                getAdapter().notifyDataSetChanged();
                 break;
             }
             case P.INSERT_BEFORE_CHANGETEMP: {
-//                //поручаем перемещение файла ViewModel
-//                tempViewModel.moveItemInSec(getFileName());
-//                //обновляем список вкладки после перемещения файла
-//                getAdapter().notifyDataSetChanged();
-//                // обновляем вкладки после перемещения файла
-//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+                bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
+                bundle.putInt(P.POSITION_OF_LIST, positionOfList+1);  //позиция в списке
+                bundle.putInt(P.FROM_ACTIVITY, P.TO_INSERT_BEFORE_FRAG); // вставить до
+                navController.navigate(R.id.action_nav_editor_to_editOneSetDialog, bundle);
                 break;
             }
             case P.INSERT_AFTER_CHANGETEMP: {
-//                //поручаем перемещение файла ViewModel
-//                tempViewModel.moveItemInLike(getFileName());
-//                //обновляем список вкладки после перемещения файла
-//                getAdapter().notifyDataSetChanged();
-//                // обновляем вкладки после перемещения файла
-//                getViewPager().getAdapter().notifyDataSetChanged(); //работает !
+                bundle.putString(P.NAME_OF_FILE, fileName);   //имя файла
+                bundle.putInt(P.POSITION_OF_LIST, positionOfList+1);  //позиция в списке
+                bundle.putInt(P.FROM_ACTIVITY, P.TO_INSERT_AFTER_FRAG); // вставить до
+                navController.navigate(R.id.action_nav_editor_to_editOneSetDialog, bundle);
             }
             case P.CANCEL_CHANGETEMP: {
                 break;

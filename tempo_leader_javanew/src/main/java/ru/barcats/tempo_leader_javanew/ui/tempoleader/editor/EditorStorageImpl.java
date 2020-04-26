@@ -169,6 +169,24 @@ public class EditorStorageImpl implements EditorStorage {
         return  TabSet.getAllSetFragments(database, fileId);
     }
 
+    @Override
+    public ArrayList<DataSet> insertSetAfter(DataSet dataSet, String finishFileName, int position) {
+        Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_INSERT_AFTER_FRAG ");
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, finishFileName);
+        TabSet.addSetAfter(database, dataSet, fileId, position);
+        return TabSet.getAllSetFragments(database, fileId);
+    }
+
+    @Override
+    public ArrayList<DataSet> insertSetBefore(DataSet dataSet, String finishFileName, int position) {
+        Log.d(TAG, "mButtonOk (P.FROM_ACTIVITY) == P.TO_INSERT_BEFORE_FRAG ");//вставляем фрагмент подхода после позиции, на которой сделан щелчок
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, finishFileName);
+        TabSet.addSetBefore(database, dataSet, fileId, position);
+        return TabSet.getAllSetFragments(database, fileId);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {
