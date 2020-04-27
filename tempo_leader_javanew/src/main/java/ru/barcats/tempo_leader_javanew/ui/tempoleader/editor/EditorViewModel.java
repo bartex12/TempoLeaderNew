@@ -93,4 +93,7 @@ public class EditorViewModel extends AndroidViewModel {
         data.setValue(storageEditor.insertSetBefore(dataSet, finishFileName, position));
     }
 
+    public void deleteOneSet(String fileName, int  position){
+        data.setValue(storageEditor.deleteOneSet(fileName, position));
+    }
 }

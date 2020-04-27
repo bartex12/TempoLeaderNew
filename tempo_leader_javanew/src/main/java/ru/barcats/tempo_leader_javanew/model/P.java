@@ -39,7 +39,7 @@ public class P {
     //идёт новой персоне и затем диплоговое окно
     public final static int TO_ADD = 3333;
     //плюсик в тулбаре темполидера
-    public final static int TO_ADD_SET = 4444;
+    public final static int TO_DELETE_SET = 4444;
     //плюсик в тулбаре редактора
     public final static int TO_ADD_LAST_SET = 5555;
     //контекстное меню в редакторе -вставить после

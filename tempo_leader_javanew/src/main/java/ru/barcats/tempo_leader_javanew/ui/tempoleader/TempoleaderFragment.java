@@ -292,6 +292,7 @@ public class TempoleaderFragment extends Fragment {
 
     private void initViews(@NonNull View view) {
         recyclerView =  view.findViewById(R.id.recycler_tempoleader);
+        recyclerView.setBackgroundColor(Color.YELLOW);
         //текстовая метка  для названия файла
         mNameOfFile = view.findViewById(R.id.textViewName);
         //текстовая метка Задержка, сек

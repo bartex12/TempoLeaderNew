@@ -239,7 +239,7 @@ public class TabSet {
         if ((cursorFile != null)&& (cursorFile.getCount()>=position)) {
             cursorFile.moveToPosition(position);
         }else {
-            Log.d(TAG, "getAllSetData cursorFile.getCount() = " + cursorFile.getCount()+
+            Log.d(TAG, "getOneSetFragmentData cursorFile.getCount() = " + cursorFile.getCount()+
                     "  position" + position);
         }
         // Используем индекс для получения строки или числа
@@ -256,7 +256,8 @@ public class TabSet {
 
         DataSet dataset = new DataSet(current_ID, current_fileId,
                 current_setTime, current_setReps, current_nameFragNumber);
-
+        Log.d(TAG, "getOneSetFragmentData Time = " + dataset.getTimeOfRep()+
+                "  Reps = " + dataset.getReps()+ " Number" + dataset.getNumberOfFrag());
         cursorFile.close();
         return dataset;
     }

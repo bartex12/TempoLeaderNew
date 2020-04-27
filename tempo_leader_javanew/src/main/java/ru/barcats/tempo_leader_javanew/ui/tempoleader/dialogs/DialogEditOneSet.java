@@ -25,7 +25,7 @@ import ru.barcats.tempo_leader_javanew.model.DataSet;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
-public class EditOneSetDialog extends DialogFragment {
+public class DialogEditOneSet extends DialogFragment {
 
     private static final String TAG = "33333";
     private EditText mTimeOfRepFrag;  //поле для времени между повторами
@@ -164,6 +164,7 @@ public class EditOneSetDialog extends DialogFragment {
     private void initViews(View view) {
 
         mTimeOfRepFrag = view.findViewById(R.id.time_item_newset);
+        mTimeOfRepFrag.setText(String.valueOf(mDataSet.getTimeOfRep()));
 
         mRepsFrag = view.findViewById(R.id.reps_item_newset);
         mRepsFrag.setText(String.valueOf(mDataSet.getReps()));

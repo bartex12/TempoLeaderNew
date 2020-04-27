@@ -36,4 +36,6 @@ public interface EditorStorage {
     ArrayList<DataSet>insertSetAfter(DataSet dataSet, String finishFileName, int position);
 
     ArrayList<DataSet>insertSetBefore(DataSet dataSet, String finishFileName, int position);
+
+    ArrayList<DataSet> deleteOneSet(String fileName, int position);
 }

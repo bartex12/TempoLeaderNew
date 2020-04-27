@@ -187,6 +187,15 @@ public class EditorStorageImpl implements EditorStorage {
         return TabSet.getAllSetFragments(database, fileId);
     }
 
+    @Override
+    public ArrayList<DataSet> deleteOneSet(String fileName, int position) {
+        //получаем id записи с таким именем
+        long fileId = TabFile.getIdFromFileName (database, fileName);
+        TabSet.deleteSet(database, fileId, position);
+        TabSet.rerangeSetFragments(database, fileId);
+        return TabSet.getAllSetFragments(database, fileId);
+    }
+
     //отмена внесённых при редактировании изменений
     @Override
     public ArrayList<DataSet> revertEdit(String fileName, long fileIdCopy) {

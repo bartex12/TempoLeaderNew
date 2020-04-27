@@ -28,6 +28,12 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     private int posItem = -1;
     private boolean isForAll;
     private boolean isEditTime;
+    private boolean isLongClick;
+
+    public void setLongClick(boolean longClick) {
+        isLongClick = longClick;
+        Log.d(TAG, " +++ RecyclerViewEditorAdapter isLongClick = " + isLongClick);
+    }
 
     public void setEditTime(boolean isEditTime) {
         this.isEditTime = isEditTime;
@@ -79,7 +85,7 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         holder.time_item_set_textview.setText(
                 getTimeAccur(listOfSet.get(position).getTimeOfRep()));
@@ -88,41 +94,59 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
         holder.mark_item_set_textview.setText(
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
 
-        if (isForAll){
-            if (isEditTime){
+        if (isLongClick){
+            holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                    .getColor(android.R.color.transparent));
+            holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                    .getColor(android.R.color.transparent));
+
+            if (posItem == position){
                 holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
-                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
-                                .getColor(android.R.color.transparent));
-            }else {
                 holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
+            }else {
                 holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        .getColor(android.R.color.transparent));
+                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
             }
         }else {
-            if (isEditTime){
-                if (posItem == position){
+            if (isForAll){
+                if (isEditTime){
                     holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
                     holder.reps_item_set_textview.setBackgroundColor(context.getResources()
                             .getColor(android.R.color.transparent));
                 }else {
-                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
-                                    .getColor(android.R.color.transparent));
-                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
-                            .getColor(android.R.color.transparent));
-                }
-            }else {
-                if (posItem == position){
                     holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
                     holder.time_item_set_textview.setBackgroundColor(context.getResources()
                             .getColor(android.R.color.transparent));
+                }
+            }else {
+                if (isEditTime){
+                    if (posItem == position){
+                        holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
+                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                    }else {
+                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                    }
                 }else {
-                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
-                                    .getColor(android.R.color.transparent));
-                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
-                            .getColor(android.R.color.transparent));
+                    if (posItem == position){
+                        holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
+                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                    }else {
+                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                                .getColor(android.R.color.transparent));
+                    }
                 }
             }
         }
+
 
         //передаём позицию списка при щелчке на строке списка
         holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +161,11 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
         holder.all_item_set_textview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                        .getColor(android.R.color.transparent));
+                holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        .getColor(android.R.color.transparent));
+                posItem = position;
                 onLongClickLikeListener.onLongClickLike(position);
                 return false;
             }

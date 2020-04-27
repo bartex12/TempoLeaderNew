@@ -2,13 +2,16 @@ package ru.barcats.tempo_leader_javanew.ui.tempoleader.editor;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -135,6 +138,7 @@ public class EditorFragment extends Fragment {
         Log.d(TAG, "/+++/  EditorFragment onCreateView" );
         view = inflater.inflate(R.layout.fragment_editor, container, false);
         recyclerView = view.findViewById(R.id.recycler_editor);
+        //recyclerView.setBackgroundColor(Color.YELLOW); //наложение желтого на градиент зелёного
         //объявляем о регистрации контекстного меню
         registerForContextMenu(recyclerView);
         return view;
@@ -241,8 +245,24 @@ public class EditorFragment extends Fragment {
         NavController navController = Navigation.findNavController(view);
         switch (id) {
             case P.DELETE_CHANGETEMP: {
-//                showDeleteDialog();
-//                getAdapter().notifyDataSetChanged();
+                Log.d(TAG,"EditorFragment P.DELETE_CHANGETEMP");
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.DeleteYesNo);
+                builder.setPositiveButton(R.string.DeleteNo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+                builder.setNegativeButton(R.string.DeleteYes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editorViewModel.deleteOneSet(fileName, (positionOfList+1));
+                        //вычисляем и показываем общее время выполнения подхода и количество повторов в подходе
+                        calculateAndShowTotalValues();
+                        isSaveVisible = true;
+                        requireActivity().invalidateOptionsMenu();
+                    }
+                });
+                builder.show();
                 break;
             }
             case P.CHANGE_CHANGETEMP: {
@@ -317,7 +337,7 @@ public class EditorFragment extends Fragment {
         }else {
             adapter.setForAll(false);
             adapter.setEditTime(isEditTime);
-            adapter.setPosItem(positionOfList);
+            adapter.setPosItem(positionOfList); //чтобы не пропадало выделение при изм. галки
             recyclerView.scrollToPosition(positionOfList);
         }
         boolean isChangeTemp = mCheckBoxAll.isChecked()&&isEditTime;
@@ -430,8 +450,6 @@ public class EditorFragment extends Fragment {
                         changeTemp_buttonPlus5.setText("+5");
                         break;
                 }
-//                adapter.setEditTime(isEditTime);
-//                adapter.notifyDataSetChanged();
                 setMarkerColor();
             }
         });
@@ -497,6 +515,7 @@ public class EditorFragment extends Fragment {
         //получаем слушатель щелчков на элементах списка
         RecyclerViewEditorAdapter.OnSetListClickListener listListener =
                 getOnSetListClickListener();
+        //получаем слушатель долгого нажатия на элементах списка
         RecyclerViewEditorAdapter.OnLongClickLikeListener longListener =
                 getOnLongClickLikeListener();
         //устанавливаем слушатель в адаптер
@@ -505,24 +524,26 @@ public class EditorFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    //слушатель щелчков редактора
+    //слушатель слушатель долгого нажатия на элементах списка редактора
     private RecyclerViewEditorAdapter.OnLongClickLikeListener getOnLongClickLikeListener(){
         return new RecyclerViewEditorAdapter.OnLongClickLikeListener() {
             @Override
             public void onLongClickLike(int position) {
+                adapter.setLongClick(true);
+                adapter.notifyDataSetChanged();
                 positionOfList = position;
                 Log.d(TAG,"/+++/ EditorFragment OnLongClickLikeListener position = " + position);
             }
         };
     }
 
-    //метод для получения слушателя щелчков на элементах списка
+    //метод для получения слушателя щелчков на элементах списка редактора
     private RecyclerViewEditorAdapter.OnSetListClickListener getOnSetListClickListener() {
         return new RecyclerViewEditorAdapter.OnSetListClickListener() {
             @Override
             public void onSetListClick(int position) {
                 positionOfList = position;
-                adapter.setPosItem(position);
+                adapter.setPosItem(position);  //редактирование времени или кол-ва в строке
                 adapter.notifyDataSetChanged();
                 //TODO
                 Log.d(TAG,"/+++/ EditorFragment OnSetListClickListener position = " + position);

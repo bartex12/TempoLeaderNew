@@ -148,13 +148,13 @@
 
     <dialog
         android:id="@+id/newSetDialog"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.EditOneSetDialog"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogEditOneSet"
         android:label="fragment_dialog_new_set"
         tools:layout="@layout/fragment_dialog_new_set" />
 
     <dialog
         android:id="@+id/editOneSetDialog"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.EditOneSetDialog"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogEditOneSet"
         android:label="fragment_dialog_change_set"
         tools:layout="@layout/fragment_dialog_new_set" />
 
