@@ -47,5 +47,20 @@ public class TempoleaderViewModel extends AndroidViewModel {
         return tempoleaderStorage.getDelay(finishFileName);
     }
 
+    public void updateDelay(int timeOfDelay, String finishFileName){
+        tempoleaderStorage.updateDelay(timeOfDelay, finishFileName);
+    }
+
+    public long getIdFromFileName(String finishFileName){
+        return tempoleaderStorage.getIdFromFileName(finishFileName);
+    }
+
+    public float getTimeOfRepInPosition(long fileId, int numberOfSet){
+        return tempoleaderStorage.getTimeOfRepInPosition(fileId, numberOfSet);
+    }
+
+    public int getRepsInPosition(long fileId, int numberOfSet){
+        return tempoleaderStorage.getRepsInPosition(fileId, numberOfSet);
+    }
 
 }

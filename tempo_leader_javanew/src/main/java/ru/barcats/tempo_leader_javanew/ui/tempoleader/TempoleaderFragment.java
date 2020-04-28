@@ -47,8 +47,6 @@ public class TempoleaderFragment extends Fragment {
 
     public static final String TAG ="33333";
     private TempoleaderViewModel dataSetViewModel;
-
-    private SQLiteDatabase database;
     private RecyclerViewTempoleaderAdapter adapter;
 
     private Button mStartButton;
@@ -125,8 +123,9 @@ public class TempoleaderFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //получаем базу данных
-        database = new TempDBHelper(getActivity()).getWritableDatabase();
+        //получаем  ViewModel для TempoleaderFragment
+        dataSetViewModel =
+                new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
 
         if (getArguments() != null) {
             //Log.d(TAG, " ### TempoleaderFragment onCreate getArguments = "  + getArguments());
@@ -135,7 +134,7 @@ public class TempoleaderFragment extends Fragment {
             if ( getArguments().getString(P.NAME_OF_FILE) != null) {
                 //получаем NAME_OF_FILE из аргументов
                 finishFileName = getArguments().getString(P.NAME_OF_FILE,P.FILENAME_OTSECHKI_SEC);
-                timeOfDelay = TabFile.getFileDelayFromTabFile(database, finishFileName);
+                timeOfDelay = dataSetViewModel.getDelay(finishFileName);
             }
             if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
                 //считываем значение FROM_ACTIVITY из интента
@@ -145,10 +144,10 @@ public class TempoleaderFragment extends Fragment {
 
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку
                 if (fromActivity == P.DIALOG_DELAY){
+                    //если из диалога задержки, получаем задержку
                     timeOfDelay = getArguments().getInt(P.ARG_DELAY,6);
-                    long fileId = TabFile.getIdFromFileName(database, finishFileName);
                     //записываем задержку в базу
-                    TabFile.updateDelay(database,timeOfDelay,fileId);
+                    dataSetViewModel.updateDelay(timeOfDelay,finishFileName);
                 }
             }
         }else {
@@ -197,14 +196,11 @@ public class TempoleaderFragment extends Fragment {
         //выставляем доступность кнопок
         buttonsEnable (true,false,false);
 
-        //получаем  ViewModel для TempoleaderFragment
-        dataSetViewModel =
-               new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
-
         //если файл с таким именем был удалён, то грузим автосохранение секундомера
         if (dataSetViewModel.getFragmentsCount(finishFileName)<=0){
             finishFileName = P.FILENAME_OTSECHKI_SEC;
         }
+        // грузим данные и следим за их изменением, кроме того передаём имя файла в Main
         dataSetViewModel.loadDataSet(finishFileName)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
@@ -212,7 +208,7 @@ public class TempoleaderFragment extends Fragment {
                 Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 updateAdapter(view, dataSets);
-                //передаём в MainActivity? чтобы засунуть в Bundle
+                //передаём в MainActivity чтобы засунуть в Bundle
                 onTransmitListener.onTransmit(finishFileName);
             }
         });
@@ -237,21 +233,19 @@ public class TempoleaderFragment extends Fragment {
         mNameOfFile.setText(finishFileName);
 
         //получаем id  файла с раскладкой по его имени finishFileName из интента
-        fileId = TabFile.getIdFromFileName(database, finishFileName);
+        fileId =  dataSetViewModel.getIdFromFileName(finishFileName);
+        //fileId = TabFile.getIdFromFileName(database, finishFileName);
         Log.d(TAG, "fileId  = " + fileId);
         //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
         //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
-       // mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
         mTotalCountFragment =dataSetViewModel.getFragmentsCount(finishFileName);
 
-                //посчитаем общее врямя выполнения подхода в секундах
+        //посчитаем общее врямя выполнения подхода в секундах
         mTimeOfSet =  dataSetViewModel.getSumOfTimes(finishFileName);
-                    //mTimeOfSet = TabSet.getSumOfTimeSet(database, fileId);
         Log.d(TAG, "Суммарное время подхода  = " + mTimeOfSet);
 
         //посчитаем общее количество повторений в подходе
         mTotalReps =  dataSetViewModel.getSumOfReps(finishFileName);
-                // mTotalReps = TabSet.getSumOfRepsSet(database, fileId);
         Log.d(TAG, "Суммарное количество повторений  = " + mTotalReps);
 
         //покажем общее время подхода и общее число повторений в подходе
@@ -274,7 +268,6 @@ public class TempoleaderFragment extends Fragment {
         edit.putInt(P.KEY_DELAY, timeOfDelay);
         edit.apply();
 
-        database.close();
         //отключаем таймер
         if (mTimer!=null)mTimer.cancel();
     }
@@ -292,7 +285,6 @@ public class TempoleaderFragment extends Fragment {
 
     private void initViews(@NonNull View view) {
         recyclerView =  view.findViewById(R.id.recycler_tempoleader);
-        recyclerView.setBackgroundColor(Color.YELLOW);
         //текстовая метка  для названия файла
         mNameOfFile = view.findViewById(R.id.textViewName);
         //текстовая метка Задержка, сек
@@ -362,19 +354,18 @@ public class TempoleaderFragment extends Fragment {
 
                 // рассчитываем время между повторениями и количество повторений
                 //   для первого фрагмента подхода до начала работы таймера
-
                 //получаем время между повторениями mCountFragment = 0 фрагмента подхода
-                countMilliSecond = TabSet.
-                        getTimeOfRepInPosition(database, fileId, mCountFragment)*1000;
+                countMilliSecond =  dataSetViewModel
+                        .getTimeOfRepInPosition(fileId, mCountFragment)*1000;
                 Log.d(TAG, "Время между повторениями = " + countMilliSecond);
 
                 //получаем количество повторений для mCountFragment = 0 фрагмента подхода
-                countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
+                countReps =  dataSetViewModel.getRepsInPosition(fileId, mCountFragment);
                 Log.d(TAG, "Количество повторений во фрагменте подхода = " + countReps);
 
                 //получаем количество фрагментов в выполняемом подходе. Если было удаление или добавление
                 //фрагмента подхода, нужно пересчитывать каждый раз
-                mTotalCountFragment = TabSet.getSetFragmentsCount(database, fileId);
+                mTotalCountFragment =dataSetViewModel.getFragmentsCount(finishFileName);
 
                 //Покажем таймер задержки
                 mtextViewCountDown.setText(String.valueOf(timeOfDelay));
@@ -403,10 +394,6 @@ public class TempoleaderFragment extends Fragment {
                 mTextViewDelay.setText(R.string.textViewDelay); //Задержка, сек
                 mTextViewRest.setText(R.string.textViewTimeRemain); //До старта, сек
 
-                //TODO если будет меню тулбара
-                //вызываем onPrepareOptionsMenu чтобы скрыть элементы тулбара пока старт
-                //requireActivity().invalidateOptionsMenu();
-
             }
         });
     }
@@ -424,8 +411,6 @@ public class TempoleaderFragment extends Fragment {
                 mTimeRestCurrent = 0; //обнуляем текущее время отдыха
                 //фиксируем момент начала отдыха
                 mTimeRestStart = System.currentTimeMillis();
-                //делаем имя файла доступным для щелчка
-                // mNameLayout.setEnabled(true);
                 //делаем изменение задержки доступным
                 mDelayButton.setEnabled(true);
 
@@ -446,10 +431,6 @@ public class TempoleaderFragment extends Fragment {
                 start = false;  //выставляем флаг нажатия на Старт = нет
                 workOn = false; //Выставляем флаг "работа"
                 restOn = true; //признак начала отдыха
-
-                //TODO если будет меню тулбара
-                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара если стоп
-                //invalidateOptionsMenu();
             }
         });
     }
@@ -470,7 +451,6 @@ public class TempoleaderFragment extends Fragment {
                 mCurrentReps.setText("");
                 mCurrentTime.setText("");
                 mProgressBarTime.setProgress(100);
-                //mProgressBarTotal.setProgress(100);
                 //выставляем доступность кнопок
                 buttonsEnable (true,false,false);
                 mtextViewCountDown.setText("");
@@ -491,11 +471,7 @@ public class TempoleaderFragment extends Fragment {
                 adapter.setItem(mCountFragment);
                 recyclerView.scrollToPosition(mCountFragment);
                 adapter.notifyDataSetChanged();
-                // changeMarkColor(R.id.fragment_container, mCountFragment, end);
                 if (mTimer!=null)mTimer.cancel();
-                //TODO если будет меню тулбара
-                //вызываем onPrepareOptionsMenu чтобы открыть элементы тулбара
-                //getActivity().invalidateOptionsMenu();
             }
         });
     }
@@ -570,7 +546,6 @@ public class TempoleaderFragment extends Fragment {
 
             //если не отдых
             if (!restOn){
-
                 if ((mCurrentDelay<=countMillisDelay-500)&&(mCurrentDelay>countMillisDelay-600)){
                     //играем мелодию начала подхода
                     mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 150);
@@ -584,14 +559,11 @@ public class TempoleaderFragment extends Fragment {
                 // если отдых
             }else {
                 mTimeRestCurrent = System.currentTimeMillis() - mTimeRestStart;
-                //Log.d(TAG, "mTimeRestCurrent = " + mTimeRestCurrent); //10 раз в сек вывод
-
                 //фиксируем изменения на экране (в пользовательском потоке)
                 doChangeOnViThread();
             }
 
             if (workOn&&!restOn) {
-
                 mTotalKvant += mKvant;  // добавляем 100мс пока не будет больше времени между повторами
                 mTotalTime += mKvant;  //добавляем 100мс к текущему времени подхода
                 if (mTotalKvant >= countMilliSecond) {
@@ -603,9 +575,10 @@ public class TempoleaderFragment extends Fragment {
                 }//переходим к следующему фрагменту
                 if ((mCurrentRep >= countReps) && (mCountFragment < mTotalCountFragment - 1)) {
                     mCountFragment++;
-                    countMilliSecond = TabSet.
-                            getTimeOfRepInPosition(database, fileId, mCountFragment)*1000;
-                    countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
+                    countMilliSecond =  dataSetViewModel
+                            .getTimeOfRepInPosition(fileId, mCountFragment)*1000;
+                    countReps = dataSetViewModel.getRepsInPosition(fileId, mCountFragment);
+                    //countReps = TabSet.getRepsInPosition(database, fileId, mCountFragment);
                     Log.d(TAG, "countMilliSecond = " + countMilliSecond + "  countReps = " + countReps);
                     mTotalKvant = 0;
                     mCurrentRep = 0;
@@ -636,8 +609,8 @@ public class TempoleaderFragment extends Fragment {
                         public void run() {
                             //чтобы не оставался последний фрагмент подхода со старым цветом
                             adapter.setItem(mCountFragment); // для маркера фрагментов подхода
-                            recyclerView.scrollToPosition(mCountFragment);
-                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(mCountFragment); //переход в позицию списка
+                            adapter.notifyDataSetChanged(); //оповещаем об изменениях
 
                             buttonsEnable(true, false, true);
                             mDelayButton.setEnabled(true);
@@ -658,10 +631,8 @@ public class TempoleaderFragment extends Fragment {
                 String time = showFormatString(mTotalTime, mKvant);
                 //показ текущ времени
                 mCurrentTime.setText(time);
-
                 //показ текущ количества повторений
                 mCurrentReps.setText(Integer.toString(mCurrentTotalReps));
-
                 //показываем текущую задержку
                 float f =(countMillisDelay - mCurrentDelay)/1000;
                 if (f>=0) {
@@ -690,7 +661,6 @@ public class TempoleaderFragment extends Fragment {
                         mtextViewCountDown.setText(timeRest);
                     }
                 }
-
                 //при переходе к следующему фрагменту подхода меняем цвет маркера, для чего
                 //передаём в адаптер  mCountFragment и обновляем адаптер
                 adapter.setItem(mCountFragment);
@@ -725,7 +695,7 @@ public class TempoleaderFragment extends Fragment {
         if (hour<1){
             if(minut<10) {
                 time = String.format(Locale.ENGLISH,"%d:%02d.%d",minut, second, decim);
-            }else if (minut<60){
+            }else {
                 time = String.format(Locale.ENGLISH,"%02d:%02d.%d",minut,second,decim);
             }
         }else {

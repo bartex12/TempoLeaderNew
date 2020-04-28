@@ -718,7 +718,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity implement
         if (hour<1){
             if(minut<10) {
                 time = String.format(Locale.ENGLISH,"%d:%02d.%d",minut, second, decim);
-            }else if (minut<60){
+            }else {
                 time = String.format(Locale.ENGLISH,"%02d:%02d.%d",minut,second,decim);
             }
         }else {

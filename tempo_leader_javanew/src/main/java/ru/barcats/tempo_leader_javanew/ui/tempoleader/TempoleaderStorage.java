@@ -10,4 +10,10 @@ public interface TempoleaderStorage {
     int getSumOfReps(String finishFileName);
     int getFragmentsCount(String finishFileName);
     int getDelay(String finishFileName);
+    void  updateDelay(int timeOfDelay, String finishFileName);
+    long getIdFromFileName(String finishFileName);
+    float getTimeOfRepInPosition(long fileId, int numberOfSet);
+    int getRepsInPosition(long fileId, int numberOfSet);
+
+
 }

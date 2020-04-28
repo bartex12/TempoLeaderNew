@@ -50,4 +50,25 @@ public class TempoleaderStorageImpl implements TempoleaderStorage {
     public int getDelay(String finishFileName) {
         return  TabFile.getFileDelayFromTabFile(database,finishFileName);
     }
+
+    @Override
+    public void updateDelay(int timeOfDelay, String finishFileName) {
+        long fileId = TabFile.getIdFromFileName(database, finishFileName);
+        TabFile.updateDelay(database,timeOfDelay,fileId);
+    }
+
+    @Override
+    public long getIdFromFileName(String finishFileName) {
+        return TabFile.getIdFromFileName(database, finishFileName);
+    }
+
+    @Override
+    public float getTimeOfRepInPosition(long fileId, int numberOfSet) {
+       return TabSet.getTimeOfRepInPosition(database, fileId, numberOfSet);
+    }
+
+    @Override
+    public int getRepsInPosition(long fileId, int numberOfSet) {
+       return TabSet.getRepsInPosition(database, fileId, numberOfSet);
+    }
 }
