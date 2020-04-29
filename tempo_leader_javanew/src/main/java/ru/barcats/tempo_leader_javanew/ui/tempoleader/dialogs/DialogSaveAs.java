@@ -30,7 +30,7 @@ import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 /**
  * Created by Андрей on 06.05.2018.
  */
-public class DialogSaveFragment extends DialogFragment {
+public class DialogSaveAs extends DialogFragment {
 
     private static String TAG = "33333";
     private String finishFileName; //имя файла, передаваемое в аргументах фрагмента
@@ -41,12 +41,12 @@ public class DialogSaveFragment extends DialogFragment {
     private EditorViewModel editorViewModel;
     private long fileIdCopy;
 
-    public DialogSaveFragment(){}
+    public DialogSaveAs(){}
 
-    public static DialogSaveFragment newInstance(String nameOfFile){
+    public static DialogSaveAs newInstance(String nameOfFile){
         Bundle args = new Bundle();
         args.putString(P.ARG_NAME_OF_FILE,nameOfFile);
-        DialogSaveFragment fragment = new DialogSaveFragment();
+        DialogSaveAs fragment = new DialogSaveAs();
         fragment.setArguments(args);
         return fragment;
     }

@@ -23,18 +23,10 @@ import ru.barcats.tempo_leader_javanew.model.P;
 /**
  * Created by Андрей on 27.05.2018.
  */
-public class DialogSetDelayFragment extends DialogFragment {
+public class DialogSetDelay extends DialogFragment {
 
     private static final String TAG = "33333";
     private EditText editTextDelay;
-
-    public static DialogSetDelayFragment newInstance(String delay){
-        Bundle args = new Bundle();
-        args.putString(P.ARG_DELAY, delay);
-        DialogSetDelayFragment fragment = new DialogSetDelayFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

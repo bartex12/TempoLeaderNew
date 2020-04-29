@@ -12,9 +12,6 @@
         android:label="@string/main_menu"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_nav_secundomer"
-            app:destination="@id/nav_secundomer" />
-        <action
             android:id="@+id/action_nav_home_to_nav_tempoleader"
             app:destination="@id/nav_tempoleader" />
         <action
@@ -29,6 +26,9 @@
         <action
             android:id="@+id/action_nav_home_to_newExerciseFragment"
             app:destination="@id/nav_new_exercise" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_secundomer"
+            app:destination="@id/nav_secundomer" />
     </fragment>
 
     <fragment
@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_nav_secundomer_to_nav_grafic"
             app:destination="@id/nav_grafic" />
+        <action
+            android:id="@+id/action_nav_secundomer_to_dialogSaveSec"
+            app:destination="@id/dialogSaveSec" />
     </fragment>
 
     <fragment
@@ -87,7 +90,7 @@
     </fragment>
     <dialog
         android:id="@+id/nav_set_delay"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSetDelayFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSetDelay"
         android:label="set_delay"
         tools:layout="@layout/set_delay" >
         <action
@@ -98,7 +101,7 @@
     <fragment
         android:id="@+id/nav_grafic"
         android:name="ru.barcats.tempo_leader_javanew.ui.sekundomer.grafic.GraficFragment"
-        android:label="fragment_grafic"
+        android:label="@string/graf_"
         tools:layout="@layout/fragment_grafic" >
         <action
             android:id="@+id/action_nav_grafic_to_nav_tempoleader"
@@ -130,7 +133,7 @@
 
     <dialog
         android:id="@+id/dialogSaveTempFragment"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSaveFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSaveAs"
         android:label="save_data_in_file_new"
         tools:layout="@layout/save_data_in_file_new" >
         <action
@@ -142,7 +145,7 @@
 
     <dialog
         android:id="@+id/dialogChangeTemp"
-        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTempFragment"
+        android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogChangeTemp"
         android:label="fragment_dialog_chahge_temp"
         tools:layout="@layout/fragment_dialog_chahge_temp" />
 
@@ -157,5 +160,10 @@
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogEditOneSet"
         android:label="fragment_dialog_change_set"
         tools:layout="@layout/fragment_dialog_new_set" />
+    <dialog
+        android:id="@+id/dialogSaveSec"
+        android:name="ru.barcats.tempo_leader_javanew.ui.sekundomer.DialogSaveSec"
+        android:label="save_data_timemeter"
+        tools:layout="@layout/save_data_timemeter" />
 
 </navigation>

@@ -24,7 +24,7 @@ import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 /**
  * Created by Андрей on 30.05.2018.
  */
-public class DialogChangeTempFragment extends DialogFragment {
+public class DialogChangeTemp extends DialogFragment {
 
     private static String TAG = "33333";
     private static final String ARG_VALUE = "ValueOfDelta";
@@ -46,7 +46,7 @@ public class DialogChangeTempFragment extends DialogFragment {
         //mChangeTempUpDownListener = (ChangeTempUpDownListener)context;
     }
 
-    public DialogChangeTempFragment(){}
+    public DialogChangeTemp(){}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

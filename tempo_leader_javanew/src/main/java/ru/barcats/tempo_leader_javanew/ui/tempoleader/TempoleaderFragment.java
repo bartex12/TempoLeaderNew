@@ -148,7 +148,7 @@ public class TempoleaderFragment extends Fragment {
             }
         }else {
             //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
-            shp = getActivity().getPreferences(MODE_PRIVATE);
+            shp = requireActivity().getPreferences(MODE_PRIVATE);
             //грузим последний файл темполидера  или автосохранение секундомера
             finishFileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
             timeOfDelay = shp.getInt(P.KEY_DELAY, 6);
@@ -478,11 +478,11 @@ public class TempoleaderFragment extends Fragment {
            LinearLayoutManager manager = new LinearLayoutManager(getActivity());
            recyclerView.setLayoutManager(manager);
             adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
-        //получаем слушатель щелчков на элементах списка
-        RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
+           //получаем слушатель щелчков на элементах списка
+           RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
                 getOnSetListClickListener();
-        //устанавливаем слушатель в адаптер
-        adapter.setOnSetListClickListener(listListener);
+           //устанавливаем слушатель в адаптер
+           adapter.setOnSetListClickListener(listListener);
            recyclerView.setAdapter(adapter);
        }
 

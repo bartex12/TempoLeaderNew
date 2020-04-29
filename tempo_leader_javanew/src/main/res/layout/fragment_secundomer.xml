@@ -8,7 +8,7 @@
     android:baselineAligned="true">
 
     <TextView
-        android:id="@+id/textViewTime"
+        android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -22,10 +22,10 @@
         android:textSize="40sp"/>
 
     <TextView
-        android:id="@+id/textViewTimePause"
+        android:id="@+id/tvTimePause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textViewTime"
+        android:layout_alignBottom="@+id/tvTime"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="42dp"
         android:text="@string/CountZeroTime"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="#72f5a4"
-        android:layout_below="@+id/textViewTime"
+        android:layout_below="@+id/tvTime"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout2">
     </LinearLayout>
@@ -44,7 +44,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/headOfList"
+        android:id="@+id/headOfListSec"
         android:layout_below="@+id/linearLayout2"
         android:stretchColumns="*">
 
@@ -59,13 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/NN"
-                android:id="@+id/item_list"
+                android:id="@+id/item_listSec"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginStart="5dp"/>
 
             <TextView
-                android:id="@+id/time_list"
+                android:id="@+id/time_listSec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="5"
@@ -74,7 +74,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/delta_time_list"
+                android:id="@+id/delta_time_listSec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="9"
@@ -90,34 +90,36 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="#72f5a4"
-        android:layout_below="@+id/headOfList"
+        android:layout_below="@+id/headOfListSec"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout3">
+        android:id="@+id/linearLayout3Sec">
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout3">
+        android:layout_below="@+id/linearLayout3Sec">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_secundomer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listViewRep"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/linearLayoutSec"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/linearLayout"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="15dp">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayoutSec"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp">
 
             <Button
-                android:id="@+id/buttonNext"
+                android:id="@+id/buttonNextSec"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -127,7 +129,7 @@
                 android:text="@string/button_lap"/>
 
             <Button
-                android:id="@+id/buttonStop"
+                android:id="@+id/buttonStopSec"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -137,7 +139,7 @@
                 android:text="@string/button_pause"/>
 
             <Button
-                android:id="@+id/buttonReset"
+                android:id="@+id/buttonResetSec"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -147,7 +149,7 @@
                 android:text="@string/button_stop"/>
 
             <Button
-                android:id="@+id/buttonStart"
+                android:id="@+id/buttonStartSec"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"

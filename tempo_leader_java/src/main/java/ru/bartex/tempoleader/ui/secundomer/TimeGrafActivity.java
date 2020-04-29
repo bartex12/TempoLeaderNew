@@ -53,7 +53,7 @@ public class TimeGrafActivity extends AppCompatActivity {
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private String finishFileName = P.FINISH_FILE_NAME;
 
-    TempDBHelper mTempDBHelper = new TempDBHelper(this);
+    //TempDBHelper mTempDBHelper = new TempDBHelper(this);
     private SQLiteDatabase database;
 
     @Override

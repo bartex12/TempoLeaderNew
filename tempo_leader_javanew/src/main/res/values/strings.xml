@@ -185,5 +185,13 @@
     <string name="count_reps">Количество , раз</string>
     <string name="cancel_">Отмена</string>
     <string name="priniat">Принять</string>
+    <string name="inputFileName">Введите имя файла</string>
+    <string name="addDataTime">Добавить дату и время</string>
+    <string name="save_show">Сохранить и показать</string>
+    <string name="NN_">№</string>
+    <string name="time_">Время,с</string>
+    <string name="lap">Отрезок,с</string>
+    <string name="graf_">График</string>
+    <string name="krug">Круг, с</string>
 
 </resources>

@@ -30,7 +30,7 @@ public class P {
     //NewExerciseActivity = 555
     //пришёл от DialogSetDelay
     public static final int DIALOG_DELAY = 777;
-    public static final int DIALOG_CHANGE_TEMP = 888;
+    public static final int DIALOG_SAVE_SEC = 888;
 
     // идёт к расчёту количества прожитых дней
     public final static int TO_SEC = 1111;
@@ -50,7 +50,7 @@ public class P {
     public final static int TO_CHANGE_SET = 9999;
 
     //идентификатор интента : пришёл от Main
-    public final static String FROM_MAIN = "ru.bartex.p010_train.FROM_MAIN";
+    public final static String FROM_SAVE_SEC_DIALOG = "ru.bartex.p010_train.FROM_SAVE_SEC_DIALOG";
 
     public static final String DETAIL_DATA_SET = "ru.bartex.p010_train.DetailActivity.DATA_SET";
     public static final String DETAIL_CHANGE_REQUEST = "ru.bartex.p010_train.DetailActivity.change_request";
