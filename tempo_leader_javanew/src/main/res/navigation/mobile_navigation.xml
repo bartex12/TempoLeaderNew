@@ -28,7 +28,8 @@
             app:destination="@id/nav_new_exercise" />
         <action
             android:id="@+id/action_nav_home_to_nav_secundomer"
-            app:destination="@id/nav_secundomer" />
+            app:destination="@id/nav_secundomer"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -92,12 +93,7 @@
         android:id="@+id/nav_set_delay"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.dialogs.DialogSetDelay"
         android:label="set_delay"
-        tools:layout="@layout/set_delay" >
-        <action
-            android:id="@+id/action_dialogSetDelay_to_nav_tempoleader"
-            app:destination="@id/nav_tempoleader"
-            app:launchSingleTop="true" />
-    </dialog>
+        tools:layout="@layout/set_delay" />
     <fragment
         android:id="@+id/nav_grafic"
         android:name="ru.barcats.tempo_leader_javanew.ui.sekundomer.grafic.GraficFragment"

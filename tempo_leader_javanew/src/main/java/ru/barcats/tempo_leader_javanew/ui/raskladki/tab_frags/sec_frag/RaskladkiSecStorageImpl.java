@@ -94,4 +94,9 @@ public class RaskladkiSecStorageImpl implements RaskladkiSecStorage {
         data = TabFile.getArrayListFilesWhithType(database, P.TYPE_TIMEMETER);
         return data;
     }
+
+    @Override
+    public long getIdFromFileName(String fileName) {
+        return TabFile.getIdFromFileName(database,fileName);
+    }
 }

@@ -172,7 +172,8 @@ public class EditorFragment extends Fragment {
                     public void onChanged(ArrayList<DataSet> dataSets) {
                         updateAdapter(dataSets);
                         setMarkerColor(); //цвет маркера от состояния чекбокса
-                        Log.d(TAG, " /+++/  dataSets getReps =  " + dataSets.get(0).getReps());
+                        Log.d(TAG, " /+++/  dataSets getReps =  " +
+                                dataSets.get(0).getReps());
                     }
                 });
         //создаём копию файла и получаем его id

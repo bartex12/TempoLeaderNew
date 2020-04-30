@@ -8,4 +8,5 @@ public interface RaskladkiLikeStorage {
    ArrayList<String> moveItemInTemp(String fileName);
    ArrayList<String> moveItemInSec(String fileName);
    ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew);
+   long getIdFromFileName(String fileName);
 }

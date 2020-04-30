@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderViewModel;
+import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
 
 /**
@@ -27,6 +32,17 @@ public class DialogSetDelay extends DialogFragment {
 
     private static final String TAG = "33333";
     private EditText editTextDelay;
+    private TempoleaderViewModel dataSetViewModel;
+    private  String fileName;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dataSetViewModel = new ViewModelProvider(requireActivity()).get(TempoleaderViewModel.class);
+        fileName = getArguments().getString(P.NAME_OF_FILE);
+        Log.d(TAG, "// ~~~ // DialogSetDelay  fileName "+ fileName);
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -59,14 +75,17 @@ public class DialogSetDelay extends DialogFragment {
                 if (tempDelay){
                     //читаем задержку в строке ввода
                     delay = Integer.parseInt(editTextDelay.getText().toString());
-                    //находим NavController в диалоге
-                    NavController controller =
-                            Navigation.findNavController(getParentFragment().getView());
-                    Bundle bundle = new Bundle();
-                    bundle.putString(P.NAME_OF_FILE, getArguments().getString(P.NAME_OF_FILE));
-                    bundle.putInt(P.ARG_DELAY, delay);
-                    bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_DELAY);
-                    controller.navigate(R.id.action_dialogSetDelay_to_nav_tempoleader, bundle);
+                    dataSetViewModel.updateDelayNew(delay, fileName);
+                    Log.d(TAG, "// ~~~ // DialogSetDelay  delay "+ delay);
+//
+//                    //находим NavController в диалоге
+//                    NavController controller =
+//                            Navigation.findNavController(getParentFragment().getView());
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(P.NAME_OF_FILE, getArguments().getString(P.NAME_OF_FILE));
+//                    bundle.putInt(P.ARG_DELAY, delay);
+//                    bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_DELAY);
+//                    controller.navigate(R.id.action_dialogSetDelay_to_nav_tempoleader, bundle);
 
                     editTextDelay.clearFocus();
 
@@ -94,7 +113,7 @@ public class DialogSetDelay extends DialogFragment {
 
     //принудительно вызываем клавиатуру - повторный вызов ее скроет
     private void takeOnAndOffSoftInput(){
-        InputMethodManager imm = (InputMethodManager) getActivity().
+        InputMethodManager imm = (InputMethodManager) requireActivity().
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }

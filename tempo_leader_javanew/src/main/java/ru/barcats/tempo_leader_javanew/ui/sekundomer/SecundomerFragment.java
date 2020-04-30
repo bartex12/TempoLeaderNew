@@ -258,9 +258,9 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
 
 
                 dataSec.clear();
-                adapter.notifyDataSetChanged();
-               //sara.notifyDataSetChanged();
-
+                if (adapter != null){
+                    adapter.notifyDataSetChanged();
+                }
                 mButtonReset.setEnabled(false);
                 mButtonReset.setVisibility(View.GONE);
                 mButtonStart.setEnabled(true);

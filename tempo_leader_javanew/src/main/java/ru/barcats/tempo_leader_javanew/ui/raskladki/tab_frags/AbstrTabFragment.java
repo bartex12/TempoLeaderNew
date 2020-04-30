@@ -53,6 +53,7 @@ public abstract class AbstrTabFragment extends Fragment {
     protected abstract void doDeleteAction(String fileName);
     protected abstract String getDateAndTime(String fileName);
     protected abstract void doChangeAction(String fileNameOld, String fileNameNew);
+    protected abstract long getIdFromFileName(String fileName);
 
     protected RecyclerView getRecyclerView() {
         return recyclerView;
@@ -222,7 +223,7 @@ public abstract class AbstrTabFragment extends Fragment {
                     Log.d(TAG, "**** DialogChangeFileName date.isChecked() Имя файла = " + newfileName);
                 }
                 //++++++++++++++++++   проверяем, есть ли такое имя   +++++++++++++//
-                long fileIdNew = TabFile.getIdFromFileName(database, newfileName);
+                long fileIdNew =  getIdFromFileName(newfileName);  //абстрактный
                 Log.d(TAG, "**** newfileName = " + newfileName + "  fileIdNew = " + fileIdNew);
 
                 //если имя - пустая строка
@@ -236,7 +237,7 @@ public abstract class AbstrTabFragment extends Fragment {
                     //если имя не повторяется, оно не пустое и не системный файл то
                 } else {
                     //поручаем смену имени ViewModel
-                    doChangeAction(fileName, newfileName);
+                    doChangeAction(fileName, newfileName); //абстрактный
                     dialog.dismiss();  //закрывает только диалог
                 }
             }

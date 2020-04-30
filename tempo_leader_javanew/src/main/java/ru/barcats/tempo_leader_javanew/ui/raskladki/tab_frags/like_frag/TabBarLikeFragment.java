@@ -117,4 +117,9 @@ public class TabBarLikeFragment extends AbstrTabFragment {
         likeViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
+    @Override
+    protected long getIdFromFileName(String fileName) {
+        return likeViewModel.getIdFromFileName(fileName);
+    }
+
 }

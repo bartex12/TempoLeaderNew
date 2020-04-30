@@ -56,4 +56,8 @@ public class SecViewModel extends AndroidViewModel {
         return dateTime.getValue();
     }
 
+    public long getIdFromFileName(String fileName){
+        return storage.getIdFromFileName(fileName);
+    }
+
 }

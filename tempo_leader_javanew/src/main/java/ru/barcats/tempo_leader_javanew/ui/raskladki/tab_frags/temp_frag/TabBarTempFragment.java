@@ -112,4 +112,9 @@ public class TabBarTempFragment extends AbstrTabFragment {
         tempViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
+    @Override
+    protected long getIdFromFileName(String fileName) {
+        return tempViewModel.getIdFromFileName(fileName);
+    }
+
 }

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import java.util.ArrayList;
 
 import ru.barcats.tempo_leader_javanew.model.DataSecundomer;
-import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 public interface GraficStorage {
 

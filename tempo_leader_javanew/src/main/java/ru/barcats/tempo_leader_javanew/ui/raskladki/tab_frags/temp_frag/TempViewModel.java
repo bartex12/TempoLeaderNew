@@ -54,4 +54,9 @@ public class TempViewModel extends AndroidViewModel {
     public void  doChangeAction(String fileNameOld, String fileNameNew){
         data.setValue(storage.doChangeAction(fileNameOld, fileNameNew));
     }
+
+    public long getIdFromFileName(String fileName){
+        return storage.getIdFromFileName(fileName);
+    }
+
 }

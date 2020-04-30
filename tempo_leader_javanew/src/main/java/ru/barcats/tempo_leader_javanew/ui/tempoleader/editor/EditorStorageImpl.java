@@ -83,10 +83,7 @@ public class EditorStorageImpl implements EditorStorage {
             DataSet dataSet = TabSet.getOneSetFragmentData(database, fileId, i);
             dataSet.setTimeOfRep((dataSet.getTimeOfRep())*ff);
             TabSet.updateSetFragment(database, dataSet);
-//            Log.d(TAG, "EditorStorageImpl changeTempUpDown dataSet Time = " +
-//                    dataSet.getTimeOfRep());
         }
-
         return TabSet.getAllSetFragments(database, fileId);
     }
 

@@ -8,6 +8,7 @@ public interface RaskladkiSecStorage {
    ArrayList<String> moveItemInTemp(String fileName);
    ArrayList<String> moveItemInLike(String fileName);
    ArrayList<String> doChangeAction(String fileNameOld, String fileNameNew);
+   long getIdFromFileName(String fileName);
 
 
 

@@ -86,4 +86,9 @@ public class RaskladkiTempStorageImpl implements RaskladkiTempStorage {
         data = TabFile.getArrayListFilesWhithType(database, P.TYPE_TEMPOLEADER);
         return data;
     }
+
+    @Override
+    public long getIdFromFileName(String fileName) {
+        return  TabFile.getIdFromFileName(database, fileName);
+    }
 }

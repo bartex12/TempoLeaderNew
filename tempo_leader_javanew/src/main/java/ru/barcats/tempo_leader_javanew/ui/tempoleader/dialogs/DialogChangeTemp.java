@@ -15,37 +15,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorViewModel;
 
 /**
- * Created by Андрей on 30.05.2018.
+ * Created by Андрей on 30.04.2020.
  */
 public class DialogChangeTemp extends DialogFragment {
 
     private static String TAG = "33333";
-    private static final String ARG_VALUE = "ValueOfDelta";
-    //private  ChangeTempViewModel changeTempViewModel;
     private EditorViewModel editorViewModel;
     private boolean up =true;
     private String finishFileName; //имя файла, передаваемое в аргументах фрагмента
 
-
-    public interface ChangeTempUpDownListener {
-        void changeTempUpDown(int valueDelta, boolean up);
-    }
-
-    ChangeTempUpDownListener mChangeTempUpDownListener;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mChangeTempUpDownListener = (ChangeTempUpDownListener)context;
     }
 
+    //конструктор по умолчанию
     public DialogChangeTemp(){}
 
     @Override
@@ -58,7 +47,6 @@ public class DialogChangeTemp extends DialogFragment {
             editorViewModel = new ViewModelProvider(
                     requireActivity()).get(EditorViewModel.class);
         }
-
     }
 
     @Override
@@ -107,20 +95,12 @@ public class DialogChangeTemp extends DialogFragment {
                         Integer.parseInt(valueChangTemp.getText().toString()), up);
                 //принудительно прячем  клавиатуру - повторный вызов ее покажет
                 takeOnAndOffSoftInput();
-//                Bundle bundle = new Bundle();
-//                bundle.putInt(P.ARG_VALUE_CHANGE_TEMP, 10);
-//                bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_CHANGE_TEMP); // изменить темп
-//               // bundle.putString(P.NAME_OF_FILE, finishFileName);
-//                NavController navController = Navigation
-//                        .findNavController(getParentFragment().getView());
-//                navController.navigate(R.id.action_dialogChangeTemp_to_nav_editor, bundle);
             }
         });
 
         bilder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
                 //принудительно прячем  клавиатуру - повторный вызов ее покажет
                 takeOnAndOffSoftInput();
 

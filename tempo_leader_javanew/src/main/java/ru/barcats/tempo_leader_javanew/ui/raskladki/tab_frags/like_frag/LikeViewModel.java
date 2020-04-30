@@ -57,4 +57,8 @@ public class LikeViewModel extends AndroidViewModel {
         dateTime.setValue(storageDateTime.getDateAndTime(fileName));
         return dateTime.getValue();
     }
+
+    public long getIdFromFileName(String fileName){
+        return storage.getIdFromFileName(fileName);
+    }
 }

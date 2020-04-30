@@ -293,6 +293,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Bundle bundle = null;
     switch (item.getItemId()){
+        case R.id.nav_grafic:
+            bundle = new Bundle();
+            bundle.putString(P.NAME_OF_FILE, data);
+            navController.navigate(R.id.action_nav_secundomer_to_nav_grafic, bundle);
+            Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
+            break;
+
         case R.id.nav_tempoleader:
             bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
@@ -302,7 +309,7 @@ public class MainActivity extends AppCompatActivity
         case R.id.nav_editor:
             bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
-            navController.navigate(R.id.nav_editor, bundle);
+            navController.navigate(R.id.action_nav_tempoleader_to_editorFragment, bundle);
             Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
             break;
         case R.id.save_data_in_file:
@@ -325,6 +332,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putInt(P.FROM_ACTIVITY, P.TO_ADD_LAST_SET); // добавить фрагмент подхода
             navController.navigate(R.id.action_nav_editor_to_newSetDialog, bundle);
             break;
+            //автоматом из темполидера в списки раскладок
             default:
                 return NavigationUI.onNavDestinationSelected(item, navController)
                         || super.onOptionsItemSelected(item);

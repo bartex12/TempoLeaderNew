@@ -72,14 +72,7 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
                 holder.mark_item_set_textview
                         .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             }
-        onSetListClickListener.onSetListClick(position);
-
-//        holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onSetListClickListener.onSetListClick(position);
-//            }
-//        });
+        //onSetListClickListener.onSetListClick(position);
     }
 
     @Override

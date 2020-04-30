@@ -85,7 +85,7 @@ public class GraficStorageImpl implements GraficStorage {
     }
 
     @Override
-    public long getColumnIndex(Cursor cursor) {
+    public int getColumnIndex(Cursor cursor) {
         return cursor.getColumnIndex(TabSet.COLUMN_SET_TIME);
     }
 

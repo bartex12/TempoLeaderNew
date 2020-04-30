@@ -136,4 +136,9 @@ public class TabBarSecFragment extends AbstrTabFragment {
         secViewModel.doChangeAction(fileNameOld, fileNameNew);
     }
 
+    @Override
+    protected long getIdFromFileName(String fileName) {
+        return secViewModel.getIdFromFileName(fileName);
+    }
+
 }

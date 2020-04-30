@@ -118,7 +118,7 @@ public class TempoleaderFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "// @@@ // TempoleaderFragment onCreate");
         //получаем  ViewModel для TempoleaderFragment
         dataSetViewModel =
                 new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
@@ -153,16 +153,8 @@ public class TempoleaderFragment extends Fragment {
             finishFileName = shp.getString(P.KEY_FILENAME,P.FILENAME_OTSECHKI_SEC);
             timeOfDelay = shp.getInt(P.KEY_DELAY, 6);
         }
-        Log.d(TAG, " @@@TempoleaderFragment fromActivity =  " +
+        Log.d(TAG, "// @@@ // TempoleaderFragment fromActivity =  " +
                 fromActivity +" mNameOfFile = " + finishFileName + " timeOfDelay = " + timeOfDelay);
-
-        //НЕ стирать = без этой строки меню тулбара пропадант, хотя оно и не во фрагменте а в Main
-        //для фрагментов требуется так разрешить появление  меню - иначе оно появляется
-        //только после захода в три точки на тулбаре
-        setHasOptionsMenu(true);
-        //но можно так
-        //вызываем onPrepareOptionsMenu в Main для показа меню в тулбаре
-        //requireActivity().invalidateOptionsMenu();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -173,7 +165,7 @@ public class TempoleaderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "TempoleaderFragment onViewCreated");
+        Log.d(TAG, "// @@@ // TempoleaderFragment onViewCreated");
 
         //разрешить только портретную ориентацию экрана
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -201,11 +193,20 @@ public class TempoleaderFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<DataSet>>() {
             @Override
             public void onChanged(ArrayList<DataSet> dataSets) {
-                Log.d(TAG, " /*/ dataSets size =  " + dataSets.size());
+                Log.d(TAG, " // *** //TempoleaderFragment dataSets size =  " + dataSets.size());
                 //показываем список на экране
                 updateAdapter(view, dataSets);
                 //передаём в MainActivity чтобы засунуть в Bundle
                 onTransmitListener.onTransmit(finishFileName);
+            }
+        });
+
+        dataSetViewModel.loadDelay(finishFileName).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Log.d(TAG, " // *** //TempoleaderFragment delay =  " + integer);
+                mDelayButton.setText(String.valueOf(integer));
+                mtextViewCountDown.setText(String.valueOf(integer));
             }
         });
        }
@@ -213,8 +214,7 @@ public class TempoleaderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "TempoleaderFragment  onResume ");
-
+        Log.d(TAG, "// @@@ // TempoleaderFragment  onResume ");
         //включаем/выключаем звук в зависимости от состояния чекбокса в PrefActivity
         AudioManager audioManager;
         if(sound){
@@ -246,17 +246,21 @@ public class TempoleaderFragment extends Fragment {
 
         //покажем общее время подхода и общее число повторений в подходе
         showTotalValues(mTimeOfSet,mTotalReps, mKvant);
+
+        setHasOptionsMenu(true);
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "// @@@ // TempoleaderFragment - onStop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "TempoleaderFragment - onDestroy");
+        Log.d(TAG, "// @@@ // TempoleaderFragment - onDestroy");
         //записываем последнее имя файла на экране в преференсис активности
         shp = requireActivity().getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor edit = shp.edit();
@@ -290,7 +294,7 @@ public class TempoleaderFragment extends Fragment {
         mTextViewRest.setText(R.string.textViewTimeRemain);
 
         mDelayButton = view.findViewById(R.id.buttonDelay);
-        mDelayButton.setText(String.valueOf(timeOfDelay)); //через viewModel никак -ещё null
+       // mDelayButton.setText(String.valueOf(timeOfDelay)); //через viewModel никак -ещё null
 
         mProgressBarTime = view.findViewById(R.id.progressBarTime);
         //mProgressBarTime.setBackgroundColor();
@@ -303,7 +307,7 @@ public class TempoleaderFragment extends Fragment {
 
         //счётчик времени задержки и времени отдыха
         mtextViewCountDown = view.findViewById(R.id.textViewCountDown);
-        mtextViewCountDown.setText(String.valueOf(timeOfDelay));
+        //mtextViewCountDown.setText(String.valueOf(timeOfDelay));
 
         mStartButton = view.findViewById(R.id.start_button);
         mStopButton = view.findViewById(R.id.stop_button);
@@ -321,6 +325,7 @@ public class TempoleaderFragment extends Fragment {
                 bundle.putString(P.NAME_OF_FILE, finishFileName );
                 bundle.putString(P.ARG_DELAY, mDelayButton.getText().toString() );
                 navController.navigate(R.id.action_nav_tempoleader_to_dialogSetDelay, bundle);
+
             }
         });
     }
@@ -482,7 +487,7 @@ public class TempoleaderFragment extends Fragment {
            RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
                 getOnSetListClickListener();
            //устанавливаем слушатель в адаптер
-           adapter.setOnSetListClickListener(listListener);
+           //adapter.setOnSetListClickListener(listListener);
            recyclerView.setAdapter(adapter);
        }
 

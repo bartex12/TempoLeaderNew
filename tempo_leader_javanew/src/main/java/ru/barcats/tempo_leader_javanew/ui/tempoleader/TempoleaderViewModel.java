@@ -1,6 +1,7 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -12,12 +13,32 @@ import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 public class TempoleaderViewModel extends AndroidViewModel {
 
+    public static final String TAG ="33333";
     private MutableLiveData<ArrayList<DataSet>>  data = new MutableLiveData<>();
     private TempoleaderStorage tempoleaderStorage;
+
+    private MutableLiveData<Integer>  delay = new MutableLiveData<>();
+    private DelayStorage delayStorage;
 
     public TempoleaderViewModel(@NonNull Application application) {
         super(application);
         tempoleaderStorage = new TempoleaderStorageImpl(application);
+        delayStorage = new DelayStorageImpl(application);
+    }
+
+    public LiveData<Integer> loadDelay(String fileName) {
+        getDelaynew(fileName);
+        return delay;
+    }
+
+    private  void getDelaynew(String fileName){
+        delay.setValue(delayStorage.getDelayNew(fileName));
+    }
+
+    public  void updateDelayNew(int timeOfDelay, String fileName){
+        int delayNew = delayStorage.updateDelayNew(timeOfDelay, fileName);
+        delay.setValue(delayNew);
+        Log.d(TAG, "// ### // TempoleaderViewModel delayNew = " + delay.getValue());
     }
 
     public LiveData<ArrayList<DataSet>> loadDataSet(String fileName) {
@@ -25,9 +46,8 @@ public class TempoleaderViewModel extends AndroidViewModel {
         return data;
     }
 
-    private LiveData<ArrayList<DataSet>> getDataSet(String fileName) {
+    private void getDataSet(String fileName) {
         data.setValue(tempoleaderStorage.getDataSet(fileName));
-        return data;
     }
 
     public float getSumOfTimes(String finishFileName){

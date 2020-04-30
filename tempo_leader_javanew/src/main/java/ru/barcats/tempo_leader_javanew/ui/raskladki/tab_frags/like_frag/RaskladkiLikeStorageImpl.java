@@ -91,4 +91,9 @@ public class RaskladkiLikeStorageImpl implements RaskladkiLikeStorage {
         data = TabFile.getArrayListFilesWhithType(database, P.TYPE_LIKE);
         return data;
     }
+
+    @Override
+    public long getIdFromFileName(String fileName) {
+        return TabFile.getIdFromFileName(database,fileName);
+    }
 }
