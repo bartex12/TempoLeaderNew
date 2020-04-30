@@ -104,9 +104,17 @@
         android:id="@+id/linearLayout3">
     </LinearLayout>
 
-    <ListView
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_grafic"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewTiming"
-        />
+        android:layout_marginBottom="15dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+<!--    <ListView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/listViewTiming"-->
+<!--        />-->
 </LinearLayout>

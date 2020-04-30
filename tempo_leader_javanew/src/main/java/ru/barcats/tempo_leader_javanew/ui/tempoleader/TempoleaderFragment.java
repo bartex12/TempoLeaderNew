@@ -102,8 +102,8 @@ public class TempoleaderFragment extends Fragment {
     private String finishFileName;
     //id файла, загруженного в темполидер
     private long fileId;
-    private OnTransmitListener onTransmitListener;
     private RecyclerView recyclerView;
+    private OnTransmitListener onTransmitListener;
 
     public interface OnTransmitListener{
         void onTransmit(String data);
@@ -176,7 +176,7 @@ public class TempoleaderFragment extends Fragment {
         Log.d(TAG, "TempoleaderFragment onViewCreated");
 
         //разрешить только портретную ориентацию экрана
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //получаем значения точности и звека из настроек
         getPrefSettings();
         //находим вьюхи

@@ -41,7 +41,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSecListener {
 
     public static final String TAG ="33333";
-    private SQLiteDatabase database;
     private Button mButtonStart;
     private Button mButtonStop;
     private Button mButtonReset;
@@ -75,17 +74,12 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
 
     private ArrayList<DataSecundomer> dataSec = new ArrayList<>();
 
-//    private final String ATTR_ITEM = "ru.bartex.p008_complex_imit_real.item";
-//    private final String ATTR_TIME = "ru.bartex.p008_complex_imit_real.time";
-//    private final String ATTR_DELTA = "ru.bartex.p008_complex_imit_real.delta";
-
     private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
     private int pause;  //режим паузы 1-остановка времени 2- остановка индикации
     private boolean sound = true; // включение / выключение звука
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private SharedPreferences prefNameOfLastFile;// предпочтения - имя последнего сохранённого файла
 
-    private TempDBHelper mTempDBHelper;
     private String finishNameFile;//имя файла - или из метода интерфейса или по умолчанию
     private RecyclerSecundomerAdapter adapter;
     private DataSecundomer dataSecundomer;
@@ -98,11 +92,9 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
         Log.d(TAG,"//##// SecundomerFragment onNameAndGrafTransmit");
         //showGraf -флаг : показывать график отсечек или нет
         //cancel - флаг : диалог отменён пользователем? true - да
-
         if (cancel){
             //если диалог был отменён, просто стираем список с отсечками
             repTimeList.clear();
-
             //в противном случае
         }else{
             //получаем дату и время в нужном для базы данных формате
@@ -119,7 +111,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
                 if (repeatId != -1){
                     secViewModel.deleteFileAndSets(repeatId);
                 }
-
             }else {
                 //проверяем, есть ли в базе запись с именем nameFile< чтобы избежать дублирования
                 long checkRepeatId = secViewModel.getIdFromFileName (nameFile);
@@ -185,9 +176,9 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTempDBHelper = new TempDBHelper(requireActivity());
-        database =  mTempDBHelper.getWritableDatabase();
         secViewModel = new ViewModelProvider(requireActivity()).get(SecundomerViewModel.class);
+        //НЕ стирать = без этой строки меню тулбара пропадант,
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -232,11 +223,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
         adapter = new RecyclerSecundomerAdapter(dataSec);
-//        //получаем слушатель щелчков на элементах списка
-//        RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
-//                getOnSetListClickListener();
-//        //устанавливаем слушатель в адаптер
-//        adapter.setOnSetListClickListener(listListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -244,8 +230,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
         mButtonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //TODO
                 //если число отсечек не меньше 1, вызываем диалог записи в файл
                 if (ii>0) {
                     //открываем диалог сохранения - проще так чем гонть Bundle туда -сюда
@@ -392,9 +376,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
             @Override
             public void onClick(View view) {
 
-//                // стираем repTimeList - если повторный запуск после запуска без сохранения
-//                repTimeList.clear();
-
                 //признак нахождения в режиме паузы
                 mIsStopped = false;
 
@@ -496,7 +477,7 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
 
 
 
-
+//
 //    //отслеживаем нажатие аппаратной кнопки Back и запрещаем, если секундомер работает
 //    @Override
 //    public void onBackPressed() {

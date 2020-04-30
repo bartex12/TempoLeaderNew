@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.sekundomer.grafic.GraficFragment;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
 
@@ -39,7 +40,8 @@ import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
-        implements TempoleaderFragment.OnTransmitListener, EditorFragment.SaverFragmentListener {
+        implements TempoleaderFragment.OnTransmitListener,
+        EditorFragment.SaverFragmentListener, GraficFragment.OnTransmitListener {
 
     public static final String TAG ="33333";
     public static final int  VALUE = 10;  //  величина изменения темпа по умолчанию
@@ -191,6 +193,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         int id = navController.getCurrentDestination().getId();
         switch (id){
+            case R.id.nav_grafic:
+                menu.findItem(R.id.nav_help).setVisible(true);
+                menu.findItem(R.id.nav_set).setVisible(true);
+                menu.findItem(R.id.nav_rascladki).setVisible(false);
+                menu.findItem(R.id.nav_editor).setVisible(false);
+                menu.findItem(R.id.nav_grafic).setVisible(false);
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(true);
+                break;
+
             case R.id.nav_set:
                 menu.findItem(R.id.nav_set).setVisible(false);
                 menu.findItem(R.id.nav_help).setVisible(true);
@@ -200,6 +214,7 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_help:
                 menu.findItem(R.id.nav_set).setVisible(true);
@@ -210,6 +225,7 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_tempoleader:
                 menu.findItem(R.id.nav_help).setVisible(true);
@@ -220,11 +236,11 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_rascladki:
             case R.id.nav_new_exercise:
             case R.id.nav_home:
-            case R.id.nav_grafic:
                 menu.findItem(R.id.nav_help).setVisible(true);
                 menu.findItem(R.id.nav_set).setVisible(true);
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
@@ -233,6 +249,7 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_secundomer:
                 menu.findItem(R.id.nav_help).setVisible(true);
@@ -240,6 +257,10 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.nav_grafic).setVisible(true);
+                menu.findItem(R.id.menu_item_new_frag).setVisible(false);
+                menu.findItem(R.id.change_temp_up_down).setVisible(false);
+                menu.findItem(R.id.save_data_in_file).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
 
             case R.id.nav_editor:
@@ -259,6 +280,7 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_editor).setVisible(false);
                 menu.findItem(R.id.menu_item_new_frag).setVisible(true);
                 menu.findItem(R.id.nav_grafic).setVisible(false);
+                menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);
@@ -266,11 +288,17 @@ public class MainActivity extends AppCompatActivity
 
     //переопределение метода обработки пунктов верхнего меню - через NavController
     //очень круто- если id пунктов графа и меню совпадают, переход происходит автоматически
-    //А КАК БЫТЬ С ДАННЫМИ?
+    //А КАК БЫТЬ С ДАННЫМИ? - тогда через Bundle
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Bundle bundle = null;
     switch (item.getItemId()){
+        case R.id.nav_tempoleader:
+            bundle = new Bundle();
+            bundle.putString(P.NAME_OF_FILE, data);
+            navController.navigate(R.id.action_nav_grafic_to_nav_tempoleader, bundle);
+            Log.d(TAG, "//****// MainActivity onOptionsItemSelected data = " + data );
+            break;
         case R.id.nav_editor:
             bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);

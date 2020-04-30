@@ -31,6 +31,15 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private NavController navController;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //без этой строки меню в тулбаре ведёт себя неправильно
+        setHasOptionsMenu(true);
+        //вызываем onPrepareOptionsMenu в Main для показа меню в тулбаре
+        //requireActivity().invalidateOptionsMenu();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

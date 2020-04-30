@@ -26,6 +26,7 @@ import android.widget.TextView;
 import org.jetbrains.annotations.NotNull;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -64,11 +65,11 @@ public class HelpFragment extends Fragment {
             imageViewRigth.setVisibility(View.GONE);
         }
 
-        helpViewModel = ViewModelProviders.of(this).get(HelpViewModel.class);
+        helpViewModel = new ViewModelProvider(this).get(HelpViewModel.class);
+
         helpViewModel.getHelp().observe(getViewLifecycleOwner(), new Observer<StringBuilder>() {
             @Override
             public void onChanged(StringBuilder stringBuilder) {
-                //textView.setText(stringBuilder);
                 textView.setText(Html.fromHtml(stringBuilder.toString()));
             }
         });
