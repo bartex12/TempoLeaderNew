@@ -75,17 +75,17 @@ public class DialogSetDelay extends DialogFragment {
                 if (tempDelay){
                     //читаем задержку в строке ввода
                     delay = Integer.parseInt(editTextDelay.getText().toString());
-                    dataSetViewModel.updateDelayNew(delay, fileName);
+                    //dataSetViewModel.updateDelayNew(delay, fileName);
                     Log.d(TAG, "// ~~~ // DialogSetDelay  delay "+ delay);
-//
-//                    //находим NavController в диалоге
-//                    NavController controller =
-//                            Navigation.findNavController(getParentFragment().getView());
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(P.NAME_OF_FILE, getArguments().getString(P.NAME_OF_FILE));
-//                    bundle.putInt(P.ARG_DELAY, delay);
-//                    bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_DELAY);
-//                    controller.navigate(R.id.action_dialogSetDelay_to_nav_tempoleader, bundle);
+
+                    //находим NavController в диалоге
+                    NavController controller =
+                            Navigation.findNavController(getParentFragment().getView());
+                    Bundle bundle = new Bundle();
+                    bundle.putString(P.NAME_OF_FILE, getArguments().getString(P.NAME_OF_FILE));
+                    bundle.putInt(P.ARG_DELAY, delay);
+                    bundle.putInt(P.FROM_ACTIVITY, P.DIALOG_DELAY);
+                    controller.navigate(R.id.action_nav_set_delay_to_nav_tempoleader, bundle);
 
                     editTextDelay.clearFocus();
 

@@ -3,7 +3,6 @@ package ru.barcats.tempo_leader_javanew.ui.sekundomer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
@@ -28,9 +27,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
-import ru.barcats.tempo_leader_javanew.database.TabSet;
-import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataFile;
 import ru.barcats.tempo_leader_javanew.model.DataSecundomer;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
@@ -86,6 +82,17 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
     private SecundomerViewModel secViewModel;
     private View root;
     private RecyclerView recyclerView;
+    private OnTransmitListener onTransmitListener;
+
+    public interface OnTransmitListener{
+        void onTransmit(String data);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        onTransmitListener = (OnTransmitListener)context;
+    }
 
     @Override
     public void onNameAndGrafTransmit(String nameFile, boolean showGraf, boolean cancel) {
@@ -152,8 +159,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
                 //======Окончание добавления записей в таблицы DataFile и DataSet=========//
             }
             // Cохраняем имя файла в предпочтениях (ИСПОЛЬЗУЕМ  при переходе в график с тулбара)
-            //получаем файл предпочтений
-            prefNameOfLastFile= requireActivity().getPreferences(MODE_PRIVATE);
             // получаем Editor
             SharedPreferences.Editor ed = prefNameOfLastFile.edit();
             //пишем имя последнего сохранённого файла в предпочтения
@@ -165,7 +170,7 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
             if (showGraf){
                 NavController controller =Navigation.findNavController(root);
                 Bundle bundle = new Bundle();
-                bundle.putString(P.FINISH_FILE_NAME, finishNameFile);
+                bundle.putString(P.NAME_OF_FILE, finishNameFile);
                 controller.navigate(R.id.action_nav_secundomer_to_nav_grafic, bundle);
             }
             //стираем список с отсечками
@@ -176,7 +181,21 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         secViewModel = new ViewModelProvider(requireActivity()).get(SecundomerViewModel.class);
+        //получаем файл предпочтений
+        prefNameOfLastFile= requireActivity().getPreferences(MODE_PRIVATE);
+        //если ничего нет в аргументах, смотрим в  SharedPreferences,
+        //если файл с таким именем был удалён, то грузим автосохранение секундомера
+        if (getArguments() != null){
+            finishNameFile = getArguments().getString(P.FINISH_FILE_NAME);
+        }else {
+            finishNameFile = prefNameOfLastFile.getString(P.LAST_FILE,P.FILENAME_OTSECHKI_SEC);
+        }
+        Log.d(TAG,"//##// SecundomerFragment onCreate имя = " + finishNameFile);
+
+        //передаём имя файла в Main
+        onTransmitListener.onTransmit(finishNameFile);
         //НЕ стирать = без этой строки меню тулбара пропадант,
         setHasOptionsMenu(true);
     }

@@ -5,7 +5,6 @@ package ru.barcats.tempo_leader_javanew.ui.sekundomer.grafic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -18,8 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -27,36 +24,27 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
-
-import java.util.Map;
-
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
-import ru.barcats.tempo_leader_javanew.database.TabFile;
-import ru.barcats.tempo_leader_javanew.database.TabSet;
-import ru.barcats.tempo_leader_javanew.database.TempDBHelper;
 import ru.barcats.tempo_leader_javanew.model.DataSecundomer;
-
 import ru.barcats.tempo_leader_javanew.model.P;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
-import ru.barcats.tempo_leader_javanew.ui.tempoleader.adapters.RecyclerViewTempoleaderAdapter;
+
 
 import static android.content.Context.MODE_PRIVATE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class GraficFragment extends Fragment {
 
     private static final String TAG ="33333";
 
     private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
-    private String finishFileName;
     private RecyclerView recyclerView;
     private GraficViewModel graficViewModel;
+    private String finishFileName;
+    private SharedPreferences prefLastFile;
     private OnTransmitListener onTransmitListener;
 
     public interface OnTransmitListener{
@@ -80,16 +68,22 @@ public class GraficFragment extends Fragment {
         graficViewModel = new ViewModelProvider(this).get(GraficViewModel.class);
         //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
         // последний сохранённый файл
-        SharedPreferences prefLastFile = requireActivity().getPreferences(MODE_PRIVATE);
+        prefLastFile = requireActivity().getPreferences(MODE_PRIVATE);
+        String s =  prefLastFile.getString(P.LAST_FILE,P.FILENAME_OTSECHKI_SEC);
+        Log.d(TAG,"GraficFragment prefLastFile = " + s);
 
-        //если ничего нет в аргументах, смотрим в  SharedPreferences, потом по умолчанию
+        //если ничего нет в аргументах, смотрим в  SharedPreferences,
+        //если файл с таким именем был удалён, то грузим автосохранение секундомера
         if (getArguments() != null){
-            finishFileName = getArguments().getString(P.FINISH_FILE_NAME);
+            finishFileName = getArguments().getString(P.NAME_OF_FILE);
         }else {
-            finishFileName = prefLastFile.getString(P.LAST_FILE,P.FILENAME_OTSECHKI_SEC);
+            finishFileName = prefLastFile.getString(P.LAST_FILE, P.FILENAME_OTSECHKI_SEC);
         }
-        Log.d(TAG,"GraficFragment onCreate имя = " + finishFileName);
 
+        Log.d(TAG,"GraficFragment onCreate имя = " + finishFileName);
+      if (graficViewModel.getFragmentsCount(finishFileName)<=0){
+          finishFileName = P.FILENAME_OTSECHKI_SEC;
+      }
     }
 
     @Override
@@ -103,10 +97,6 @@ public class GraficFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         TextView nameOfFile = view.findViewById(R.id.textViewName_TimeGraf);
-        //если файл с таким именем был удалён, то грузим автосохранение секундомера
-        if (graficViewModel.getFragmentsCount(finishFileName) <= 0) {
-            finishFileName = P.FILENAME_OTSECHKI_SEC;
-        }
         nameOfFile.setText(finishFileName);
 
         recyclerView = view.findViewById(R.id.recycler_grafic);

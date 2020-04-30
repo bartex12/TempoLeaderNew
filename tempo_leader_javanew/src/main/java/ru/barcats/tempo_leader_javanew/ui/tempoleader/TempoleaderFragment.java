@@ -205,8 +205,6 @@ public class TempoleaderFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 Log.d(TAG, " // *** //TempoleaderFragment delay =  " + integer);
-                mDelayButton.setText(String.valueOf(integer));
-                mtextViewCountDown.setText(String.valueOf(integer));
             }
         });
        }
@@ -294,7 +292,7 @@ public class TempoleaderFragment extends Fragment {
         mTextViewRest.setText(R.string.textViewTimeRemain);
 
         mDelayButton = view.findViewById(R.id.buttonDelay);
-       // mDelayButton.setText(String.valueOf(timeOfDelay)); //через viewModel никак -ещё null
+        mDelayButton.setText(String.valueOf(timeOfDelay)); //через viewModel никак -ещё null
 
         mProgressBarTime = view.findViewById(R.id.progressBarTime);
         //mProgressBarTime.setBackgroundColor();
@@ -307,7 +305,7 @@ public class TempoleaderFragment extends Fragment {
 
         //счётчик времени задержки и времени отдыха
         mtextViewCountDown = view.findViewById(R.id.textViewCountDown);
-        //mtextViewCountDown.setText(String.valueOf(timeOfDelay));
+        mtextViewCountDown.setText(String.valueOf(timeOfDelay));
 
         mStartButton = view.findViewById(R.id.start_button);
         mStopButton = view.findViewById(R.id.stop_button);

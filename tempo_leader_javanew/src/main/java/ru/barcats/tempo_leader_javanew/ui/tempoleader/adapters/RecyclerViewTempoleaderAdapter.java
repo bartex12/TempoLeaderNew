@@ -27,7 +27,6 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
 
     public void setItem(int item) {
         this.item = item;
-        Log.d(TAG, " +++ RecyclerViewTempoleaderAdapter item = " + item);
     }
 
     public RecyclerViewTempoleaderAdapter(ArrayList<DataSet> listOfSet,  int accurancy){

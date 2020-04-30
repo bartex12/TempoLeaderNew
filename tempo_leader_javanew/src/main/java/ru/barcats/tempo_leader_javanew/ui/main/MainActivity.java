@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
+import ru.barcats.tempo_leader_javanew.ui.sekundomer.SecundomerFragment;
 import ru.barcats.tempo_leader_javanew.ui.sekundomer.grafic.GraficFragment;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.TempoleaderFragment;
 import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
@@ -40,8 +41,8 @@ import ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
-        implements TempoleaderFragment.OnTransmitListener,
-        EditorFragment.SaverFragmentListener, GraficFragment.OnTransmitListener {
+        implements TempoleaderFragment.OnTransmitListener, GraficFragment.OnTransmitListener,
+        EditorFragment.SaverFragmentListener, SecundomerFragment.OnTransmitListener{
 
     public static final String TAG ="33333";
     public static final int  VALUE = 10;  //  величина изменения темпа по умолчанию
