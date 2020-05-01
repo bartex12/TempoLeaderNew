@@ -72,7 +72,15 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
                 holder.view_mark_end
                         .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             }
-        //onSetListClickListener.onSetListClick(position);
+
+        // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
+        holder.all_item_set_textview.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+               // onSetListClickListener.onSetListClick(position);
+                return false;
+            }
+        });
     }
 
     @Override

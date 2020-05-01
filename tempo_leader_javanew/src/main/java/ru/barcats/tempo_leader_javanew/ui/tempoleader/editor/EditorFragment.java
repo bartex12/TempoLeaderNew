@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -68,8 +69,6 @@ public class EditorFragment extends Fragment {
 
     private CheckBox mCheckBoxAll;
     private RadioGroup mRadioGroupTimeCount;
-    private RadioButton mRadioButtonTime;
-    private RadioButton mRadioButtonCount;
 
     private float mTimeOfSet = 0;   //общее время выполнения подхода в секундах
     private float time = 0f; //размер изменений времени
@@ -91,7 +90,6 @@ public class EditorFragment extends Fragment {
     private boolean sound = true; // включение / выключение звука
     private boolean isSaveVisible = false; //показывать иконку Сохранить true - да false - нет
     private boolean isEditTime = true; //радиокнопка редактировать время нажата?
-    private boolean isCheckedAll =  false;
 
     private long fileIdCopy;  // id  копии файла
 
@@ -225,7 +223,8 @@ public class EditorFragment extends Fragment {
 
     //создаём контекстное меню для списка
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NotNull ContextMenu menu, @NotNull View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(0, P.DELETE_CHANGETEMP, 0, "Удалить строку");
         menu.add(0, P.CHANGE_CHANGETEMP, 0, "Изменить строку");
@@ -459,11 +458,7 @@ public class EditorFragment extends Fragment {
     private void initViews(@NonNull View view) {
         deltaValue = view.findViewById(R.id.deltaValue);
         deltaValue.setVisibility(View.INVISIBLE);
-        //deltaValue.setText("-00%");
-        //deltaValue.setBackground(R.drawable.ramka);
 
-        mRadioButtonTime = view.findViewById(R.id.radioButtonTime);
-        mRadioButtonCount = view.findViewById(R.id.radioButtonCount);
         mRadioGroupTimeCount = view.findViewById(R.id.radioGroupTimeCount);
 
         mCheckBoxAll = view.findViewById(R.id.checkBox);
@@ -546,7 +541,6 @@ public class EditorFragment extends Fragment {
                 positionOfList = position;
                 adapter.setPosItem(position);  //редактирование времени или кол-ва в строке
                 adapter.notifyDataSetChanged();
-                //TODO
                 Log.d(TAG,"/+++/ EditorFragment OnSetListClickListener position = " + position);
             }
         };

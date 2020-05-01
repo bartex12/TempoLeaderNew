@@ -152,7 +152,7 @@
     <fragment
         android:id="@+id/nav_editor"
         android:name="ru.barcats.tempo_leader_javanew.ui.tempoleader.editor.EditorFragment"
-        android:label="@string/change_name"
+        android:label="@string/editor"
         tools:layout="@layout/fragment_editor" >
         <argument
             android:name="fileName"

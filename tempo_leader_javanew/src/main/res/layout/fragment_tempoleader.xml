@@ -28,25 +28,27 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/delay_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/delay_layout"
         android:layout_below="@+id/name_layout"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="false"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewDelay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
                 android:text="@string/textViewDelay"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/buttonDelay"
@@ -55,12 +57,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/draw_delay"
-                android:text="@string/_555"/>
+                android:text="@string/_555" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -71,7 +74,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="@string/textViewRestTime"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textViewCountDown"
@@ -83,7 +86,7 @@
                 android:text="@string/_555"
                 android:textColor="#f80515"
                 android:textSize="32sp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
@@ -98,18 +101,16 @@
         android:layout_gravity="center_horizontal">
 
         <ProgressBar
+            android:id="@+id/progressBarTime"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/progressBarTime"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:indeterminate="false"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:visibility="visible"
-            android:background="#72f5a4"
-            />
+            android:visibility="visible" />
 
     </LinearLayout>
 

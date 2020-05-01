@@ -1,6 +1,7 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -10,12 +11,16 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -24,6 +29,7 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -104,6 +110,8 @@ public class TempoleaderFragment extends Fragment {
     private long fileId;
     private RecyclerView recyclerView;
     private OnTransmitListener onTransmitListener;
+    private View root;
+
 
     public interface OnTransmitListener{
         void onTransmit(String data);
@@ -159,7 +167,8 @@ public class TempoleaderFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tempoleader, container, false);
+        root = inflater.inflate(R.layout.fragment_tempoleader, container, false);
+        return root;
     }
 
     @Override
@@ -247,6 +256,9 @@ public class TempoleaderFragment extends Fragment {
 
         setHasOptionsMenu(true);
         requireActivity().invalidateOptionsMenu();
+
+        //объявляем о регистрации контекстного меню
+        registerForContextMenu(recyclerView);
     }
 
     @Override
@@ -268,6 +280,37 @@ public class TempoleaderFragment extends Fragment {
 
         //отключаем таймер
         if (mTimer!=null)mTimer.cancel();
+    }
+
+    //создаём контекстное меню для списка
+    @Override
+    public void onCreateContextMenu(@NotNull ContextMenu menu, @NotNull View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.GOTO_EDITOR, 0, "Перейти в редактор");
+        menu.add(0, P.CANCEL_TEMP, 0, "Отмена");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        handleMenuItemClick(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private void handleMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        NavController navController = Navigation.findNavController(root);
+        switch (id) {
+            case P.GOTO_EDITOR: {
+                Bundle bundle = new Bundle();
+                bundle.putString(P.NAME_OF_FILE, finishFileName);   //имя файла
+                navController.navigate(R.id.action_nav_tempoleader_to_editorFragment, bundle);
+                break;
+            }
+            case P.CANCEL_TEMP: {
+                break;
+            }
+        }
     }
 
     private void getPrefSettings() {

@@ -18,7 +18,8 @@ import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
 
 
-public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerViewEditorAdapter.ViewHolder> {
+public class RecyclerViewEditorAdapter extends
+        RecyclerView.Adapter<RecyclerViewEditorAdapter.ViewHolder> {
 
     private static final String TAG = "33333";
     private ArrayList<DataSet> listOfSet;
@@ -97,21 +98,13 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
 
         if (isLongClick){
             if (posItem == position){
-                //holder.all_item_set_textview.setBackgroundColor(Color.YELLOW);
-
                 holder.view_time.setBackgroundColor(Color.YELLOW);
                 holder.view_reps.setBackgroundColor(Color.YELLOW);
-               // holder.view_mark.setBackgroundColor(Color.YELLOW);
             }else {
-//                holder.all_item_set_textview.setBackgroundColor(context.getResources()
-//                        .getColor(android.R.color.transparent));
-
                 holder.view_time.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
                 holder.view_reps.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
-//                holder.view_mark.setBackgroundColor(context.getResources()
-//                        .getColor(android.R.color.transparent));
             }
         }else {
             if (isForAll){
@@ -150,7 +143,6 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             }
         }
-
 
         //передаём позицию списка при щелчке на строке списка
         holder.all_item_set_textview.setOnClickListener(new View.OnClickListener() {

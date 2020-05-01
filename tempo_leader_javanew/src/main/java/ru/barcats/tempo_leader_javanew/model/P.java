@@ -71,6 +71,9 @@ public class P {
     public static final int MOVE_TEMP_ACTION_SEC = 7;
     public static final int MOVE_SHOW_GRAF_SEC = 8;
 
+    public static final int GOTO_EDITOR = 9;
+    public static final int CANCEL_TEMP = 10;
+
     public static final int DELETE_ACTION_TEMP = 11;
     public static final int CHANGE_ACTION_TEMP = 12;
     public static final int CANCEL_ACTION_TEMP = 13;
