@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.P;
 import ru.barcats.tempo_leader_javanew.ui.raskladki.tab_frags.AbstrTabFragment;
 
@@ -46,6 +49,7 @@ public class TabBarTempFragment extends AbstrTabFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, P.MOVE_SHOW_GRAF_TEMP, 5, "Показать на графике");
         menu.add(0, P.DELETE_ACTION_TEMP, 10, "Удалить запись");
         menu.add(0, P.CHANGE_ACTION_TEMP, 20, "Изменить запись");
         menu.add(0, P.MOVE_SEC_ACTION_TEMP, 30, "Переместить в секундомер");
@@ -62,18 +66,26 @@ public class TabBarTempFragment extends AbstrTabFragment {
     private void handleMenuItemClick(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id) {
-            case P.DELETE_ACTION_TEMP: {
+            switch (id) {
+
+                case P.MOVE_SHOW_GRAF_TEMP:
+                    NavController controller = Navigation.findNavController(getView());
+                    Bundle bundle = new Bundle();
+                    bundle.putString(P.NAME_OF_FILE, getFileName());
+                    controller.navigate(R.id.action_nav_rascladki_to_nav_grafic, bundle);
+                    break;
+
+            case P.DELETE_ACTION_TEMP:
                 showDeleteDialog();
                 getAdapter().notifyDataSetChanged();
                 break;
-            }
-            case P.CHANGE_ACTION_TEMP: {
+
+            case P.CHANGE_ACTION_TEMP:
                 showChangeDialog();
                 getAdapter().notifyDataSetChanged();
                 break;
-            }
-            case P.MOVE_SEC_ACTION_TEMP: {
+
+            case P.MOVE_SEC_ACTION_TEMP:
                 //поручаем перемещение файла ViewModel
                 tempViewModel.moveItemInSec(getFileName());
                 //обновляем список вкладки после перемещения файла
@@ -81,18 +93,17 @@ public class TabBarTempFragment extends AbstrTabFragment {
                 // обновляем вкладки после перемещения файла
                 getViewPager().getAdapter().notifyDataSetChanged(); //работает !
                 break;
-            }
-            case P.MOVE_LIKE_ACTION_TEMP: {
+
+            case P.MOVE_LIKE_ACTION_TEMP:
                 //поручаем перемещение файла ViewModel
                 tempViewModel.moveItemInLike(getFileName());
                 //обновляем список вкладки после перемещения файла
                 getAdapter().notifyDataSetChanged();
                 // обновляем вкладки после перемещения файла
                 getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-            }
-            case P.CANCEL_ACTION_TEMP: {
                 break;
-            }
+            case P.CANCEL_ACTION_TEMP:
+                break;
         }
     }
 

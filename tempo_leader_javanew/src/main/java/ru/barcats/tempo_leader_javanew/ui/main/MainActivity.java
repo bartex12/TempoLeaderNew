@@ -91,8 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
         appBarConfiguration =
-                new AppBarConfiguration.Builder(
-                        navController.getGraph())
+                new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(drawerLayout)
                         .build();
 
@@ -113,22 +112,21 @@ public class MainActivity extends AppCompatActivity
             public void onDestinationChanged(
                     @NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                switch (destination.getId()){
-                   case R.id.nav_rascladki:
-                       toolbar.setVisibility(View.VISIBLE);
-                       bottomNavigation.setVisibility(View.VISIBLE);
-                       break;
-                   case R.id.nav_help:
                    case R.id.nav_home:
+                   case R.id.nav_help:
                    case R.id.nav_set:
                    case R.id.nav_secundomer:
+                   case R.id.nav_grafic:
                    case R.id.nav_tempoleader:
+                   case R.id.nav_rascladki:
+                   case R.id.nav_editor:
+                   case R.id.nav_new_exercise:
                        toolbar.setVisibility(View.VISIBLE);
                        bottomNavigation.setVisibility(View.GONE);
                        break;
                }
             }
         });
-
     }
 
     @Override

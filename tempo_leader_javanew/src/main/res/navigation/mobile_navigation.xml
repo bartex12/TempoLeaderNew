@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_nav_rascladki_to_nav_help"
             app:destination="@id/nav_help" />
+        <action
+            android:id="@+id/action_nav_rascladki_to_nav_grafic"
+            app:destination="@id/nav_grafic" />
     </fragment>
 
     <fragment

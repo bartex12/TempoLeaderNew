@@ -64,6 +64,7 @@ public class GraficFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"GraficFragment onCreate");
 
         graficViewModel = new ViewModelProvider(this).get(GraficViewModel.class);
         //получаем имя последнего файла темполидера из преференсис (запись в onDestroy )
@@ -84,17 +85,21 @@ public class GraficFragment extends Fragment {
       if (graficViewModel.getFragmentsCount(finishFileName)<=0){
           finishFileName = P.FILENAME_OTSECHKI_SEC;
       }
+        //НЕ стирать = без этой строки меню тулбара пропадант,
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"GraficFragment onCreateView");
         return inflater.inflate(R.layout.fragment_grafic, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG,"GraficFragment onViewCreated");
 
         TextView nameOfFile = view.findViewById(R.id.textViewName_TimeGraf);
         nameOfFile.setText(finishFileName);

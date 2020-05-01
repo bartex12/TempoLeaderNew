@@ -69,12 +69,14 @@ public class P {
     public static final int CANCEL_ACTION_SEC = 3;
     public static final int MOVE_LIKE_ACTION_SEC = 5;
     public static final int MOVE_TEMP_ACTION_SEC = 7;
+    public static final int MOVE_SHOW_GRAF_SEC = 8;
 
     public static final int DELETE_ACTION_TEMP = 11;
     public static final int CHANGE_ACTION_TEMP = 12;
     public static final int CANCEL_ACTION_TEMP = 13;
     public static final int MOVE_LIKE_ACTION_TEMP = 15;
     public static final int MOVE_SEC_ACTION_TEMP = 16;
+    public static final int MOVE_SHOW_GRAF_TEMP = 17;
 
 
     public static final int DELETE_ACTION_LIKE = 21;
@@ -82,6 +84,7 @@ public class P {
     public static final int CANCEL_ACTION_LIKE = 23;
     public static final int MOVE_SEC_ACTION_LIKE = 26;
     public static final int MOVE_TEMP_ACTION_LIKE = 27;
+    public static final int MOVE_SHOW_GRAF_LIKE = 28;
 
 
     public static final int DELETE_CHANGETEMP = 31;
