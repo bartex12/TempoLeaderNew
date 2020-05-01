@@ -193,5 +193,6 @@
     <string name="lap">Отрезок,с</string>
     <string name="graf_">График</string>
     <string name="krug">Круг, с</string>
+    <string name="now_stop">Сначала нажмите Стоп</string>
 
 </resources>

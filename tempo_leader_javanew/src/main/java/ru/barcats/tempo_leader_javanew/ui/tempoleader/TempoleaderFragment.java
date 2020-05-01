@@ -1,7 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.tempoleader;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -29,7 +28,6 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -138,7 +136,6 @@ public class TempoleaderFragment extends Fragment {
                 new ViewModelProvider(this).get("loadDataSet", TempoleaderViewModel.class);
 
         if (getArguments() != null) {
-            //Log.d(TAG, " ### TempoleaderFragment onCreate getArguments = "  + getArguments());
             //************** Получение интента/ аргументов  с данными *************
             // когда грузим с главного экрана или со шторки, аргументы = null
             if ( getArguments().getString(P.NAME_OF_FILE) != null) {
@@ -148,10 +145,8 @@ public class TempoleaderFragment extends Fragment {
             }
             if (getArguments().getInt(P.FROM_ACTIVITY)>0) {
                 //считываем значение FROM_ACTIVITY из интента
-                //код -откуда пришли данные 111 --Main, 222-TimeMeterActivity, 333-ListOfFilesActivity
-                //444 -DetailActivity  555 - NewExerciseActivity 777 - DialogSetDelay
+                //код -откуда пришли данные 111 --Main, 777 - DialogSetDelay
                 fromActivity =getArguments().getInt(P.FROM_ACTIVITY,111);
-
                 //если интент пришел от DialogSetDelay, он принёс с собой  задержку
                 if (fromActivity == P.DIALOG_DELAY){
                     //если из диалога задержки, получаем задержку
@@ -243,7 +238,6 @@ public class TempoleaderFragment extends Fragment {
 
         //получаем id  файла с раскладкой по его имени finishFileName из интента
         fileId =  dataSetViewModel.getIdFromFileName(finishFileName);
-        //fileId = TabFile.getIdFromFileName(database, finishFileName);
         Log.d(TAG, "fileId  = " + fileId);
         //получаем количество фрагментов в выполняемом подходе если было удаление или добавление
         //фрагмента подхода, нужно пересчитывать каждый раз - это по кнопке Старт
@@ -538,25 +532,23 @@ public class TempoleaderFragment extends Fragment {
            recyclerView.setLayoutManager(manager);
             adapter = new RecyclerViewTempoleaderAdapter(dataSets, accurancy);
            //получаем слушатель щелчков на элементах списка
-           RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
-                getOnSetListClickListener();
+//           RecyclerViewTempoleaderAdapter.OnSetListClickListener listListener =
+//                getOnSetListClickListener();
            //устанавливаем слушатель в адаптер
            //adapter.setOnSetListClickListener(listListener);
            recyclerView.setAdapter(adapter);
        }
 
-    //метод для получения слушателя щелчков на элементах списка
-    private RecyclerViewTempoleaderAdapter.OnSetListClickListener getOnSetListClickListener() {
-        return new RecyclerViewTempoleaderAdapter.OnSetListClickListener() {
-            @Override
-            public void onSetListClick(int position) {
-                //adapter.setPosItem(position);
-               // adapter.notifyDataSetChanged();
-                //TODO
-                Log.d(TAG,"/+++/ TempoleaderFragment Adapter position = " + position);
-            }
-        };
-    }
+//    //метод для получения слушателя щелчков на элементах списка
+//    private RecyclerViewTempoleaderAdapter.OnSetListClickListener getOnSetListClickListener() {
+//        return new RecyclerViewTempoleaderAdapter.OnSetListClickListener() {
+//            @Override
+//            public void onSetListClick(int position) {
+//                //TODO
+//                Log.d(TAG,"/+++/ TempoleaderFragment Adapter position = " + position);
+//            }
+//        };
+//    }
 
     //покажем общее время подхода и общее число повторений в подходе
     private void showTotalValues(float timeOfSet,int totalReps, long kvant){
@@ -759,6 +751,5 @@ public class TempoleaderFragment extends Fragment {
         }
         return time;
     }
-
 
 }

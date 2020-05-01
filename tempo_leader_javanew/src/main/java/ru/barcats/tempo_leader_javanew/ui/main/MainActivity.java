@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity
     private boolean isChangeTemp;
     private boolean isSaveVisible;
     private boolean start;
-    private ActionBar acBar;
 
     @Override
     public void onStart(boolean start) {
@@ -200,7 +198,7 @@ public class MainActivity extends AppCompatActivity
             if (start){
                 Log.d(TAG,"TimeMeterActivity onBackPressed if (start)");
                 Toast.makeText(getApplicationContext(),
-                        "Сначала нажмите Стоп", Toast.LENGTH_SHORT).show();
+                       getResources().getString(R.string.now_stop), Toast.LENGTH_SHORT).show();
             }else{
                 super.onBackPressed();
                 Log.d(TAG,"TimeMeterActivity onBackPressed if (!start)");
@@ -419,6 +417,4 @@ public class MainActivity extends AppCompatActivity
     }
     return super.onOptionsItemSelected(item);
     }
-
-
 }

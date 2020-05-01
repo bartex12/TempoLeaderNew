@@ -161,7 +161,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
                 DataSet set = new DataSet(time_now,1,j+1);
                 //добавляем запись в таблицу TabSet, используя данные DataSet
                 secViewModel.addSet(set, file1_id);
-                //TabSet.addSet(database, set, file1_id);
                 //======Окончание добавления записей в таблицы DataFile и DataSet=========//
             }
             // Cохраняем имя файла в предпочтениях (ИСПОЛЬЗУЕМ  при переходе в график с тулбара)
@@ -172,7 +171,7 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
             ed.apply();
 
             //если нужно записать и показать
-            //вызываем интент, в котором передаём имя последнего файла в TimeGrafActivity
+            //переходим в Графики через NavController с данными
             if (showGraf){
                 NavController controller =Navigation.findNavController(root);
                 Bundle bundle = new Bundle();
@@ -497,22 +496,6 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
         //выключаем таймер
         if (mTimer!=null)mTimer.cancel();
     }
-
-
-
-//
-//    //отслеживаем нажатие аппаратной кнопки Back и запрещаем, если секундомер работает
-//    @Override
-//    public void onBackPressed() {
-//        if (start){
-//            Log.d(TAG,"TimeMeterActivity onBackPressed if (start)");
-//            Toast.makeText(getApplicationContext(),
-//                    R.string.PressStopBefore, Toast.LENGTH_SHORT).show();
-//        }else{
-//            super.onBackPressed();
-//            Log.d(TAG,"TimeMeterActivity onBackPressed if (!start)");
-//        }
-//    }
 
     //======================class MyTimerTask=================================//
     public class MyTimerTask extends TimerTask{
