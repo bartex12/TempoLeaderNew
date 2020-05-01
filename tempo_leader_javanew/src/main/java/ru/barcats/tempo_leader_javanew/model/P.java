@@ -37,11 +37,8 @@ public class P {
     public final static int TO_CHANGE_SET = 9999;
 
     //имя файла для записи раскладки секундомера по умолчанию - когда имя - пустая строка
-    public static final String FILENAME_OTSECHKI_SEC ="автосохранение_секундомера";
-
-    //имя файла для записи текущей раскладки секундомера - когда не стали сохранять (или случайно)
-    // перезаписывается при новой порции отсечек
-    public static final String TYPE_OF_FILE = "ru.bartex.p010_train.TYPE_OF_FILE";
+     public static final String FILENAME_OTSECHKI_SEC ="автосохранение_секундомера";
+    //public static final String FILENAME_OTSECHKI_SEC ="автосохранение";
 
     public static final String TYPE_TIMEMETER ="type_timemeter";
     public static final String TYPE_TEMPOLEADER ="type_tempoleader";
@@ -58,10 +55,6 @@ public class P {
 
     public static final String KEY_DELAY = "DELAY";
     public static final String KEY_FILENAME = "FILENAME";
-
-    public final static String ATTR_ITEM_GRAF = "ru.bartex.p010_train.item";
-    public final static String ATTR_TIME_GRAF = "ru.bartex.p010_train.time";
-    public final static String ATTR_DELTA_GRAF = "ru.bartex.p010_train.delta";
 
     public static final String ARG_NAME_OF_FILE = "ru.bartex.p010_train.NameOfFile";
     public static final String ARG_NUMBER_ITEM = "ru.bartex.p010_train.NumberItem";

@@ -292,8 +292,49 @@ public class MainActivity extends AppCompatActivity
     //А КАК БЫТЬ С ДАННЫМИ? - тогда через Bundle
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Bundle bundle = null;
+        Bundle bundle;
+        int id = navController.getCurrentDestination().getId();
     switch (item.getItemId()){
+        case R.id.nav_set:
+            if (id == R.id.nav_home){
+                navController.navigate(R.id.action_nav_home_to_nav_set);
+            }else if (id == R.id.nav_tempoleader){
+                navController.navigate(R.id.action_nav_tempoleader_to_nav_set);
+            }else if (id == R.id.nav_secundomer){
+                navController.navigate(R.id.action_nav_secundomer_to_nav_set);
+            }else if (id == R.id.nav_grafic) {
+                navController.navigate(R.id.action_nav_grafic_to_nav_set);
+            }else if (id == R.id.nav_editor) {
+                navController.navigate(R.id.action_nav_editor_to_nav_set);
+            }else if (id == R.id.nav_rascladki) {
+                navController.navigate(R.id.action_nav_rascladki_to_nav_set);
+            }else if (id == R.id.nav_help) {
+                navController.navigate(R.id.action_nav_help_to_nav_set);
+            }else if (id == R.id.nav_new_exercise) {
+                navController.navigate(R.id.action_nav_new_exercise_to_nav_set);
+            }
+            break;
+
+        case R.id.nav_help:
+            if (id == R.id.nav_home){
+                navController.navigate(R.id.action_nav_home_to_nav_help);//
+            }else if (id == R.id.nav_tempoleader){
+                navController.navigate(R.id.action_nav_editor_to_nav_help);
+            }else if (id == R.id.nav_secundomer){
+                navController.navigate(R.id.action_nav_secundomer_to_nav_help);
+            }else if (id == R.id.nav_grafic) {
+                navController.navigate(R.id.action_nav_grafic_to_nav_help);
+            }else if (id == R.id.nav_editor) {
+                navController.navigate(R.id.action_nav_editor_to_nav_help);
+            }else if (id == R.id.nav_rascladki) {
+                navController.navigate(R.id.action_nav_rascladki_to_nav_help);
+            }else if (id == R.id.nav_set) {
+                navController.navigate(R.id.action_nav_set_to_nav_help);//
+            }else if (id == R.id.nav_new_exercise) {
+                navController.navigate(R.id.action_nav_new_exercise_to_nav_help);
+            }
+            break;
+
         case R.id.nav_grafic:
             bundle = new Bundle();
             bundle.putString(P.NAME_OF_FILE, data);
