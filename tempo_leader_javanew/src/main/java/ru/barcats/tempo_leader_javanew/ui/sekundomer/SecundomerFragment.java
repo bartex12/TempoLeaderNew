@@ -83,15 +83,21 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
     private View root;
     private RecyclerView recyclerView;
     private OnTransmitListener onTransmitListener;
+    private OnStarttListener onStarttListener;
 
     public interface OnTransmitListener{
         void onTransmit(String data);
+    }
+
+    public interface OnStarttListener{
+        void onStart(boolean start);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onTransmitListener = (OnTransmitListener)context;
+        onStarttListener = (OnStarttListener)context;
     }
 
     @Override
@@ -292,9 +298,8 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
 
                 //выставляем флаг нажатия на Старт = нет
                 start = false;
-                //вызываем onPrepareOptionsMenu для создания недоступномсти значков ToolBar
-                //invalidateOptionsMenu();
-
+                //передаём в Main флаг start
+                onStarttListener.onStart(start);
             }
         });
     }
@@ -432,9 +437,8 @@ public class SecundomerFragment extends Fragment implements DialogSaveSec.SaveSe
                 mRestart = true;
                 //выставляем флаг нажатия на Старт = да
                 start = true;
-                //вызываем onPrepareOptionsMenu для создания недоступномсти значков ToolBar
-                //invalidateOptionsMenu();
-
+                //передаём в Main флаг start
+                onStarttListener.onStart(start);
             }
         });
     }

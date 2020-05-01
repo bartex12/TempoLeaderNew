@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -42,7 +44,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements TempoleaderFragment.OnTransmitListener, GraficFragment.OnTransmitListener,
-        EditorFragment.SaverFragmentListener, SecundomerFragment.OnTransmitListener{
+        EditorFragment.SaverFragmentListener, SecundomerFragment.OnTransmitListener,
+        TempoleaderFragment.OnStarttListener,  SecundomerFragment.OnStarttListener{
 
     public static final String TAG ="33333";
     public static final int  VALUE = 10;  //  величина изменения темпа по умолчанию
@@ -55,8 +58,17 @@ public class MainActivity extends AppCompatActivity
     private  BottomNavigationView bottomNavigation;
     private String data;
     private long fileIdCopy;
-    boolean isChangeTemp;
-    boolean isSaveVisible;
+    private boolean isChangeTemp;
+    private boolean isSaveVisible;
+    private boolean start;
+    private ActionBar acBar;
+
+    @Override
+    public void onStart(boolean start) {
+        this.start =start;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(!start);
+        invalidateOptionsMenu();
+    }
 
     @Override
     public void onTransmit(String data) {
@@ -88,6 +100,7 @@ public class MainActivity extends AppCompatActivity
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //acBar = getSupportActionBar();
 
         //включение setDrawerLayout(drawerLayout) даёт появление гамбургера в панели
         appBarConfiguration =
@@ -127,6 +140,13 @@ public class MainActivity extends AppCompatActivity
                }
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
     @Override
@@ -177,7 +197,14 @@ public class MainActivity extends AppCompatActivity
                 }
             }, 2000);
         }else {
-            super.onBackPressed();
+            if (start){
+                Log.d(TAG,"TimeMeterActivity onBackPressed if (start)");
+                Toast.makeText(getApplicationContext(),
+                        "Сначала нажмите Стоп", Toast.LENGTH_SHORT).show();
+            }else{
+                super.onBackPressed();
+                Log.d(TAG,"TimeMeterActivity onBackPressed if (!start)");
+            }
         }
     }
 
@@ -227,10 +254,17 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_tempoleader:
-                menu.findItem(R.id.nav_help).setVisible(true);
-                menu.findItem(R.id.nav_set).setVisible(true);
-                menu.findItem(R.id.nav_rascladki).setVisible(true);
-                menu.findItem(R.id.nav_editor).setVisible(true);
+                if (start){
+                    menu.findItem(R.id.nav_rascladki).setVisible(false);
+                    menu.findItem(R.id.nav_editor).setVisible(false);
+                    menu.findItem(R.id.nav_help).setVisible(false);
+                    menu.findItem(R.id.nav_set).setVisible(false);
+                }else {
+                    menu.findItem(R.id.nav_rascladki).setVisible(true);
+                    menu.findItem(R.id.nav_editor).setVisible(true);
+                    menu.findItem(R.id.nav_help).setVisible(true);
+                    menu.findItem(R.id.nav_set).setVisible(true);
+                }
                 menu.findItem(R.id.nav_grafic).setVisible(false);
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
@@ -251,11 +285,17 @@ public class MainActivity extends AppCompatActivity
                 menu.findItem(R.id.nav_tempoleader).setVisible(false);
                 break;
             case R.id.nav_secundomer:
-                menu.findItem(R.id.nav_help).setVisible(true);
-                menu.findItem(R.id.nav_set).setVisible(true);
+                if (start){
+                    menu.findItem(R.id.nav_help).setVisible(false);
+                    menu.findItem(R.id.nav_set).setVisible(false);
+                    menu.findItem(R.id.nav_grafic).setVisible(false);
+                }else {
+                    menu.findItem(R.id.nav_help).setVisible(true);
+                    menu.findItem(R.id.nav_set).setVisible(true);
+                    menu.findItem(R.id.nav_grafic).setVisible(true);
+                }
                 menu.findItem(R.id.nav_rascladki).setVisible(false);
                 menu.findItem(R.id.nav_editor).setVisible(false);
-                menu.findItem(R.id.nav_grafic).setVisible(true);
                 menu.findItem(R.id.menu_item_new_frag).setVisible(false);
                 menu.findItem(R.id.change_temp_up_down).setVisible(false);
                 menu.findItem(R.id.save_data_in_file).setVisible(false);
@@ -379,4 +419,6 @@ public class MainActivity extends AppCompatActivity
     }
     return super.onOptionsItemSelected(item);
     }
+
+
 }

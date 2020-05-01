@@ -110,6 +110,7 @@ public class TempoleaderFragment extends Fragment {
     private long fileId;
     private RecyclerView recyclerView;
     private OnTransmitListener onTransmitListener;
+    private  OnStarttListener onStarttListener;
     private View root;
 
 
@@ -117,10 +118,15 @@ public class TempoleaderFragment extends Fragment {
         void onTransmit(String data);
     }
 
+    public interface OnStarttListener{
+        void onStart(boolean start);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onTransmitListener = (OnTransmitListener)context;
+        onStarttListener = (OnStarttListener)context;
     }
 
     @Override
@@ -427,8 +433,11 @@ public class TempoleaderFragment extends Fragment {
                 //выставляем доступность кнопок
                 buttonsEnable (false,true,false);
                 Log.d(TAG, "countMilliSecond = " + countMilliSecond +"  countReps = " + countReps);
+
                 //выставляем флаг нажатия на Старт = да
                 start = true;
+                //передаём в Main флаг start
+                onStarttListener.onStart(start);
 
                 //делаем изменение задержки недоступным
                 mDelayButton.setEnabled(false);
@@ -467,12 +476,14 @@ public class TempoleaderFragment extends Fragment {
                     mTextViewRest.setText(R.string.textViewRestTime);  //Время отдыха, сек
                 }
 
-                Log.d(TAG, "Pressed StopButton workOn = " + workOn);
-
-                delayOn = false; //Выставляем флаг "задержка"
-                start = false;  //выставляем флаг нажатия на Старт = нет
                 workOn = false; //Выставляем флаг "работа"
                 restOn = true; //признак начала отдыха
+                delayOn = false; //Выставляем флаг "задержка"
+                start = false;  //выставляем флаг нажатия на Старт = нет
+                //передаём в Main флаг start
+                onStarttListener.onStart(start);
+
+                Log.d(TAG, "Pressed StopButton workOn = " + workOn);
             }
         });
     }
@@ -502,6 +513,8 @@ public class TempoleaderFragment extends Fragment {
                 restOn = false; //признак начала отдыха
                 end = false;  //признак окончания подхода в Нет
                 start = false;
+                //передаём в Main флаг start
+                onStarttListener.onStart(start);
 
                 mTimeRestCurrent = 0; //текущее время отдыха
                 mTextViewDelay.setText(R.string.textViewDelay); //задержка,сек
@@ -638,7 +651,7 @@ public class TempoleaderFragment extends Fragment {
                     mTotalReps = 0;
                     mCountFragment ++; // чтобы в одаптере маркер фрагментов подхода правильно показывал
                     end = true;
-                    start = false; //это для разблокировки кнопки BACK
+                    start = false; //это для разблокировки кнопки BACK и показа меню
                     workOn = false;  //признак начала работы
                     restOn = true; //признак начала отдыха
                     //фиксируем момент начала отдыха
@@ -653,7 +666,8 @@ public class TempoleaderFragment extends Fragment {
                             adapter.setItem(mCountFragment); // для маркера фрагментов подхода
                             recyclerView.scrollToPosition(mCountFragment); //переход в позицию списка
                             adapter.notifyDataSetChanged(); //оповещаем об изменениях
-
+                            //передаём в Main флаг start в пользовательском потоке
+                            onStarttListener.onStart(start);
                             buttonsEnable(true, false, true);
                             mDelayButton.setEnabled(true);
                         }
