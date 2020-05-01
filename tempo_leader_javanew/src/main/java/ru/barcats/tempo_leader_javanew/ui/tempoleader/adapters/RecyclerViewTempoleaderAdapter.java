@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
@@ -66,9 +67,9 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
         holder.mark_item_set_textview.setText(
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
             if (position < item){
-                holder.mark_item_set_textview.setBackgroundColor(Color.YELLOW);
+                holder.view_mark_end.setBackgroundColor(Color.YELLOW);
             }else {
-                holder.mark_item_set_textview
+                holder.view_mark_end
                         .setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             }
         //onSetListClickListener.onSetListClick(position);
@@ -81,11 +82,12 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout all_item_set_textview ;
+        ConstraintLayout all_item_set_textview ;
         TextView time_item_set_textview;
         TextView reps_item_set_textview;
         TextView mark_item_set_textview;
-
+        TextView view_mark;
+        TextView view_mark_end;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +95,8 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
             time_item_set_textview = itemView.findViewById(R.id.time_item_set_textview);
             reps_item_set_textview = itemView.findViewById(R.id.reps_item_set_textview);
             mark_item_set_textview = itemView.findViewById(R.id.mark_item_set_textview);
+            view_mark = itemView.findViewById(R.id.view_mark);
+            view_mark_end = itemView.findViewById(R.id.view_mark_end);
         }
     }
 

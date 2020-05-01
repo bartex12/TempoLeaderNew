@@ -67,7 +67,6 @@ public class TabBarTempFragment extends AbstrTabFragment {
         int id = item.getItemId();
 
             switch (id) {
-
                 case P.MOVE_SHOW_GRAF_TEMP:
                     NavController controller = Navigation.findNavController(getView());
                     Bundle bundle = new Bundle();

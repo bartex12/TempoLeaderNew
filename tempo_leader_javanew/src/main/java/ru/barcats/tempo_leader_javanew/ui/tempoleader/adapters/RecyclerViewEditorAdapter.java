@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.barcats.tempo_leader_javanew.R;
 import ru.barcats.tempo_leader_javanew.model.DataSet;
@@ -95,52 +96,55 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
                 String.valueOf(listOfSet.get(position).getNumberOfFrag()));
 
         if (isLongClick){
-            holder.time_item_set_textview.setBackgroundColor(context.getResources()
-                    .getColor(android.R.color.transparent));
-            holder.reps_item_set_textview.setBackgroundColor(context.getResources()
-                    .getColor(android.R.color.transparent));
-
             if (posItem == position){
-                holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
-                holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
+                //holder.all_item_set_textview.setBackgroundColor(Color.YELLOW);
+
+                holder.view_time.setBackgroundColor(Color.YELLOW);
+                holder.view_reps.setBackgroundColor(Color.YELLOW);
+               // holder.view_mark.setBackgroundColor(Color.YELLOW);
             }else {
-                holder.time_item_set_textview.setBackgroundColor(context.getResources()
+//                holder.all_item_set_textview.setBackgroundColor(context.getResources()
+//                        .getColor(android.R.color.transparent));
+
+                holder.view_time.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
-                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                holder.view_reps.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
+//                holder.view_mark.setBackgroundColor(context.getResources()
+//                        .getColor(android.R.color.transparent));
             }
         }else {
             if (isForAll){
                 if (isEditTime){
-                    holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
-                    holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                    holder.view_time.setBackgroundColor(Color.YELLOW);
+                    holder.view_reps.setBackgroundColor(context.getResources()
                             .getColor(android.R.color.transparent));
                 }else {
-                    holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
-                    holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                    holder.view_reps.setBackgroundColor(Color.YELLOW);
+                    holder.view_time.setBackgroundColor(context.getResources()
                             .getColor(android.R.color.transparent));
                 }
             }else {
                 if (isEditTime){
                     if (posItem == position){
-                        holder.time_item_set_textview.setBackgroundColor(Color.YELLOW);
-                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_time.setBackgroundColor(Color.YELLOW);
+                        holder.view_reps.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
                     }else {
-                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_time.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
-                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_reps.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
                     }
                 }else {
                     if (posItem == position){
-                        holder.reps_item_set_textview.setBackgroundColor(Color.YELLOW);
-                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_reps.setBackgroundColor(Color.YELLOW);
+                        holder.view_time.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
                     }else {
-                        holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_reps.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
-                        holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                        holder.view_time.setBackgroundColor(context.getResources()
                                 .getColor(android.R.color.transparent));
                     }
                 }
@@ -161,9 +165,9 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
         holder.all_item_set_textview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                holder.reps_item_set_textview.setBackgroundColor(context.getResources()
+                holder.view_reps.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
-                holder.time_item_set_textview.setBackgroundColor(context.getResources()
+                holder.view_time.setBackgroundColor(context.getResources()
                         .getColor(android.R.color.transparent));
                 posItem = position;
                 onLongClickLikeListener.onLongClickLike(position);
@@ -179,10 +183,14 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout all_item_set_textview ;
+        ConstraintLayout all_item_set_textview ;
         TextView time_item_set_textview;
         TextView reps_item_set_textview;
         TextView mark_item_set_textview;
+
+        TextView view_time;
+        TextView view_reps;
+        TextView view_mark;
 
 
         public ViewHolder(View itemView) {
@@ -191,6 +199,10 @@ public class RecyclerViewEditorAdapter extends RecyclerView.Adapter<RecyclerView
             time_item_set_textview = itemView.findViewById(R.id.time_item_set_textview);
             reps_item_set_textview = itemView.findViewById(R.id.reps_item_set_textview);
             mark_item_set_textview = itemView.findViewById(R.id.mark_item_set_textview);
+
+            view_time = itemView.findViewById(R.id.view_time);
+            view_reps = itemView.findViewById(R.id.view_reps);
+            view_mark = itemView.findViewById(R.id.view_mark);
         }
     }
 
