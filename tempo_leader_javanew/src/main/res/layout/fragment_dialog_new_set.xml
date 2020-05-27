@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/fr_n"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/mark_item_newset"
@@ -30,7 +31,7 @@
             android:singleLine="true"
             android:text="@string/_0"
             android:textColor="#0512c5"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -46,7 +47,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/time_sec"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
 
         <EditText
             android:id="@+id/time_item_newset"
@@ -58,12 +65,15 @@
             android:ems="10"
             android:enabled="true"
             android:focusable="true"
-            android:selectAllOnFocus="true"
             android:gravity="center"
             android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
             android:text="@string/timeValue_item1"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -77,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/count_reps"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/reps_item_newset"
@@ -89,11 +99,11 @@
             android:ems="10"
             android:enabled="true"
             android:focusable="true"
-            android:selectAllOnFocus="true"
             android:gravity="center"
             android:inputType="number"
+            android:selectAllOnFocus="true"
             android:text="@string/repsValue_item1"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -112,8 +122,9 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:textSize="16sp"
-            android:text="@string/cancel_" />
+            android:text="@string/cancel_"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
 
 
         <Button

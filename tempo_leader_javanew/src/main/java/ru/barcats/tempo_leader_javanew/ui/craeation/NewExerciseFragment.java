@@ -1,5 +1,6 @@
 package ru.barcats.tempo_leader_javanew.ui.craeation;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -7,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,7 +40,7 @@ public class NewExerciseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frafment_new_exercise, container, false);
+        return inflater.inflate(R.layout.frafment_new_ex_material, container, false);
     }
 
     @Override
@@ -45,6 +48,9 @@ public class NewExerciseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tempDBHelper = new TempDBHelper(getActivity());
         database = tempDBHelper.getWritableDatabase();
+
+        //принудительно вызываем клавиатуру - повторный вызов ее скроет
+        takeOnAndOffSoftInput();
 
         //разрешить только портретную ориентацию экрана
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -108,18 +114,18 @@ public class NewExerciseFragment extends Fragment {
 
                 //если имя - пустая строка
                 if (fileNameStr.trim().isEmpty()){
-                    Snackbar.make(v, R.string.InputNameOfSchelule, Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(v.getContext(), R.string.InputNameOfSchelule,
+                            Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Введите непустое имя раскладки ");
                     //если такое имя уже есть в базе
                 }else if (fileId != -1) {
-                    Snackbar.make(v, R.string.InputAnotherName, Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(v.getContext(), R.string.InputAnotherName,
+                            Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Такое имя уже существует. Введите другое имя. fileId = " +fileId);
                     //если во всех фрагментах есть нулевые поля
                 }else  if (resalt == 0) {
-                    Snackbar.make(v, "Заполните хотя бы один фрагмент подхода.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(v.getContext(), "Заполните хотя бы один фрагмент подхода.",
+                            Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Заполните хотя бы один фрагмент подхода  resalt = " + resalt);
                     //если имя не повторяется, оно не пустое и заполнен хотя бы один фрагмент
                 }else {
@@ -154,40 +160,16 @@ public class NewExerciseFragment extends Fragment {
                     bundle.putString(P.NAME_OF_FILE, fileNameStr);
                     bundle.putInt(P.FROM_ACTIVITY, P.NEW_EXERCISE_ACTIVITY);  //555 - NewExerciseFragment
                     controller.navigate(R.id.action_new_exercise_to_nav_tempoleader, bundle);
+
+                    takeOnAndOffSoftInput();
                 }
             }
         });
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //return super.onCreateOptionsMenu(menu);
-//        getMenuInflater().inflate(R.menu.pacemaker,menu);
-//        Log.d(TAG, "onCreateOptionsMenu");
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        switch (item.getItemId()){
-//            case android.R.id.home:
-//                Log.d(TAG, "Домой");
-//                Intent intentHome = new Intent(this, MainActivity.class);
-//                startActivity(intentHome);
-//                finish();
-//                return true;
-//
-//            case R.id.action_settings:
-//                //вызываем ListOfFilesActivity
-//                Intent intentPref = new Intent(getBaseContext(), PrefActivity.class);
-//                startActivity(intentPref);
-//                //finish();  //не нужно
-//                return true;
-//
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
+    //принудительно вызываем клавиатуру - повторный вызов ее скроет
+    private void takeOnAndOffSoftInput(){
+        InputMethodManager imm = (InputMethodManager) requireActivity().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
 }

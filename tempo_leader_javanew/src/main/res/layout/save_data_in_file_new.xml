@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/editTextNameOfFile_new"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:hint="Введите имя файла"
-        android:inputType="text"/>
+        android:hint="@string/inputFileName"
+        app:endIconMode="clear_text">
+
+        <EditText
+            android:id="@+id/editTextNameOfFile_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -26,9 +32,8 @@
             android:id="@+id/textViewAddDate_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Добавить дату и время"/>
+            android:layout_marginStart="20dp"
+            android:text="Добавить дату и время" />
 
         <CheckBox
             android:id="@+id/checkBoxDate_new"
@@ -51,11 +56,12 @@
             android:id="@+id/buttonSaveNo_new"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:text="Нет"/>
+            android:text="@string/no"
+            android:textColor="@color/colorAccent" />
 
         <Button
             android:id="@+id/buttonSaveYes_new"
@@ -65,7 +71,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="2"
             android:background="@android:color/transparent"
-            android:text="Сохранить"/>
+            android:text="@string/save_as"/>
+
     </LinearLayout>
 
 </LinearLayout>

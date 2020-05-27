@@ -32,7 +32,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:background="#72f5a4"
         android:id="@+id/linearLayoutDivider"
         android:layout_marginBottom="5dp">
@@ -47,7 +47,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:background="#72f5a4"
         android:id="@+id/linearLayout2"
         android:layout_marginTop="5dp">
@@ -67,31 +67,28 @@
 
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/NN_"
                 android:id="@+id/item_list"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/time_"
+                android:layout_marginStart="5dp"
+                android:text="@string/NN_"
+                android:textSize="20sp" />
+
+            <TextView
                 android:id="@+id/time_list"
-                android:textSize="20sp"
-                android:layout_column="5"
-                android:textStyle="bold"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/krug"
+                android:layout_column="5"
+                android:text="@string/time_"
+                android:textSize="20sp" />
+
+            <TextView
                 android:id="@+id/delta_time_list"
-                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_column="9"
-                android:textStyle="bold"/>
+                android:text="@string/krug"
+                android:textSize="20sp" />
 
         </TableRow>
     </TableLayout>
@@ -99,7 +96,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:background="#72f5a4"
         android:id="@+id/linearLayout3">
     </LinearLayout>

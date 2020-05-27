@@ -27,7 +27,6 @@
             android:textColor="@android:color/background_dark"/>
     </LinearLayout>
 
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

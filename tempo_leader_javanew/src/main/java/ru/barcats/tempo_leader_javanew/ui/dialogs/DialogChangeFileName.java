@@ -51,8 +51,6 @@ public class DialogChangeFileName extends DialogFragment {
         super.onAttachFragment(childFragment);
         Log.d(TAG, " **** DialogChangeFileName onAttachFragment = ");
         context = childFragment.getContext();
-//        database = new TempDBHelper(context).getWritableDatabase();
-//        Log.d(TAG, " **** DialogChangeFileName database = " + database);
     }
 
     @Nullable
@@ -61,12 +59,6 @@ public class DialogChangeFileName extends DialogFragment {
         Log.d(TAG, " **** DialogChangeFileName onCreateView");
 
           view = inflater.inflate(R.layout.fragment_dialog_chahge_name, null);
-
-//        database = new TempDBHelper(container.getContext()).getWritableDatabase();
-//        Log.d(TAG, " **** DialogChangeFileName database = " + database);
-
-
-
         return view;
     }
 
@@ -75,7 +67,6 @@ public class DialogChangeFileName extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
-
 
     @NotNull
     @Override
@@ -87,8 +78,8 @@ public class DialogChangeFileName extends DialogFragment {
 //        final long fileIdOld = TabFile.getIdFromFileName(database,fileNameOld);
 //        //получаем объект с данными строки с id = acmi.id из  таблицы TabFile
 //        final DataFile dataFile = TabFile.getAllFilesData(database, fileIdOld);
-//        //принудительно вызываем клавиатуру - повторный вызов ее скроет
-//        // takeOnAndOffSoftInput();
+        //принудительно вызываем клавиатуру - повторный вызов ее скроет
+         takeOnAndOffSoftInput();
 
         final AlertDialog.Builder changeDialog = new AlertDialog.Builder(context);
         LayoutInflater inflater = getActivity().getLayoutInflater();

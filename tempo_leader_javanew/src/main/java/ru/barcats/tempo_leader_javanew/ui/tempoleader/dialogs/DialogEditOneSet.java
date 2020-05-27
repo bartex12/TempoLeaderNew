@@ -101,7 +101,7 @@ public class DialogEditOneSet extends DialogFragment {
             builder.setIcon(R.drawable.ic_refresh_black_24dp);
             //если Добавить с тулбара редактора  +
         }else if (from == P.TO_ADD_LAST_SET){
-            builder.setTitle("Создать");
+            builder.setTitle("Создать фрагмент");
             builder.setIcon(R.drawable.ic_add_black_24dp);
         }else if (from == P.TO_INSERT_AFTER_FRAG){
             builder.setTitle("Вставить после");
@@ -124,7 +124,7 @@ public class DialogEditOneSet extends DialogFragment {
         //запрет на закрытие окна при щелчке за пределами окна
         dialog.setCanceledOnTouchOutside(false);
         //Вызываем экранную клавиатуру -метод работает как в 4.0.3, так и в 6.0
-        showSoftInputOn();
+        //showSoftInputOn();
         return dialog;
     }
 
@@ -146,7 +146,7 @@ public class DialogEditOneSet extends DialogFragment {
                     editorViewModel.insertSetBefore(mDataSet, finishFileName, positionOfList);
                 }
                 //прячем экранную клавиатуру
-                takeOffSoftInput();
+                //takeOffSoftInput();
                 getDialog().dismiss();  //закрывает только диалог
             }
         });
@@ -246,8 +246,10 @@ public class DialogEditOneSet extends DialogFragment {
         //прячем экранную клавиатуру
         InputMethodManager imm = (InputMethodManager)requireActivity().
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        if(requireActivity().getCurrentFocus().getWindowToken()!=null){
+            imm.hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
 
     }
 }

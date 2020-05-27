@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -182,8 +183,8 @@ public abstract class AbstrTabFragment extends Fragment {
             }
         });
         if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, getResources().getString(R.string.system_file),
-                    Snackbar.LENGTH_SHORT).setAnchorView(R.id.recycler_rascladki).show();
+            Snackbar.make(recyclerView, R.string.system_file, Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.recycler_rascladki).show();
         }else {
             deleteDialog.show();
         }
@@ -257,8 +258,8 @@ public abstract class AbstrTabFragment extends Fragment {
         dialog.setCanceledOnTouchOutside(false);
 
         if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, getResources().getString(R.string.system_file_change),
-                    Snackbar.LENGTH_SHORT).setAnchorView(R.id.recycler_rascladki).show();
+            Snackbar.make(recyclerView, R.string.system_file_change,Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.recycler_rascladki).show();
         }else {
             dialog.show();
         }

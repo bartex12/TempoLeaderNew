@@ -62,7 +62,7 @@ public class DialogSetDelay extends DialogFragment {
         editTextDelay = view.findViewById(R.id.editTextDelay);
         editTextDelay.setText( getArguments().getString(P.ARG_DELAY)); //получаем из аргументов
         //так как в макете это уже есть, здесь не надо
-        //editTextDelay.requestFocus();
+        editTextDelay.requestFocus();
         //editTextDelay.setInputType(InputType.TYPE_CLASS_NUMBER);
         builder.setView(view);
         builder.setTitle("Установите задержку старта в секундах");

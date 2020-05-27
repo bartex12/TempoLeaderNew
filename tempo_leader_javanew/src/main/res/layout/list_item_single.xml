@@ -18,7 +18,7 @@
         android:paddingRight="16dp"
         android:text="@string/head"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:textStyle="italic" />
 
     <View

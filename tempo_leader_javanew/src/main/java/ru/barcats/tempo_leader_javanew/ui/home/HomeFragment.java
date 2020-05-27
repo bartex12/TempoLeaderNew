@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -55,7 +56,9 @@ public class HomeFragment extends Fragment {
         navController = Navigation.findNavController(view);
         //находим HomeViewModel
         homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+                new ViewModelProvider(this).get(HomeViewModel.class);
+        //если записей в базе нет - создаём файл автосохранение секундомера
+        homeViewModel.createDefaultFile();
         //наблюдаем за изменением данных
         homeViewModel.getListMain().observe(getViewLifecycleOwner(),
                 new Observer<ArrayList<DataHome>>() {

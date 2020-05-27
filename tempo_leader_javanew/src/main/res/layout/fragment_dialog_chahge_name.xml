@@ -15,12 +15,12 @@
         android:inputType="text"/>
 
     <TextView
+        android:id="@+id/textViewDateAndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/date_time"
-        android:id="@+id/textViewDateAndTime"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/date_time" />
 
     <EditText
         android:layout_width="match_parent"
@@ -40,11 +40,11 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:id="@+id/textViewAddDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/addDateTime"
-            android:id="@+id/textViewAddDate"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="20dp"
+            android:text="@string/addDateTime" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -69,7 +69,8 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:text="@string/CancelEdit"/>
+            android:text="@string/CancelEdit"
+            android:textColor="@color/colorAccent" />
 
         <Button
             android:id="@+id/buttonSaveYesChangeName"

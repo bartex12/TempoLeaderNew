@@ -53,7 +53,6 @@ public class RecyclerViewTempoleaderAdapter extends RecyclerView.Adapter<Recycle
 
         View view = LayoutInflater.from(context).inflate(
                 R.layout.list_item_set_textview, parent, false);
-
         return new ViewHolder(view) ;
     }
 

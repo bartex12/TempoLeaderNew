@@ -34,7 +34,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:background="#72f5a4"
         android:layout_below="@+id/tvTime"
         android:layout_alignParentStart="true"
@@ -56,13 +56,12 @@
 
 
             <TextView
+                android:id="@+id/item_listSec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="@string/NN"
-                android:id="@+id/item_listSec"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="5dp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/time_listSec"
@@ -70,8 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="5"
                 android:text="@string/label_time"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/delta_time_listSec"
@@ -79,8 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="9"
                 android:text="@string/label_lap"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
+                android:textSize="20sp" />
 
         </TableRow>
     </TableLayout>
@@ -88,7 +85,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:background="#72f5a4"
         android:layout_below="@+id/headOfListSec"
         android:layout_alignParentStart="true"

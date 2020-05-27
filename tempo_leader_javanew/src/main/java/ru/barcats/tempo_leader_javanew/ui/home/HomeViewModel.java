@@ -34,4 +34,8 @@ public class HomeViewModel extends AndroidViewModel {
         ArrayList<DataHome> list = storage.getListMain();
         data.setValue(list);
     }
+
+    public void createDefaultFile() {
+        storage.createDefoultFile();
+    }
 }

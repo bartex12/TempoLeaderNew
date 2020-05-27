@@ -72,7 +72,6 @@ public class TabBarSecFragment extends AbstrTabFragment {
         int id = item.getItemId();
 
         switch (id) {
-
             case P.MOVE_SHOW_GRAF_SEC:
                 NavController controller = Navigation.findNavController(getView());
                 Bundle bundle = new Bundle();
