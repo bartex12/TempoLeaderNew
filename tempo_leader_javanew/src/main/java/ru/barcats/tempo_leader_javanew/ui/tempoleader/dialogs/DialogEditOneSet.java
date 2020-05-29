@@ -236,20 +236,19 @@ public class DialogEditOneSet extends DialogFragment {
         }else return Integer.parseInt(reps.getText().toString());
     }
 
-    private void showSoftInputOn() {
-        InputMethodManager imm = (InputMethodManager)requireActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mTimeOfRepFrag, 0);
-    }
-
-    private void takeOffSoftInput(){
-        //прячем экранную клавиатуру
-        InputMethodManager imm = (InputMethodManager)requireActivity().
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(requireActivity().getCurrentFocus().getWindowToken()!=null){
-            imm.hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-
-    }
+//    private void showSoftInputOn() {
+//        InputMethodManager imm = (InputMethodManager)requireActivity()
+//                .getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(mTimeOfRepFrag, 0);
+//    }
+//
+//    private void takeOffSoftInput(){
+//        //прячем экранную клавиатуру
+//        InputMethodManager imm = (InputMethodManager)requireActivity().
+//                getSystemService(Context.INPUT_METHOD_SERVICE);
+//        if(requireActivity().getCurrentFocus().getWindowToken()!=null){
+//            imm.hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(),
+//                    InputMethodManager.HIDE_NOT_ALWAYS);
+//        }
+//    }
 }

@@ -55,7 +55,6 @@ public abstract class AbstrTabFragment extends Fragment {
     protected abstract String getDateAndTime(String fileName);
     protected abstract void doChangeAction(String fileNameOld, String fileNameNew);
     protected abstract long getIdFromFileName(String fileName);
-
     protected RecyclerView getRecyclerView() {
         return recyclerView;
     }
@@ -182,12 +181,7 @@ public abstract class AbstrTabFragment extends Fragment {
                 doDeleteAction(fileName);
             }
         });
-        if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, R.string.system_file, Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.recycler_rascladki).show();
-        }else {
-            deleteDialog.show();
-        }
+        deleteDialog.show();
     }
 
     //диалог изменения имени файла через AlertDialog.Builder - чтобы было плавающее окно
@@ -243,7 +237,6 @@ public abstract class AbstrTabFragment extends Fragment {
                 }
             }
         });
-
         Button saveButNo = viewDialog.findViewById(R.id.buttonSaveNoChangeName);
         saveButNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,13 +249,6 @@ public abstract class AbstrTabFragment extends Fragment {
         dialog = changeDialog.create();
         //запрет на закрытие окна при щелчке за пределами окна
         dialog.setCanceledOnTouchOutside(false);
-
-        if (fileName.equals(P.FILENAME_OTSECHKI_SEC)){
-            Snackbar.make(recyclerView, R.string.system_file_change,Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.recycler_rascladki).show();
-        }else {
-            dialog.show();
-        }
+        dialog.show();
     }
-
 }

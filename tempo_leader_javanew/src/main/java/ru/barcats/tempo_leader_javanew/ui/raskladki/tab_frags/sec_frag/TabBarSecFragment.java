@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +61,16 @@ public class TabBarSecFragment extends AbstrTabFragment {
         menu.add(0, P.MOVE_TEMP_ACTION_SEC, 30, "Переместить в темполидер");
         menu.add(0, P.MOVE_LIKE_ACTION_SEC, 40, "Переместить в избранное");
         menu.add(0, P.CANCEL_ACTION_SEC, 50, "Отмена");
+
+        if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
+            menu.findItem(P.DELETE_ACTION_SEC).setEnabled(false);
+            menu.findItem(P.CHANGE_ACTION_SEC).setEnabled(false);
+            menu.findItem(P.MOVE_TEMP_ACTION_SEC).setEnabled(false);
+            menu.findItem(P.MOVE_LIKE_ACTION_SEC).setEnabled(false);
+            //выводим сообщение Системный файл. Действия ограничены.
+            Toast.makeText(getActivity(), getResources()
+                    .getString(R.string.system_file_limited),Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -92,34 +103,22 @@ public class TabBarSecFragment extends AbstrTabFragment {
 
             case P.MOVE_TEMP_ACTION_SEC:
                 Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
-                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-                    Snackbar.make(getRecyclerView(), getResources()
-                                    .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
-                                    .setAnchorView(R.id.recycler_rascladki).show();
-                }else {
                     //поручаем перемещение файла ViewModel
                     secViewModel.moveItemInTemp(getFileName());
                     //обновляем список вкладки после перемещения файла
                     getAdapter().notifyDataSetChanged();
                     // обновляем вкладки после перемещения файла
                     getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-                }
                 break;
 
             case P.MOVE_LIKE_ACTION_SEC:
                 Log.d(TAG, "// TabBarSecFragment  getFileName() = " + getFileName());
-                if (getFileName().equals(P.FILENAME_OTSECHKI_SEC)) {
-                    Snackbar.make(getRecyclerView(), getResources()
-                            .getString(R.string.system_file_move),Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.recycler_rascladki).show();
-                }else {
                     //поручаем перемещение файла ViewModel
                     secViewModel.moveItemInLike(getFileName());
                     //обновляем список вкладки после перемещения файла
                     getAdapter().notifyDataSetChanged();
                     // обновляем вкладки после перемещения файла
                     getViewPager().getAdapter().notifyDataSetChanged(); //работает !
-                }
                 break;
 
             case P.CANCEL_ACTION_SEC:

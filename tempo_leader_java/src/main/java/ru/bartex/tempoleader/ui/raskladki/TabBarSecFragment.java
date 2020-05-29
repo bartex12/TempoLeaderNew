@@ -162,6 +162,7 @@ public class TabBarSecFragment extends Fragment {
         // получаем инфу о пункте списка
         final AdapterView.AdapterContextMenuInfo acmi =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         //получаем номер открытой вкладки из аргументов
         int curItem = getArguments().getInt(P.ARG_NUMBER_ITEM_SEC);
         Log.d(TAG, "TabBarSecFragment curItem = " + curItem);
@@ -175,6 +176,7 @@ public class TabBarSecFragment extends Fragment {
             String fileName = TabFile.getFileNameFromTabFile(database, acmi.id);
             if (fileName.equals(P.FILENAME_OTSECHKI_SEC)||
                     fileName.equals(P.FILENAME_OTSECHKI_TEMP)) {
+
                 Snackbar.make(getView(), "Системный файл. Удаление запрещено.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }else {

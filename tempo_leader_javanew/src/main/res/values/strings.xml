@@ -165,6 +165,7 @@
     <string name="action_cancel">Отменить</string>
     <string name="system_file">Системный файл. Удаление запрещено.</string>
     <string name="system_file_move">Системный файл. Действие запрещено.</string>
+    <string name="system_file_limited">Системный файл. Действия ограничены.</string>
     <string name="system_file_change">Системный файл. Действие запрещено.</string>
     <string name="name_file_dialog">Имя файла</string>
     <string name="date_time">Дата и время записи</string>

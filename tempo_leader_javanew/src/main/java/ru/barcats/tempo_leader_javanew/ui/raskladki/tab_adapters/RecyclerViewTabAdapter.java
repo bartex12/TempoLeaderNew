@@ -65,7 +65,7 @@ public class RecyclerViewTabAdapter extends
             }
         });
         // устанавливаем слушатель долгих нажатий на списке для вызова контекстного меню
-        //запоминаем позицию в списке - нужно при удалении, например
+        //передаём имя файла раскладки
         holder.name_of_rasckadka.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
