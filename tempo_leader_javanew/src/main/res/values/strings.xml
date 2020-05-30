@@ -69,6 +69,24 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="sound_level_entry_number">
+        <item>Без звука</item>
+        <item>20%</item>
+        <item>40%</item>
+        <item>60%</item>
+        <item>80%</item>
+        <item>100%</item>
+    </string-array>
+
+    <string-array name="sound_level_entryValues_number">
+        <item>0</item>
+        <item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+    </string-array>
+
     <string-array name="MenuMain">
         <item>Секундомер</item>
         <item>Темполидер</item>
@@ -209,8 +227,11 @@
     <string name="screen2_summary">Открываем настройки звука</string>
     <string name="screen2_title">Громкость</string>
     <string name="sound">Звук</string>
-    <string name="soundSet">Настройки звука</string>
+    <string name="soundSet">Звук</string>
     <string name="opit">Опыты</string>
     <string name="max_volume">Громкость звуковых сигналов</string>
     <string name="setSound">Установите уровень громкости</string>
+    <string name="accurancy">Отсечки</string>
+    <string name="lap_accur">Точность отсечек</string>
+    <string name="sec">Секундомер</string>
 </resources>

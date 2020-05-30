@@ -18,15 +18,4 @@ public class PrefFragment extends PreferenceFragmentCompat {
         // создаём настройки из xml файла
       addPreferencesFromResource(R.xml.preferences);
     }
-
-    @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
-
-        if (preference instanceof SeekbarPreference) {
-            DialogFragment dialogFragment = DialogPrefFragCompat.newInstance(preference.getKey());
-            dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(getFragmentManager(), null);
-        } else super.onDisplayPreferenceDialog(preference);
-
-    }
 }

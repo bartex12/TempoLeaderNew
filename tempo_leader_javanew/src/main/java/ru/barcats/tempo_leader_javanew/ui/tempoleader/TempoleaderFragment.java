@@ -98,7 +98,8 @@ public class TempoleaderFragment extends Fragment {
     private int fromActivity;
 
     private int accurancy; //точность отсечек - количество знаков после запятой - от MainActivity
-    boolean sound = true; // включение / выключение звука
+    private boolean sound = true; // включение / выключение звука
+    private int sound_level; //уровень звука - если без звука, sound = false
     private SharedPreferences prefSetting;// предпочтения из PrefActivity
     private SharedPreferences shp; //предпочтения для записи задержки общей для всех раскладок
     private int  timeOfDelay = 6; //задержка в секундах
@@ -319,8 +320,9 @@ public class TempoleaderFragment extends Fragment {
         //получаем из файла настроек количество знаков после запятой
         accurancy = Integer.parseInt(prefSetting.getString("accurancy", "1"));
         Log.d(TAG,"TempoleaderFragment getPrefSettings accurancy = " + accurancy);
-        //получаем из файла настроек наличие звука
-        sound = prefSetting.getBoolean("cbSound",true);
+        sound_level =Integer.parseInt(prefSetting.getString("sound_level", "80"));
+        Log.d(TAG,"TempoleaderFragment getPrefSettings sound_level = " + sound_level);
+        sound = sound_level != 0;
         Log.d(TAG,"TempoleaderFragment getPrefSettings sound = " + sound);
     }
 
@@ -380,8 +382,8 @@ public class TempoleaderFragment extends Fragment {
                 if (mTimer!=null)mTimer.cancel();
                 mTimer =new Timer();
                 mTimerTask = new MyTimerTask();
-                //TODO регулировка звука
-                mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,50);
+                //регулировка звука через sound_level в настройках
+                mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC, sound_level);
 
                 //Выполняем начальные установки параметров, которые могли измениться
                 mCurrentRep = 0;  //устанавливаем счётчик повторений во фрагменте в 0

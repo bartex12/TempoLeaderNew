@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory
+        android:title="@string/accurancy">
     <ListPreference
         android:entries="@array/аccurancy_entry_number"
         android:entryValues="@array/аccurancy_entryValues_number"
-        android:defaultValue="3"
+        android:defaultValue="2"
         android:key="accurancy"
-        android:title="Точность отсечек"
+        android:title="@string/lap_accur"
         android:summary="@string/Accurancy"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/sec">
     <ListPreference
         android:entries="@array/pause_entry_number"
         android:entryValues="@array/pause_entryValues_number"
@@ -16,44 +21,17 @@
         android:key="pause_type"
         android:title="Пауза секундомера"
         android:summary="Варианты работы секундомера в режиме паузы"/>
-
-    <PreferenceCategory
-        android:title="@string/soundSet"
-        android:key="pref_key_sound">
-
-    <CheckBoxPreference
-        android:key="cbSound"
-        android:title="@string/sound"
-        android:summaryOn="@string/cbSoundOn"
-        android:summaryOff="@string/cbSoundOff"
-        android:defaultValue="@string/cbSoundOff"/>
-
-        <ru.barcats.tempo_leader_javanew.ui.settings.SeekbarPreference
-            android:key="pref_max_volume"
-            android:title="@string/max_volume"
-            android:dependency="cbSound"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/opit"
-        android:key="pref_key_opit">
-
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="Turn this option on or off"
-        android:title="Settings option"
-        />
-
+        android:title="@string/soundSet">
+        <ListPreference
+            android:key="sound_level"
+            android:entries="@array/sound_level_entry_number"
+            android:entryValues="@array/sound_level_entryValues_number"
+            android:defaultValue="80"
+            android:title="Громкость"
+            android:summary="Громкость звукового сигнала"/>
     </PreferenceCategory>
+
 </PreferenceScreen>
-
-<!--<PreferenceScreen-->
-<!--android:summary="@string/screen2_summary"-->
-<!--android:title="@string/screen2_title"-->
-<!--android:dependency="cbSound">-->
-<!--<intent-->
-<!--    android:action="android.settings.SOUND_SETTINGS">-->
-<!--</intent>-->
-<!--</PreferenceScreen>-->
