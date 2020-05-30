@@ -206,4 +206,11 @@
     <string name="delay">Задержка</string>
     <string name="no">Нет</string>
     <string name="save_as">Сохранить</string>
+    <string name="screen2_summary">Открываем настройки звука</string>
+    <string name="screen2_title">Громкость</string>
+    <string name="sound">Звук</string>
+    <string name="soundSet">Настройки звука</string>
+    <string name="opit">Опыты</string>
+    <string name="max_volume">Громкость звуковых сигналов</string>
+    <string name="setSound">Установите уровень громкости</string>
 </resources>

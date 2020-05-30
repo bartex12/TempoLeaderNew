@@ -380,7 +380,8 @@ public class TempoleaderFragment extends Fragment {
                 if (mTimer!=null)mTimer.cancel();
                 mTimer =new Timer();
                 mTimerTask = new MyTimerTask();
-                mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
+                //TODO регулировка звука
+                mToneGenerator = new ToneGenerator(AudioManager.STREAM_MUSIC,50);
 
                 //Выполняем начальные установки параметров, которые могли измениться
                 mCurrentRep = 0;  //устанавливаем счётчик повторений во фрагменте в 0
@@ -596,7 +597,8 @@ public class TempoleaderFragment extends Fragment {
                 if ((mCurrentDelay<=countMillisDelay-500)&&(mCurrentDelay>countMillisDelay-600)){
                     //играем мелодию начала подхода
                     mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 150);
-                    SystemClock.sleep(250);
+                    mToneGenerator.startTone(ToneGenerator.MIN_VOLUME, 250);
+                   // SystemClock.sleep(250);
                     mToneGenerator.startTone(ToneGenerator.TONE_DTMF_0, 300);
                 }
                 if (mCurrentDelay>=countMillisDelay){
